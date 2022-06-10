@@ -72,13 +72,13 @@ ob_start();
 
                             </div>
 
-                            <label for="icon"><?= WIKI_DASHBOARD_ADD_CATEGORIE_ICON ?></label>
+                            <label for="icon"><?= WIKI_DASHBOARD_ADD_CATEGORY_ICON ?></label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-icons"></i></span>
                                 </div>
                                 <input type="text" name="icon" class="form-control"
-                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORIE_ICON_PLACEHOLDER ?>" required>
+                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_ICON_PLACEHOLDER ?>" required>
                             </div>
                             <small class="form-text"><?= WIKI_DASHBOARD_ADD_HINT_ICON ?> <a
                                         href="https://fontawesome.com" target="_blank">FontAwesome.com</a></small>
@@ -97,7 +97,7 @@ ob_start();
 
                         <div class="card-footer">
                             <button type="submit"
-                                    class="btn btn-primary float-right"><?= WIKI_DASHBOARD_BUTTON_SAVE ?></button>
+                                    class="btn btn-primary float-right"><?= CORE_BTN_SAVE ?></button>
                         </div>
 
                     </div>
