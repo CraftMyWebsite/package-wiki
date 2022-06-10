@@ -28,6 +28,8 @@ class wikiController extends coreController
 
     public function frontWikiListAdmin(): void
     {
+        usersController::isUserHasPermission("wiki.show");
+
         $articles = new wikiArticlesModel();
 
         $categories = new wikiCategoriesModel();
@@ -47,7 +49,7 @@ class wikiController extends coreController
 
     public function addCategorie(): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.add");
 
         view('wiki', 'addCategorie.admin', [], 'admin');
     }
@@ -55,7 +57,7 @@ class wikiController extends coreController
 
     public function addCategoriePost(): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.add");
 
         $categories = new wikiCategoriesModel();
 
@@ -72,7 +74,7 @@ class wikiController extends coreController
 
     public function addArticle(): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.add");
 
         $articles = new wikiArticlesModel();
 
@@ -84,7 +86,7 @@ class wikiController extends coreController
 
     public function addArticlePost(): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.add");
 
         $articles = new wikiArticlesModel();
 
@@ -106,7 +108,7 @@ class wikiController extends coreController
 
     public function editCategorie($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.edit");
 
         $categories = new wikiCategoriesModel();
         $categories->id = $id;
@@ -119,7 +121,7 @@ class wikiController extends coreController
 
     public function editCategoriePost($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.edit");
 
         $categories = new wikiCategoriesModel();
         $categories->id = $id;
@@ -142,7 +144,7 @@ class wikiController extends coreController
 
     public function deleteCategorie($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.delete");
 
         $categorie = new wikiCategoriesModel();
         $categorie->id = $id;
@@ -154,7 +156,7 @@ class wikiController extends coreController
 
     public function editArticle($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.edit");
 
         $articles = new wikiArticlesModel();
         $articles->id = $id;
@@ -170,7 +172,7 @@ class wikiController extends coreController
 
     public function editArticlePost($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.edit");
 
         //Get the author pseudo
         $user = new usersModel();
@@ -198,7 +200,7 @@ class wikiController extends coreController
 
     public function deleteArticle($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.delete");
 
         $article = new wikiArticlesModel();
         $article->id = $id;
@@ -210,7 +212,7 @@ class wikiController extends coreController
 
     public function defineCategorie($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.categorie.define");
 
         $categorie = new wikiCategoriesModel();
         $categorie->id = $id;
@@ -221,7 +223,7 @@ class wikiController extends coreController
 
     public function defineArticle($id): void
     {
-        usersController::isAdminLogged();
+        usersController::isUserHasPermission("wiki.article.define");
 
         $article = new wikiArticlesModel();
         $article->id = $id;
