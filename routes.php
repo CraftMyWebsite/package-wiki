@@ -1,6 +1,6 @@
 <?php
 
-use CMW\Controller\wiki\wikiController;
+use CMW\Controller\wiki\WikiController;
 use CMW\Router\Router;
 
 require_once('Lang/'.getenv("LOCALE").'.php');
@@ -18,31 +18,31 @@ $router->scope('/cmw-admin/wiki', function($router) {
     $router->post('/add/article', "wiki#addArticlePost");
 
     $router->get('/edit/categorie/:id', function($id) {
-        (new wikiController)->editCategorie($id);
+        (new WikiController)->editCategorie($id);
     })->with('id', '[0-9]+');
     $router->post('/edit/categorie/:id', function($id) {
-        (new wikiController)->editCategoriePost($id);
+        (new WikiController)->editCategoriePost($id);
     })->with('id', '[0-9]+');
 
     $router->get('/edit/article/:id', function($id) {
-        (new wikiController)->editArticle($id);
+        (new WikiController)->editArticle($id);
     })->with('id', '[0-9]+');
     $router->post('/edit/article/:id', function($id) {
-        (new wikiController)->editArticlePost($id);
+        (new WikiController)->editArticlePost($id);
     })->with('id', '[0-9]+');
 
     $router->get('/delete/article/:id', function($id) {
-        (new wikiController)->deleteArticle($id);
+        (new WikiController)->deleteArticle($id);
     })->with('id', '[0-9]+');
     $router->get('/delete/categorie/:id', function($id) {
-        (new wikiController)->deleteCategorie($id);
+        (new WikiController)->deleteCategorie($id);
     })->with('id', '[0-9]+');
 
     $router->get('/define/categorie/:id', function($id) {
-        (new wikiController)->defineCategorie($id);
+        (new WikiController)->defineCategorie($id);
     })->with('id', '[0-9]+');
     $router->get('/define/article/:id', function($id) {
-        (new wikiController)->defineArticle($id);
+        (new WikiController)->defineArticle($id);
     })->with('id', '[0-9]+');
 
 });
@@ -57,7 +57,7 @@ $router->scope('/wiki', function ($router){
 
 
     $router->get('/:slugC/:slugA', function($slugC,$slugA) {
-        (new wikiController)->publicShowArticle($slugC,$slugA);
+        (new WikiController)->publicShowArticle($slugC,$slugA);
     })->with('slug', '.*?');
 
 });

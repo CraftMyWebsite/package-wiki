@@ -10,7 +10,7 @@ use CMW\Model\Manager;
  * @author Teyir
  * @version 1.0
  */
-class wikiArticlesModel extends Manager
+class WikiArticlesModel extends Manager
 {
 
     public ?int $id;
@@ -141,7 +141,7 @@ class wikiArticlesModel extends Manager
                 array_unshift($key, $firstElement);
                 $key = implode('', $key);
 
-                if (property_exists(wikiArticlesModel::class, $key)) {
+                if (property_exists(WikiArticlesModel::class, $key)) {
                     $this->$key = $property;
                 }
             }
@@ -215,7 +215,7 @@ class wikiArticlesModel extends Manager
                 array_unshift($key, $firstElement);
                 $key = implode('', $key);
 
-                if (property_exists(wikiArticlesModel::class, $key)) {
+                if (property_exists(WikiArticlesModel::class, $key)) {
                     $this->$key = $property;
                 }
             }

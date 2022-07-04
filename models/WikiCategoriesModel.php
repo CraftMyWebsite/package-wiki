@@ -11,7 +11,7 @@ use CMW\Model\Manager;
  * @author Teyir
  * @version 1.0
  */
-class wikiCategoriesModel extends Manager
+class WikiCategoriesModel extends Manager
 {
     public ?int $id;
     public string $name;
@@ -128,7 +128,7 @@ class wikiCategoriesModel extends Manager
                 array_unshift($key, $firstElement);
                 $key = implode('', $key);
 
-                if (property_exists(wikiCategoriesModel::class, $key)) {
+                if (property_exists(WikiCategoriesModel::class, $key)) {
                     $this->$key = $property;
                 }
             }

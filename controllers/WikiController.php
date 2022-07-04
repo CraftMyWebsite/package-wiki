@@ -5,8 +5,8 @@ namespace CMW\Controller\Wiki;
 use CMW\Controller\CoreController;
 use CMW\Controller\Menus\MenusController;
 use CMW\Controller\users\UsersController;
-use CMW\Model\wiki\wikiCategoriesModel;
-use CMW\Model\wiki\wikiArticlesModel;
+use CMW\Model\wiki\WikiCategoriesModel;
+use CMW\Model\wiki\WikiArticlesModel;
 use CMW\Model\users\UsersModel;
 
 
@@ -16,7 +16,7 @@ use CMW\Model\users\UsersModel;
  * @author Teyir
  * @version 1.0
  */
-class wikiController extends CoreController
+class WikiController extends CoreController
 {
 
     public static string $themePath;
@@ -30,9 +30,9 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.show");
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
 
         //Get all undefined articles
         $undefinedArticles = $articles->getUndefinedArticles();
@@ -59,7 +59,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.add");
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
 
         $categories->name = filter_input(INPUT_POST, "name");
         $categories->description = filter_input(INPUT_POST, "description");
@@ -76,9 +76,9 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.add");
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
         $categories = $categories->fetchAll();
 
         view('wiki', 'addArticle.admin', ["articles" => $articles, "categories" => $categories], 'admin');
@@ -88,7 +88,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.add");
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
         $articles->title = filter_input(INPUT_POST, "title");
         $articles->categoryId = filter_input(INPUT_POST, "categorie");
@@ -110,7 +110,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.edit");
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
         $categories->id = $id;
 
         $categories->fetch($id);
@@ -123,7 +123,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.edit");
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
         $categories->id = $id;
         $categories->name = filter_input(INPUT_POST, "name");
         $categories->description = filter_input(INPUT_POST, "description");
@@ -146,7 +146,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.delete");
 
-        $categorie = new wikiCategoriesModel();
+        $categorie = new WikiCategoriesModel();
         $categorie->id = $id;
         $categorie->delete();
 
@@ -158,10 +158,10 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.edit");
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
         $articles->id = $id;
 
-        $categories = new wikiCategoriesModel();
+        $categories = new WikiCategoriesModel();
         $categories = $categories->fetchAll();
 
         $articles->fetch($id);
@@ -178,7 +178,7 @@ class wikiController extends CoreController
         $user = new UsersModel();
         $user->fetch($_SESSION['cmwUserId']);
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
         $articles->id = $id;
         $articles->title = filter_input(INPUT_POST, "title");
@@ -202,7 +202,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.delete");
 
-        $article = new wikiArticlesModel();
+        $article = new WikiArticlesModel();
         $article->id = $id;
         $article->delete();
 
@@ -214,7 +214,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.define");
 
-        $categorie = new wikiCategoriesModel();
+        $categorie = new WikiCategoriesModel();
         $categorie->id = $id;
         $categorie->define();
 
@@ -225,7 +225,7 @@ class wikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.define");
 
-        $article = new wikiArticlesModel();
+        $article = new WikiArticlesModel();
         $article->id = $id;
         $article->define();
 
@@ -244,10 +244,10 @@ class wikiController extends CoreController
         $core = new CoreController();
         $menu = new MenusController();
 
-        $categorie = new wikiCategoriesModel();
+        $categorie = new WikiCategoriesModel();
         $getAllCategories = $categorie->getAllCategories();
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
@@ -265,10 +265,10 @@ class wikiController extends CoreController
         $core = new CoreController();
         $menu = new MenusController();
 
-        $categorie = new wikiCategoriesModel();
+        $categorie = new WikiCategoriesModel();
         $getAllCategories = $categorie->getAllCategories();
 
-        $articles = new wikiArticlesModel();
+        $articles = new WikiArticlesModel();
 
         $articles->getContent($slugA);
 
