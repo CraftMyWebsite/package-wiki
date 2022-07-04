@@ -2,12 +2,12 @@
 
 namespace CMW\Controller\Wiki;
 
-use CMW\Controller\coreController;
-use CMW\Controller\Menus\menusController;
-use CMW\Controller\users\usersController;
+use CMW\Controller\CoreController;
+use CMW\Controller\Menus\MenusController;
+use CMW\Controller\users\UsersController;
 use CMW\Model\wiki\wikiCategoriesModel;
 use CMW\Model\wiki\wikiArticlesModel;
-use CMW\Model\users\usersModel;
+use CMW\Model\users\UsersModel;
 
 
 /**
@@ -16,7 +16,7 @@ use CMW\Model\users\usersModel;
  * @author Teyir
  * @version 1.0
  */
-class wikiController extends coreController
+class wikiController extends CoreController
 {
 
     public static string $themePath;
@@ -28,7 +28,7 @@ class wikiController extends coreController
 
     public function frontWikiListAdmin(): void
     {
-        usersController::isUserHasPermission("wiki.show");
+        UsersController::isUserHasPermission("wiki.show");
 
         $articles = new wikiArticlesModel();
 
@@ -49,7 +49,7 @@ class wikiController extends coreController
 
     public function addCategorie(): void
     {
-        usersController::isUserHasPermission("wiki.categorie.add");
+        UsersController::isUserHasPermission("wiki.categorie.add");
 
         view('wiki', 'addCategorie.admin', [], 'admin');
     }
@@ -57,7 +57,7 @@ class wikiController extends coreController
 
     public function addCategoriePost(): void
     {
-        usersController::isUserHasPermission("wiki.categorie.add");
+        UsersController::isUserHasPermission("wiki.categorie.add");
 
         $categories = new wikiCategoriesModel();
 
@@ -74,7 +74,7 @@ class wikiController extends coreController
 
     public function addArticle(): void
     {
-        usersController::isUserHasPermission("wiki.article.add");
+        UsersController::isUserHasPermission("wiki.article.add");
 
         $articles = new wikiArticlesModel();
 
@@ -86,7 +86,7 @@ class wikiController extends coreController
 
     public function addArticlePost(): void
     {
-        usersController::isUserHasPermission("wiki.article.add");
+        UsersController::isUserHasPermission("wiki.article.add");
 
         $articles = new wikiArticlesModel();
 
@@ -98,7 +98,7 @@ class wikiController extends coreController
         $articles->slug = $articles->cleanString($articles->title);
 
         //Get the author pseudo
-        $user = new usersModel();
+        $user = new UsersModel();
         $user->fetch($_SESSION['cmwUserId']);
         $articles->author = $user->userPseudo;
 
@@ -108,7 +108,7 @@ class wikiController extends coreController
 
     public function editCategorie($id): void
     {
-        usersController::isUserHasPermission("wiki.categorie.edit");
+        UsersController::isUserHasPermission("wiki.categorie.edit");
 
         $categories = new wikiCategoriesModel();
         $categories->id = $id;
@@ -121,7 +121,7 @@ class wikiController extends coreController
 
     public function editCategoriePost($id): void
     {
-        usersController::isUserHasPermission("wiki.categorie.edit");
+        UsersController::isUserHasPermission("wiki.categorie.edit");
 
         $categories = new wikiCategoriesModel();
         $categories->id = $id;
@@ -144,7 +144,7 @@ class wikiController extends coreController
 
     public function deleteCategorie($id): void
     {
-        usersController::isUserHasPermission("wiki.categorie.delete");
+        UsersController::isUserHasPermission("wiki.categorie.delete");
 
         $categorie = new wikiCategoriesModel();
         $categorie->id = $id;
@@ -156,7 +156,7 @@ class wikiController extends coreController
 
     public function editArticle($id): void
     {
-        usersController::isUserHasPermission("wiki.article.edit");
+        UsersController::isUserHasPermission("wiki.article.edit");
 
         $articles = new wikiArticlesModel();
         $articles->id = $id;
@@ -172,10 +172,10 @@ class wikiController extends coreController
 
     public function editArticlePost($id): void
     {
-        usersController::isUserHasPermission("wiki.article.edit");
+        UsersController::isUserHasPermission("wiki.article.edit");
 
         //Get the author pseudo
-        $user = new usersModel();
+        $user = new UsersModel();
         $user->fetch($_SESSION['cmwUserId']);
 
         $articles = new wikiArticlesModel();
@@ -200,7 +200,7 @@ class wikiController extends coreController
 
     public function deleteArticle($id): void
     {
-        usersController::isUserHasPermission("wiki.article.delete");
+        UsersController::isUserHasPermission("wiki.article.delete");
 
         $article = new wikiArticlesModel();
         $article->id = $id;
@@ -212,7 +212,7 @@ class wikiController extends coreController
 
     public function defineCategorie($id): void
     {
-        usersController::isUserHasPermission("wiki.categorie.define");
+        UsersController::isUserHasPermission("wiki.categorie.define");
 
         $categorie = new wikiCategoriesModel();
         $categorie->id = $id;
@@ -223,7 +223,7 @@ class wikiController extends coreController
 
     public function defineArticle($id): void
     {
-        usersController::isUserHasPermission("wiki.article.define");
+        UsersController::isUserHasPermission("wiki.article.define");
 
         $article = new wikiArticlesModel();
         $article->id = $id;
@@ -241,8 +241,8 @@ class wikiController extends coreController
     {
 
         //Default controllers (important)
-        $core = new coreController();
-        $menu = new menusController();
+        $core = new CoreController();
+        $menu = new MenusController();
 
         $categorie = new wikiCategoriesModel();
         $getAllCategories = $categorie->getAllCategories();
@@ -262,8 +262,8 @@ class wikiController extends coreController
         $url = $slugA;
 
         //Default controllers (important)
-        $core = new coreController();
-        $menu = new menusController();
+        $core = new CoreController();
+        $menu = new MenusController();
 
         $categorie = new wikiCategoriesModel();
         $getAllCategories = $categorie->getAllCategories();

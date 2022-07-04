@@ -1,11 +1,11 @@
 <?php
 
 use CMW\Controller\wiki\wikiController;
-use CMW\Router\router;
+use CMW\Router\Router;
 
 require_once('Lang/'.getenv("LOCALE").'.php');
 
-/** @var $router router Main router */
+/** @var $router Router Main router */
 
 //Admin pages
 $router->scope('/cmw-admin/wiki', function($router) {

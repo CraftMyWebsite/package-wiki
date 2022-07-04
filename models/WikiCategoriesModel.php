@@ -2,7 +2,7 @@
 
 namespace CMW\Model\Wiki;
 
-use CMW\Model\manager;
+use CMW\Model\Manager;
 
 
 /**
@@ -11,7 +11,7 @@ use CMW\Model\manager;
  * @author Teyir
  * @version 1.0
  */
-class wikiCategoriesModel extends manager
+class wikiCategoriesModel extends Manager
 {
     public ?int $id;
     public string $name;
@@ -43,7 +43,7 @@ class wikiCategoriesModel extends manager
 
         $sql = "INSERT INTO cmw_wiki_categories (name,description,slug,icon) VALUES (:name, :description, :slug, :icon)";
 
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute($var);
     }
@@ -51,7 +51,7 @@ class wikiCategoriesModel extends manager
     public function fetchAll(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories";
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -65,7 +65,7 @@ class wikiCategoriesModel extends manager
     public function getUndefinedCategories(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE is_define = 0";
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -79,7 +79,7 @@ class wikiCategoriesModel extends manager
     public function getNumberOfUndefinedCategories(): array|int
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE is_define = 0";
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -95,7 +95,7 @@ class wikiCategoriesModel extends manager
     public function getAllCategories(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE is_define = 1";
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -114,7 +114,7 @@ class wikiCategoriesModel extends manager
 
         $sql = "SELECT * FROM cmw_wiki_categories WHERE id =:id";
 
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -150,7 +150,7 @@ class wikiCategoriesModel extends manager
         $sql = "UPDATE cmw_wiki_categories SET name=:name, description=:description, slug=:slug, icon=:icon, date_update=now(), is_define=:is_define WHERE id=:id";
 
 
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute($var);
     }
@@ -163,7 +163,7 @@ class wikiCategoriesModel extends manager
 
         $sql = "UPDATE cmw_wiki_categories SET is_define=1 WHERE id=:id";
 
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute($var);
     }
@@ -176,7 +176,7 @@ class wikiCategoriesModel extends manager
 
         $sql = "DELETE FROM cmw_wiki_categories WHERE id=:id";
 
-        $db = manager::dbConnect();
+        $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute($var);
     }
