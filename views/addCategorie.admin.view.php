@@ -2,8 +2,6 @@
 $title = WIKI_DASHBOARD_TITLE_ADD_CATEGORY;
 $description = WIKI_DASHBOARD_DESC;
 
-$styles = '<link rel="stylesheet" href="' . getenv("PATH_SUBFOLDER") . 'app/package/wiki/views/ressources/css/main.css">';
-
 ob_start();
 ?>
 
@@ -78,4 +76,3 @@ ob_start();
 
 <?php $content = ob_get_clean(); ?>
 
-<?php require(getenv("PATH_ADMIN_VIEW") . 'template.php'); ?>

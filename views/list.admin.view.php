@@ -1,9 +1,6 @@
 <?php
 $title = WIKI_DASHBOARD_TITLE;
 $description = WIKI_DASHBOARD_DESC;
-
-$styles = '<link rel="stylesheet" href="' . getenv("PATH_SUBFOLDER") . 'app/package/wiki/views/ressources/css/main.css">';
-
 /** @var wikiArticlesModel[] $articles */
 /** @var wikiCategoriesModel[] $categories */
 
@@ -132,5 +129,3 @@ ob_start();
 
 
 <?php $content = ob_get_clean(); ?>
-
-<?php require(getenv("PATH_ADMIN_VIEW") . 'template.php'); ?>

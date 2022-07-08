@@ -41,17 +41,29 @@ class WikiController extends CoreController
 
         $getAllCategories = $categories->getAllCategories();
 
+        $includes = array(
+            "styles" => [
+                "app/package/wiki/views/assets/css/main.css"
+            ]
+        );
+
         //Include the view file ("views/list.admin.view.php").
         view('wiki', 'list.admin', ["articles" => $articles, "categories" => $categories,
             "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories,
-            "getAllCategories" => $getAllCategories], 'admin');
+            "getAllCategories" => $getAllCategories], 'admin', $includes);
     }
 
     public function addCategorie(): void
     {
         UsersController::isUserHasPermission("wiki.categorie.add");
 
-        view('wiki', 'addCategorie.admin', [], 'admin');
+        $includes = array(
+            "styles" => [
+                "app/package/wiki/views/assets/css/main.css"
+            ]
+        );
+
+        view('wiki', 'addCategorie.admin', [], 'admin', $includes);
     }
 
 
@@ -81,7 +93,22 @@ class WikiController extends CoreController
         $categories = new WikiCategoriesModel();
         $categories = $categories->fetchAll();
 
-        view('wiki', 'addArticle.admin', ["articles" => $articles, "categories" => $categories], 'admin');
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "admin/resources/vendors/summernote/summernote.min.js",
+                    "admin/resources/vendors/summernote/summernote-bs4.min.js",
+                    "app/package/wiki/views/assets/js/summernoteInit.js"
+                ]
+            ],
+            "styles" => [
+                "app/package/wiki/views/assets/css/main.css",
+                "admin/resources/vendors/summernote/summernote-bs4.min.css",
+                "admin/resources/vendors/summernote/summernote.min.css"
+            ]
+        );
+
+        view('wiki', 'addArticle.admin', ["articles" => $articles, "categories" => $categories], 'admin', $includes);
     }
 
     public function addArticlePost(): void
@@ -115,8 +142,14 @@ class WikiController extends CoreController
 
         $categories->fetch($id);
 
+        $includes = array(
+            "styles" => [
+                "app/package/wiki/views/assets/css/main.css"
+            ]
+        );
 
-        view('wiki', 'editCategorie.admin', ["categories" => $categories], 'admin');
+
+        view('wiki', 'editCategorie.admin', ["categories" => $categories], 'admin', $includes);
     }
 
     public function editCategoriePost($id): void
@@ -166,8 +199,23 @@ class WikiController extends CoreController
 
         $articles->fetch($id);
 
+        $includes = array(
+            "scripts" => [
+                "before" => [
+                    "admin/resources/vendors/summernote/summernote.min.js",
+                    "admin/resources/vendors/summernote/summernote-bs4.min.js",
+                    "app/package/wiki/views/assets/js/summernoteInit.js"
+                ]
+            ],
+            "styles" => [
+                "app/package/wiki/views/assets/css/main.css",
+                "admin/resources/vendors/summernote/summernote-bs4.min.css",
+                "admin/resources/vendors/summernote/summernote.min.css"
+            ]
+        );
 
-        view('wiki', 'editArticle.admin', ["articles" => $articles, "categories" => $categories], 'admin');
+        view('wiki', 'editArticle.admin', ["articles" => $articles,
+            "categories" => $categories], 'admin', $includes);
     }
 
     public function editArticlePost($id): void
@@ -252,7 +300,7 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         view('wiki', 'main', ["categorie" => $categorie, "getAllCategories" => $getAllCategories,
-            "articles" => $articles, "core" => $core, "menu" => $menu], 'public');
+            "articles" => $articles, "core" => $core, "menu" => $menu], 'public', []);
     }
 
     public function publicShowArticle($slugC, $slugA): void
@@ -275,6 +323,6 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         view('wiki', 'main', ["categorie" => $categorie, "getAllCategories" => $getAllCategories,
-            "articles" => $articles, "url" => $url, "core" => $core, "menu" => $menu], 'public');
+            "articles" => $articles, "url" => $url, "core" => $core, "menu" => $menu], 'public', []);
     }
 }

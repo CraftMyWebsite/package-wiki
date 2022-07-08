@@ -2,36 +2,6 @@
 $title = WIKI_DASHBOARD_TITLE_ADD_ARTICLE;
 $description = WIKI_DASHBOARD_DESC;
 
-$styles = '<link rel="stylesheet" href="' . getenv("PATH_SUBFOLDER") . 'app/package/wiki/views/ressources/css/main.css">';
-$styles .= "<link rel='stylesheet' href='" . getenv("PATH_SUBFOLDER") . "admin/resources/vendors/summernote/summernote-bs4.min.css'>";
-$styles .= "<link rel='stylesheet' href='" . getenv("PATH_SUBFOLDER") . "admin/resources/vendors/summernote/summernote.min.css'>";
-
-$scripts = '<script src="' . getenv("PATH_SUBFOLDER") . 'admin/resources/vendors/summernote/summernote.min.js" ></script>';
-$scripts .= '<script src="' . getenv("PATH_SUBFOLDER") . 'admin/resources/vendors/summernote/summernote-bs4.min.js" ></script>';
-$scripts .= "
-    <script>
-        $(document).ready(function() {
-          $('#summernote').summernote({
-          height: 200,
-          width: 200000,
-          codeviewIframeFilter: true,
-            toolbar: [
-              ['style', ['style']],
-              ['font', ['bold', 'underline', 'strikethrough', 'clear']],
-              ['font', ['superscript', 'subscript']],
-              ['fontname', ['fontname']],
-              ['color', ['color']],
-              ['division', ['hr']],
-              ['para', ['ul', 'ol', 'paragraph']],
-              ['table', ['table']],
-              ['insert', ['link', 'picture', 'video']],
-              ['view', ['fullscreen', 'codeview', 'help']],
-              ['misc', ['undo', 'redo']]
-            ],
-          });
-        });
-    </script>
-";
 
 ob_start();
 ?>
