@@ -8,6 +8,8 @@ use CMW\Controller\users\UsersController;
 use CMW\Model\wiki\WikiCategoriesModel;
 use CMW\Model\wiki\WikiArticlesModel;
 use CMW\Model\users\UsersModel;
+use CMW\Utils\Utils;
+use JetBrains\PhpStorm\NoReturn;
 
 
 /**
@@ -20,26 +22,27 @@ class WikiController extends CoreController
 {
 
     public static string $themePath;
+    private WikiArticlesModel $wikiArticlesModel;
+    private WikiCategoriesModel $wikiCategoriesModel;
 
     public function __construct($themePath = null)
     {
         parent::__construct($themePath);
+        $this->wikiArticlesModel = new WikiArticlesModel();
+        $this->wikiCategoriesModel = new WikiCategoriesModel();
     }
 
     public function frontWikiListAdmin(): void
     {
         UsersController::isUserHasPermission("wiki.show");
 
-        $articles = new WikiArticlesModel();
-
-        $categories = new WikiCategoriesModel();
 
         //Get all undefined articles
-        $undefinedArticles = $articles->getUndefinedArticles();
+        $undefinedArticles = $this->wikiArticlesModel->getUndefinedArticles();
 
-        $undefinedCategories = $categories->getUndefinedCategories();
+        $undefinedCategories = $this->wikiCategoriesModel->getUndefinedCategories();
 
-        $getAllCategories = $categories->getAllCategories();
+        $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
         $includes = array(
             "styles" => [
@@ -48,9 +51,8 @@ class WikiController extends CoreController
         );
 
         //Include the view file ("views/list.admin.view.php").
-        view('wiki', 'list.admin', ["articles" => $articles, "categories" => $categories,
-            "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories,
-            "getAllCategories" => $getAllCategories], 'admin', $includes);
+        view('wiki', 'list.admin', ["categories" => $categories, "undefinedArticles" => $undefinedArticles,
+            "undefinedCategories" => $undefinedCategories], 'admin', $includes);
     }
 
     public function addCategorie(): void
@@ -71,16 +73,14 @@ class WikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.add");
 
-        $categories = new WikiCategoriesModel();
+        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+        $icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
 
-        $categories->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-        $categories->description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $categories->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
-
-        $categories->slug = $categories->cleanString(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING));
+        $slug = Utils::normalizeForSlug(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING));
 
 
-        $categories->create();
+        $this->wikiCategoriesModel->createCategorie($name, $description, $icon, $slug);
         header("location: ../list");
     }
 
@@ -88,10 +88,7 @@ class WikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.article.add");
 
-        $articles = new WikiArticlesModel();
-
-        $categories = new WikiCategoriesModel();
-        $categories = $categories->fetchAll();
+        $categories = $this->wikiCategoriesModel->getCategories();
 
         $includes = array(
             "scripts" => [
@@ -108,7 +105,7 @@ class WikiController extends CoreController
             ]
         );
 
-        view('wiki', 'addArticle.admin', ["articles" => $articles, "categories" => $categories], 'admin', $includes);
+        view('wiki', 'addArticle.admin', ["categories" => $categories], 'admin', $includes);
     }
 
     public function addArticlePost(): void
@@ -117,30 +114,27 @@ class WikiController extends CoreController
 
         $articles = new WikiArticlesModel();
 
-        $articles->title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
-        $articles->categoryId = filter_input(INPUT_POST, "categorie", FILTER_SANITIZE_NUMBER_INT);
-        $articles->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
-        $articles->content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
+        $categoryId = filter_input(INPUT_POST, "categorie", FILTER_SANITIZE_NUMBER_INT);
+        $icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, "content");
 
-        $articles->slug = $articles->cleanString($articles->title);
+        $slug = Utils::normalizeForSlug($title);
 
         //Get the author pseudo
-        $user = new UsersModel();
-        $user->fetch($_SESSION['cmwUserId']);
-        $articles->author = $user->userPseudo;
+        $user = new UsersModel;
+        $userEntity = $user->getUserById($_SESSION['cmwUserId']);
+        $userId = $userEntity->getId();
 
-        $articles->create();
+        $articles->createArticle($title, $categoryId, $icon, $content, $slug, $userId);
         header("location: ../list");
     }
 
-    public function editCategorie($id): void
+    public function editCategorie(int $id): void
     {
         UsersController::isUserHasPermission("wiki.categorie.edit");
 
-        $categories = new WikiCategoriesModel();
-        $categories->id = $id;
-
-        $categories->fetch($id);
+        $categorie = $this->wikiCategoriesModel->getCategorieById($id);
 
         $includes = array(
             "styles" => [
@@ -149,26 +143,25 @@ class WikiController extends CoreController
         );
 
 
-        view('wiki', 'editCategorie.admin', ["categories" => $categories], 'admin', $includes);
+        view('wiki', 'editCategorie.admin', ["categorie" => $categorie], 'admin', $includes);
     }
 
-    public function editCategoriePost($id): void
+    #[NoReturn] public function editCategoriePost(int $id): void
     {
         UsersController::isUserHasPermission("wiki.categorie.edit");
 
-        $categories = new WikiCategoriesModel();
-        $categories->id = $id;
-        $categories->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
-        $categories->description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $categories->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
-        $categories->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+        $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+        $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
+        $icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
+        $slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+
         if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
-            $categories->isDefine = 0;
+            $isDefine = 0;
         } else {
-            $categories->isDefine = filter_input(INPUT_POST, "isDefine");
+            $isDefine = filter_input(INPUT_POST, "isDefine");
         }
 
-        $categories->update();
+        $this->wikiCategoriesModel->updateCategorie($id, $name, $description, $slug, $icon, $isDefine);
 
         header("location: ../../list");
         die();
@@ -179,25 +172,20 @@ class WikiController extends CoreController
     {
         UsersController::isUserHasPermission("wiki.categorie.delete");
 
-        $categorie = new WikiCategoriesModel();
-        $categorie->id = $id;
-        $categorie->delete();
+        $this->wikiCategoriesModel->deleteCategorie($id);
 
         header("location: ../../list");
 
     }
 
-    public function editArticle($id): void
+    public function editArticle(int $id): void
     {
         UsersController::isUserHasPermission("wiki.article.edit");
 
-        $articles = new WikiArticlesModel();
-        $articles->id = $id;
 
-        $categories = new WikiCategoriesModel();
-        $categories = $categories->fetchAll();
+        $categories = $this->wikiCategoriesModel->getCategories();
 
-        $articles->fetch($id);
+        $article = $this->wikiArticlesModel->getArticleById($id);
 
         $includes = array(
             "scripts" => [
@@ -214,68 +202,59 @@ class WikiController extends CoreController
             ]
         );
 
-        view('wiki', 'editArticle.admin', ["articles" => $articles,
+        view('wiki', 'editArticle.admin', ["article" => $article,
             "categories" => $categories], 'admin', $includes);
     }
 
-    public function editArticlePost($id): void
+    #[NoReturn] public function editArticlePost(int $id): void
     {
         UsersController::isUserHasPermission("wiki.article.edit");
 
-        //Get the author pseudo
-        $user = new UsersModel();
-        $user->fetch($_SESSION['cmwUserId']);
+        //Get the editor id
+        $user = new UsersModel;
+        $userEntity = $user->getUserById($_SESSION['cmwUserId']);
 
-        $articles = new WikiArticlesModel();
 
-        $articles->id = $id;
-        $articles->title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
-        $articles->content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
-        $articles->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
-        $articles->lastEditor = $user->userPseudo;
+        $title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
+        $content = filter_input(INPUT_POST, "content");
+        $icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
+        $lastEditor = $userEntity->getId();
         if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
-            $articles->isDefine = 0;
+            $isDefine = 0;
         } else {
-            $articles->isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT);
+            $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT);
         }
 
-        $articles->update();
+        $this->wikiArticlesModel->updateArticle($id, $title, $content, $icon, $lastEditor, $isDefine);
 
         header("location: ../../list");
         die();
-
     }
 
-    public function deleteArticle($id): void
+    public function deleteArticle(int $id): void
     {
         UsersController::isUserHasPermission("wiki.article.delete");
 
-        $article = new WikiArticlesModel();
-        $article->id = $id;
-        $article->delete();
+        $this->wikiArticlesModel->deleteArticle($id);
 
         header("location: ../../list");
 
     }
 
-    public function defineCategorie($id): void
+    public function defineCategorie(int $id): void
     {
         UsersController::isUserHasPermission("wiki.categorie.define");
 
-        $categorie = new WikiCategoriesModel();
-        $categorie->id = $id;
-        $categorie->define();
+        $this->wikiCategoriesModel->defineCategorie($id);
 
         header("location: ../../list");
     }
 
-    public function defineArticle($id): void
+    public function defineArticle(int $id): void
     {
         UsersController::isUserHasPermission("wiki.article.define");
 
-        $article = new WikiArticlesModel();
-        $article->id = $id;
-        $article->define();
+        $this->wikiArticlesModel->defineArticle($id);
 
         header("location: ../../list");
     }
@@ -292,15 +271,10 @@ class WikiController extends CoreController
         $core = new CoreController();
         $menu = new MenusController();
 
-        $categorie = new WikiCategoriesModel();
-        $getAllCategories = $categorie->getAllCategories();
-
-        $articles = new WikiArticlesModel();
-
+        $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
-        view('wiki', 'main', ["categorie" => $categorie, "getAllCategories" => $getAllCategories,
-            "articles" => $articles, "core" => $core, "menu" => $menu], 'public', []);
+        view('wiki', 'main', ["categories" => $categories, "core" => $core, "menu" => $menu], 'public', []);
     }
 
     public function publicShowArticle($slugC, $slugA): void
@@ -313,16 +287,13 @@ class WikiController extends CoreController
         $core = new CoreController();
         $menu = new MenusController();
 
-        $categorie = new WikiCategoriesModel();
-        $getAllCategories = $categorie->getAllCategories();
+        $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
-        $articles = new WikiArticlesModel();
-
-        $articles->getContent($slugA);
+        $article = $this->wikiArticlesModel->getArticleBySlug($slugA);
 
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
-        view('wiki', 'main', ["categorie" => $categorie, "getAllCategories" => $getAllCategories,
-            "articles" => $articles, "url" => $url, "core" => $core, "menu" => $menu], 'public', []);
+        view('wiki', 'main', ["categories" => $categories,
+            "article" => $article, "url" => $url, "core" => $core, "menu" => $menu], 'public', []);
     }
 }

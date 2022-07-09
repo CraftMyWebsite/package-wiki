@@ -4,7 +4,7 @@ $description = WIKI_DASHBOARD_DESC;
 
 ob_start();
 
-/** @var wikiCategoriesModel[] $categories */
+/** @var \CMW\Entity\Wiki\WikiCategoriesEntity $categorie */
 ?>
 
 <div class="content">
@@ -25,7 +25,7 @@ ob_start();
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-heading"></i></span>
                                 </div>
-                                <input type="text" name="name" value="<?= $categories->name ?>" class="form-control"
+                                <input type="text" name="name" value="<?= $categorie->getName() ?>" class="form-control"
                                        placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_NAME_PLACEHOLDER ?>" required>
 
                             </div>
@@ -35,7 +35,7 @@ ob_start();
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-paragraph"></i></span>
                                 </div>
-                                <input type="text" name="description" value="<?= $categories->description ?>"
+                                <input type="text" name="description" value="<?= $categorie->getDescription() ?>"
                                        class="form-control"
                                        placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_DESCRIPTION_PLACEHOLDER ?>"
                                        required>
@@ -46,7 +46,7 @@ ob_start();
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-icons"></i></span>
                                 </div>
-                                <input type="text" name="icon" value="<?= $categories->icon ?>" class="form-control"
+                                <input type="text" name="icon" value="<?= $categorie->getIcon() ?>" class="form-control"
                                        placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_ICON_PLACEHOLDER ?>" required>
                             </div>
                             <small class="form-text"> <?= WIKI_DASHBOARD_ADD_HINT_ICON ?> <a
@@ -57,7 +57,7 @@ ob_start();
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><?= "https://" . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'wiki/' ?></span>
                                 </div>
-                                <input type="text" name="slug" value="<?= $categories->slug ?>" class="form-control"
+                                <input type="text" name="slug" value="<?= $categorie->getSlug() ?>" class="form-control"
                                        placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_SLUG_PLACEHOLDER ?>" required>
                             </div>
 
@@ -68,7 +68,7 @@ ob_start();
 
                             <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success float-left">
                                 <input type="checkbox" name="isDefine" value="1" class="custom-control-input"
-                                       id="customSwitch3" <?= ($categories->isDefine ? "checked" : "") ?>>
+                                       id="customSwitch3" <?= ($categorie->getIsDefine() ? "checked" : "") ?>>
                                 <label class="custom-control-label"
                                        for="customSwitch3"><?= WIKI_DASHBOARD_EDIT_CATEGORY_ENABLE ?></label>
                             </div>

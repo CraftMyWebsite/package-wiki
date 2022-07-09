@@ -1,8 +1,14 @@
 <?php
+
+use CMW\Model\Wiki\WikiArticlesModel;
+use CMW\Model\Wiki\WikiCategoriesModel;
+
 $title = WIKI_DASHBOARD_TITLE;
 $description = WIKI_DASHBOARD_DESC;
-/** @var wikiArticlesModel[] $articles */
-/** @var wikiCategoriesModel[] $categories */
+
+/** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
+/** @var \CMW\Entity\Wiki\WikiArticlesEntity[] $undefinedArticles */
+/** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $undefinedCategories */
 
 ob_start();
 ?>
@@ -36,19 +42,18 @@ ob_start();
                                 <div class="card-header">
                                     <h5 class="card-title"><?= WIKI_DASHBOARD_ARTICLES ?></h5>
                                     <div class="card-tools">
-                                        <span>(<strong><?= $articles->getNumberOfUndefinedArticles() ?></strong>)</span>
+                                        <span>(<strong><?= (new WikiArticlesModel())->getNumberOfUndefinedArticles() ?></strong>)</span>
                                     </div>
                                 </div>
                                 <div class="card-body" id="list-articles">
                                     <ul class="list-unstyled">
                                         <?php
-                                        /** @var wikiArticlesModel[] $undefinedArticles */
                                         foreach ($undefinedArticles as $undefinedArticle):?>
-                                            <li><?= $undefinedArticle['title'] ?>
+                                            <li><?= $undefinedArticle->getTitle() ?>
                                                 <div class="float-right">
-                                                    <a href="define/article/<?= $undefinedArticle['id'] ?>"
+                                                    <a href="define/article/<?= $undefinedArticle->getId() ?>"
                                                        class="icon-add"><i class="fas fa-plus-circle"></i></a>
-                                                    <a href="delete/article/<?= $undefinedArticle['id'] ?>"
+                                                    <a href="delete/article/<?= $undefinedArticle->getId() ?>"
                                                        class="icon-delete"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </li>
@@ -63,19 +68,18 @@ ob_start();
                                 <div class="card-header">
                                     <h5 class="card-title"><?= WIKI_DASHBOARD_CATEGORIES ?></h5>
                                     <div class="card-tools">
-                                        <span>(<strong><?= $categories->getNumberOfUndefinedCategories() ?></strong>)</span>
+                                        <span>(<strong><?= (new WikiCategoriesModel())->getNumberOfUndefinedCategories() ?></strong>)</span>
                                     </div>
                                 </div>
                                 <div class="card-body" id="list-articles">
                                     <ul class="list-unstyled">
                                         <?php
-                                        /** @var wikiCategoriesModel[] $undefinedCategories */
                                         foreach ($undefinedCategories as $undefinedCategorie):?>
-                                            <li><?= $undefinedCategorie['name'] ?>
+                                            <li><?= $undefinedCategorie->getName() ?>
                                                 <div class="float-right">
-                                                    <a href="define/categorie/<?= $undefinedCategorie['id'] ?>"
+                                                    <a href="define/categorie/<?= $undefinedCategorie->getId() ?>"
                                                        class="icon-add"><i class="fas fa-plus-circle"></i></a>
-                                                    <a href="delete/categorie/<?= $undefinedCategorie['id'] ?>"
+                                                    <a href="delete/categorie/<?= $undefinedCategorie->getId() ?>"
                                                        class="icon-delete"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </li>
@@ -89,29 +93,29 @@ ob_start();
             </section>
 
 
-            <!-- Section container, elle contient tous les articles et les catégories-->
+            <!-- Section container, elle contient tous les articles et les catégories définis -->
             <div class="col-8">
                 <div class="p-5" id="container">
 
                     <div class="card-body">
                         <ol class="list-unstyled">
                             <?php
-                            /** @var wikiArticlesModel[] $getAllCategories */
-                            foreach ($getAllCategories as $category):?>
-                                <div class="categorie-container mt-4" id="categorie-<?= $category['id'] ?>">
-                                    <span class="ml-2"><?= $category['name'] ?></span>
-                                    <a href="delete/categorie/<?= $category['id'] ?>"
+                            foreach ($categories as $category):?>
+                                <div class="categorie-container mt-4" id="categorie-<?= $category->getId() ?>">
+                                    <span class="ml-2"><?= $category->getName() ?></span>
+                                    <a href="delete/categorie/<?= $category->getId() ?>"
                                        class="float-right wiki-icons mr-2"><i class="fas fa-trash-alt"></i></a>
-                                    <a href="edit/categorie/<?= $category['id'] ?>" class="float-right wiki-icons mr-3"><i
+                                    <a href="edit/categorie/<?= $category->getId() ?>"
+                                       class="float-right wiki-icons mr-3"><i
                                                 class="fas fa-edit"></i></a>
                                 </div>
-                                <?php $getArticles = $articles->getAllArticlesInCategory($category['id']);
-                                foreach ($getArticles as $article):?>
-                                    <div class="ml-5 mt-1 article-container" id="article-<?= $article['id'] ?>">
-                                        <span class="ml-2"><?= $article['title'] ?></span>
-                                        <a href="delete/article/<?= $article['id'] ?>"
+                                <?php
+                                foreach ($category->getArticles() as $article):?>
+                                    <div class="ml-5 mt-1 article-container" id="article-<?= $article->getId() ?>">
+                                        <span class="ml-2"><?= $article->getTitle() ?></span>
+                                        <a href="delete/article/<?= $article->getId() ?>"
                                            class="float-right wiki-icons mr-2"><i class="fas fa-trash-alt"></i></a>
-                                        <a href="edit/article/<?= $article['id'] ?>"
+                                        <a href="edit/article/<?= $article->getId() ?>"
                                            class="float-right wiki-icons mr-3"><i class="fas fa-edit"></i></a>
                                     </div>
                                 <?php endforeach; ?>

@@ -2,7 +2,9 @@
 
 namespace CMW\Model\Wiki;
 
+use CMW\Entity\Wiki\WikiArticlesEntity;
 use CMW\Model\Manager;
+use CMW\Model\Users\UsersModel;
 
 /**
  * Class @wikiArticlesModel
@@ -13,81 +15,112 @@ use CMW\Model\Manager;
 class WikiArticlesModel extends Manager
 {
 
-    public ?int $id;
-    public ?string $title;
-    public ?string $categoryId;
-    public ?string $icon;
-    public ?string $content;
-    public ?string $slug;
-    public ?string $author;
-    public ?string $lastEditor;
-    public ?string $dateUpdate;
-    public ?string $dateCreate;
-    public ?int $position;
-    public ?int $isDefine;
-
-
-    public function cleanString($string): string
-    {
-        $search = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ', '&', "'", '"', '%', '!', '?', '*', ' ');
-        $replace = array('A', 'A', 'A', 'A', 'A', 'A', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y', 'e', '_', '_', '_', '_', '_', '_', '-');
-
-        return str_replace($search, $replace, $string);
-    }
-
-
-    public function create(): void
+    public function createArticle(string $title, int $categoryId, string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
     {
 
         $var = array(
-            "title" => $this->title,
-            "category_id" => $this->categoryId,
-            "icon" => $this->icon,
-            "content" => $this->content,
-            "author" => $this->author,
-            "slug" => $this->slug
+            "title" => $title,
+            "category_id" => $categoryId,
+            "icon" => $icon,
+            "content" => $content,
+            "author_id" => $authorId,
+            "last_editor_id" => $authorId,
+            "slug" => $slug
         );
 
-        $sql = "INSERT INTO cmw_wiki_articles (title, category_id, icon, content, author, slug) VALUES (:title, :category_id, :icon, :content, :author, :slug)";
+        $sql = "INSERT INTO cmw_wiki_articles (wiki_articles_title, wiki_articles_category_id, wiki_articles_icon, 
+                               wiki_articles_content, wiki_articles_author_id, wiki_articles_last_editor_id, wiki_articles_slug) 
+                        VALUES (:title, :category_id, :icon, :content, :author_id,:last_editor_id, :slug)";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
 
+        if ($req->execute($var)) {
+            $id = $db->lastInsertId();
+            return $this->getArticleById($id);
+        }
+
+        return null;
     }
 
+    public function getArticleById(int $id): ?WikiArticlesEntity
+    {
 
-    public function fetchAll(): array
+        $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
+       wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
+       wiki_articles_icon,  DATE_FORMAT(wiki_articles_date_create, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_create', 
+       DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
+       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id";
+
+        $db = Manager::dbConnect();
+        $res = $db->prepare($sql);
+
+        if (!$res->execute(array("id" => $id))) {
+            return null;
+        }
+
+        $res = $res->fetch();
+
+        $author = (new UsersModel())->getUserById($res["wiki_articles_author_id"]);
+        $lastEditor = (new UsersModel())->getUserById($res["wiki_articles_last_editor_id"]);
+
+        return new WikiArticlesEntity(
+            $res['wiki_articles_id'],
+            $res['wiki_articles_category_id'],
+            $res['wiki_articles_position'],
+            $res['wiki_articles_is_define'],
+            $res['wiki_articles_title'],
+            $res['wiki_articles_content'],
+            $res['wiki_articles_slug'],
+            $res['wiki_articles_icon'],
+            $res['wiki_articles_date_create'],
+            $res['wiki_articles_date_update'],
+            $author,
+            $lastEditor,
+        );
+    }
+
+    public function getArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles";
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $res = $req->execute();
+        $res = $db->prepare($sql);
 
-        if ($res) {
-            return $req->fetchAll();
+        if (!$res->execute()) {
+            return array();
         }
 
-        return [];
+        $toReturn = array();
+
+        while ($wiki = $res->fetch()) {
+            $toReturn[] = $this->getArticleById($wiki["wiki_articles_id"]);
+        }
+
+        return $toReturn;
     }
 
     public function getUndefinedArticles(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE is_define = 0";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $res = $req->execute();
+        $res = $db->prepare($sql);
 
-        if ($res) {
-            return $req->fetchAll();
+        if (!$res->execute()) {
+            return array();
         }
 
-        return [];
+        $toReturn = array();
+
+        while ($wiki = $res->fetch()) {
+            $toReturn[] = $this->getArticleById($wiki["wiki_articles_id"]);
+        }
+
+        return $toReturn;
     }
 
-    public function getNumberOfUndefinedArticles(): array|int
+    public function getNumberOfUndefinedArticles(): int
     {
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE is_define = 0";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
@@ -98,128 +131,107 @@ class WikiArticlesModel extends Manager
             return count($lines);
         }
 
-        return [];
+        return 0;
     }
 
-    public function getAllArticlesInCategory($id): array
+    public function getArticlesInCategory(int $id): array
     {
-        $var = array(
-            "categoryId" => $id
-        );
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE category_id =:categoryId AND is_define = 1";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1";
 
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        $res = $req->execute($var);
+        $res = $db->prepare($sql);
 
-        if ($res) {
-            return $req->fetchAll();
+        if (!$res->execute(array("categoryId" => $id))) {
+            return array();
         }
 
-        return [];
-    }
+        $toReturn = array();
 
-    public function fetch($id): void
-    {
-        $var = array(
-            "id" => $id
-        );
-
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE id =:id";
-
-        $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-
-        if ($req->execute($var)) {
-            $result = $req->fetch();
-            foreach ($result as $key => $property) {
-
-                //to camel case all keys
-                $key = explode('_', $key);
-                $firstElement = array_shift($key);
-                $key = array_map('ucfirst', $key);
-                array_unshift($key, $firstElement);
-                $key = implode('', $key);
-
-                if (property_exists(WikiArticlesModel::class, $key)) {
-                    $this->$key = $property;
-                }
-            }
+        while ($wiki = $res->fetch()) {
+            $toReturn[] = $this->getArticleById($wiki["wiki_articles_id"]);
         }
+
+        return $toReturn;
     }
 
-
-    public function update(): void
+    public function updateArticle(int $id, string $title, string $content, string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
     {
         $var = array(
-            "id" => $this->id,
-            "title" => $this->title,
-            "content" => $this->content,
-            "icon" => $this->icon,
-            "last_editor" => $this->lastEditor,
-            "is_define" => $this->isDefine
+            "id" => $id,
+            "title" => $title,
+            "content" => $content,
+            "icon" => $icon,
+            "last_editor" => $lastEditor,
+            "is_define" => $isDefine
         );
 
-        $sql = "UPDATE cmw_wiki_articles SET title=:title, content=:content, icon=:icon, date_update=now(), last_editor=:last_editor, is_define=:is_define WHERE id=:id";
+        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_title=:title, wiki_articles_content=:content, 
+                             wiki_articles_icon=:icon, wiki_articles_date_update=now(), 
+                             wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
 
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+
+        if ($req->execute($var))
+            return $this->getArticleById($id);
+
+        return null;
     }
 
-    public function define(): void
+    public function defineArticle(int $id): void
     {
-        $var = array(
-            "id" => $this->id
-        );
-
-        $sql = "UPDATE cmw_wiki_articles SET is_define=1 WHERE id=:id";
+        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_is_define=1 WHERE wiki_articles_id=:id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+        $req->execute(array("id" => $id));
     }
 
-    public function delete(): void
+    public function deleteArticle(int $id): void
     {
-        $var = array(
-            "id" => $this->id
-        );
-
-        $sql = "DELETE FROM cmw_wiki_articles WHERE id=:id";
+        $sql = "DELETE FROM cmw_wiki_articles WHERE wiki_articles_id=:id";
 
         $db = Manager::dbConnect();
         $req = $db->prepare($sql);
-        $req->execute($var);
+        $req->execute(array("id" => $id));
     }
 
-    public function getContent($slug): void
+    public function getArticleBySlug(string $slug): ?WikiArticlesEntity
     {
-        $var = array(
-            "slug" => $slug
-        );
 
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE slug=:slug";
+        $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
+       wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
+       wiki_articles_icon,  DATE_FORMAT(wiki_articles_date_create, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_create', 
+       DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
+       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug";
 
         $db = Manager::dbConnect();
-        $req = $db->prepare($sql);
-        if ($req->execute($var)) {
-            $result = $req->fetch();
-            foreach ($result as $key => $property) {
+        $res = $db->prepare($sql);
 
-                //to camel case all keys
-                $key = explode('_', $key);
-                $firstElement = array_shift($key);
-                $key = array_map('ucfirst', $key);
-                array_unshift($key, $firstElement);
-                $key = implode('', $key);
-
-                if (property_exists(WikiArticlesModel::class, $key)) {
-                    $this->$key = $property;
-                }
-            }
+        if (!$res->execute(array("slug" => $slug))) {
+            return null;
         }
+
+        $res = $res->fetch();
+
+        $author = (new UsersModel())->getUserById($res["wiki_articles_author_id"]);
+        $lastEditor = (new UsersModel())->getUserById($res["wiki_articles_last_editor_id"]);
+
+        return new WikiArticlesEntity(
+            $res['wiki_articles_id'],
+            $res['wiki_articles_category_id'],
+            $res['wiki_articles_position'],
+            $res['wiki_articles_is_define'],
+            $res['wiki_articles_title'],
+            $res['wiki_articles_content'],
+            $res['wiki_articles_slug'],
+            $res['wiki_articles_icon'],
+            $res['wiki_articles_date_create'],
+            $res['wiki_articles_date_update'],
+            $author,
+            $lastEditor,
+        );
     }
 
 

@@ -1,9 +1,8 @@
 <?php
 $title = WIKI_DASHBOARD_TITLE_ADD_ARTICLE;
 $description = WIKI_DASHBOARD_DESC;
-
-
 ob_start();
+/** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 ?>
 <div class="content">
     <div class="container-fluid">
@@ -33,9 +32,9 @@ ob_start();
 
                                 <select class="form-control" name="categorie" required>
                                     <?php
-                                    /** @var WikiModel[] $categories */
+
                                     foreach ($categories as $category): ?>
-                                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                                        <option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
                                     <?php endforeach; ?>
                                 </select>
 
