@@ -2,7 +2,6 @@
 $title = WIKI_DASHBOARD_TITLE_ADD_CATEGORY;
 $description = WIKI_DASHBOARD_DESC;
 
-ob_start();
 ?>
 
 <div class="content">
@@ -72,7 +71,3 @@ ob_start();
         </div>
     </div>
 </div>
-
-
-<?php $content = ob_get_clean(); ?>
-

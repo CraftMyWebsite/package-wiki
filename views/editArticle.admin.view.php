@@ -2,8 +2,6 @@
 $title = WIKI_DASHBOARD_TITLE_ADD_ARTICLE;
 $description = WIKI_DASHBOARD_DESC;
 
-ob_start();
-
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity $article */
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 ?>
@@ -89,6 +87,3 @@ ob_start();
             </div>
         </div>
     </div>
-
-
-<?php $content = ob_get_clean(); ?>

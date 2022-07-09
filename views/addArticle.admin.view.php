@@ -1,7 +1,7 @@
 <?php
 $title = WIKI_DASHBOARD_TITLE_ADD_ARTICLE;
 $description = WIKI_DASHBOARD_DESC;
-ob_start();
+
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 ?>
 <div class="content">
@@ -75,8 +75,3 @@ ob_start();
         </div>
     </div>
 </div>
-
-
-<?php $content = ob_get_clean(); ?>
-
-<?php require(getenv("PATH_ADMIN_VIEW") . 'template.php'); ?>

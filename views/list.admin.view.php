@@ -9,8 +9,6 @@ $description = WIKI_DASHBOARD_DESC;
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity[] $undefinedArticles */
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $undefinedCategories */
-
-ob_start();
 ?>
 
 
@@ -130,6 +128,3 @@ ob_start();
         </div>
 
     </div>
-
-
-<?php $content = ob_get_clean(); ?>
