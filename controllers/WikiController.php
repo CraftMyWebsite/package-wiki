@@ -73,11 +73,11 @@ class WikiController extends CoreController
 
         $categories = new WikiCategoriesModel();
 
-        $categories->name = filter_input(INPUT_POST, "name");
-        $categories->description = filter_input(INPUT_POST, "description");
-        $categories->icon = filter_input(INPUT_POST, "icon");
+        $categories->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+        $categories->description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $categories->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
 
-        $categories->slug = $categories->cleanString(filter_input(INPUT_POST, "slug"));;
+        $categories->slug = $categories->cleanString(filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING));
 
 
         $categories->create();
@@ -117,10 +117,10 @@ class WikiController extends CoreController
 
         $articles = new WikiArticlesModel();
 
-        $articles->title = filter_input(INPUT_POST, "title");
-        $articles->categoryId = filter_input(INPUT_POST, "categorie");
-        $articles->icon = filter_input(INPUT_POST, "icon");
-        $articles->content = filter_input(INPUT_POST, "content");
+        $articles->title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
+        $articles->categoryId = filter_input(INPUT_POST, "categorie", FILTER_SANITIZE_NUMBER_INT);
+        $articles->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
+        $articles->content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
         $articles->slug = $articles->cleanString($articles->title);
 
@@ -158,11 +158,11 @@ class WikiController extends CoreController
 
         $categories = new WikiCategoriesModel();
         $categories->id = $id;
-        $categories->name = filter_input(INPUT_POST, "name");
-        $categories->description = filter_input(INPUT_POST, "description");
-        $categories->icon = filter_input(INPUT_POST, "icon");
-        $categories->slug = filter_input(INPUT_POST, "slug");
-        if (filter_input(INPUT_POST, "isDefine") == null) {
+        $categories->name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
+        $categories->description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $categories->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
+        $categories->slug = filter_input(INPUT_POST, "slug", FILTER_SANITIZE_STRING);
+        if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
             $categories->isDefine = 0;
         } else {
             $categories->isDefine = filter_input(INPUT_POST, "isDefine");
@@ -229,14 +229,14 @@ class WikiController extends CoreController
         $articles = new WikiArticlesModel();
 
         $articles->id = $id;
-        $articles->title = filter_input(INPUT_POST, "title");
-        $articles->content = filter_input(INPUT_POST, "content");
-        $articles->icon = filter_input(INPUT_POST, "icon");
+        $articles->title = filter_input(INPUT_POST, "title", FILTER_SANITIZE_STRING);
+        $articles->content = filter_input(INPUT_POST, "content", FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $articles->icon = filter_input(INPUT_POST, "icon", FILTER_SANITIZE_STRING);
         $articles->lastEditor = $user->userPseudo;
-        if (filter_input(INPUT_POST, "isDefine") == null) {
+        if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
             $articles->isDefine = 0;
         } else {
-            $articles->isDefine = filter_input(INPUT_POST, "isDefine");
+            $articles->isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT);
         }
 
         $articles->update();
