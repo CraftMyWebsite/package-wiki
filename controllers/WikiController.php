@@ -34,7 +34,7 @@ class WikiController extends CoreController
 
     public function frontWikiListAdmin(): void
     {
-        UsersController::isUserHasPermission("wiki.show");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.show");
 
 
         //Get all undefined articles
@@ -57,7 +57,7 @@ class WikiController extends CoreController
 
     public function addCategorie(): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
 
         $includes = array(
             "styles" => [
@@ -71,7 +71,7 @@ class WikiController extends CoreController
 
     public function addCategoriePost(): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
 
         $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
@@ -86,7 +86,7 @@ class WikiController extends CoreController
 
     public function addArticle(): void
     {
-        UsersController::isUserHasPermission("wiki.article.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
         $categories = $this->wikiCategoriesModel->getCategories();
 
@@ -110,7 +110,7 @@ class WikiController extends CoreController
 
     public function addArticlePost(): void
     {
-        UsersController::isUserHasPermission("wiki.article.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
         $articles = new WikiArticlesModel();
 
@@ -132,7 +132,7 @@ class WikiController extends CoreController
 
     public function editCategorie(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.edit");
 
         $categorie = $this->wikiCategoriesModel->getCategorieById($id);
 
@@ -148,7 +148,7 @@ class WikiController extends CoreController
 
     #[NoReturn] public function editCategoriePost(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.edit");
 
         $name = filter_input(INPUT_POST, "name", FILTER_SANITIZE_STRING);
         $description = filter_input(INPUT_POST, "description", FILTER_SANITIZE_STRING);
@@ -170,7 +170,7 @@ class WikiController extends CoreController
 
     public function deleteCategorie($id): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.delete");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.delete");
 
         $this->wikiCategoriesModel->deleteCategorie($id);
 
@@ -180,7 +180,7 @@ class WikiController extends CoreController
 
     public function editArticle(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.article.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
 
 
         $categories = $this->wikiCategoriesModel->getCategories();
@@ -208,7 +208,7 @@ class WikiController extends CoreController
 
     #[NoReturn] public function editArticlePost(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.article.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
 
         //Get the editor id
         $user = new UsersModel;
@@ -233,7 +233,7 @@ class WikiController extends CoreController
 
     public function deleteArticle(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.article.delete");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.delete");
 
         $this->wikiArticlesModel->deleteArticle($id);
 
@@ -243,7 +243,7 @@ class WikiController extends CoreController
 
     public function defineCategorie(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.categorie.define");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.define");
 
         $this->wikiCategoriesModel->defineCategorie($id);
 
@@ -252,7 +252,7 @@ class WikiController extends CoreController
 
     public function defineArticle(int $id): void
     {
-        UsersController::isUserHasPermission("wiki.article.define");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.define");
 
         $this->wikiArticlesModel->defineArticle($id);
 
