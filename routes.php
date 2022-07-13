@@ -3,7 +3,6 @@
 use CMW\Controller\wiki\WikiController;
 use CMW\Router\Router;
 
-require_once('Lang/'.getenv("LOCALE").'.php');
 
 /** @var $router Router Main router */
 
