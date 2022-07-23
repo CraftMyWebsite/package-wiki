@@ -16,11 +16,11 @@ $description = WIKI_DASHBOARD_DESC;
         <section class="card">
             <div class="row p-3">
                 <div class="mx-auto">
-                    <a href="add/categorie" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_CATEGORY ?></a>
+                    <a href="categorie/add" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_CATEGORY ?></a>
                 </div>
 
                 <div class="mx-auto">
-                    <a href="add/article" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_ARTICLE ?></a>
+                    <a href="article/add" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_ARTICLE ?></a>
                 </div>
             </div>
         </section>
@@ -49,9 +49,9 @@ $description = WIKI_DASHBOARD_DESC;
                                         foreach ($undefinedArticles as $undefinedArticle):?>
                                             <li><?= $undefinedArticle->getTitle() ?>
                                                 <div class="float-right">
-                                                    <a href="define/article/<?= $undefinedArticle->getId() ?>"
+                                                    <a href="article/define/<?= $undefinedArticle->getId() ?>"
                                                        class="icon-add"><i class="fas fa-plus-circle"></i></a>
-                                                    <a href="delete/article/<?= $undefinedArticle->getId() ?>"
+                                                    <a href="article/delete/<?= $undefinedArticle->getId() ?>"
                                                        class="icon-delete"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </li>
@@ -75,9 +75,9 @@ $description = WIKI_DASHBOARD_DESC;
                                         foreach ($undefinedCategories as $undefinedCategorie):?>
                                             <li><?= $undefinedCategorie->getName() ?>
                                                 <div class="float-right">
-                                                    <a href="define/categorie/<?= $undefinedCategorie->getId() ?>"
+                                                    <a href="categorie/define/<?= $undefinedCategorie->getId() ?>"
                                                        class="icon-add"><i class="fas fa-plus-circle"></i></a>
-                                                    <a href="delete/categorie/<?= $undefinedCategorie->getId() ?>"
+                                                    <a href="categorie/delete/<?= $undefinedCategorie->getId() ?>"
                                                        class="icon-delete"><i class="fas fa-trash-alt"></i></a>
                                                 </div>
                                             </li>
@@ -101,9 +101,9 @@ $description = WIKI_DASHBOARD_DESC;
                             foreach ($categories as $category):?>
                                 <div class="categorie-container mt-4" id="categorie-<?= $category->getId() ?>">
                                     <span class="ml-2"><?= $category->getName() ?></span>
-                                    <a href="delete/categorie/<?= $category->getId() ?>"
+                                    <a href="categorie/delete/<?= $category->getId() ?>"
                                        class="float-right wiki-icons mr-2"><i class="fas fa-trash-alt"></i></a>
-                                    <a href="edit/categorie/<?= $category->getId() ?>"
+                                    <a href="categorie/edit/<?= $category->getId() ?>"
                                        class="float-right wiki-icons mr-3"><i
                                                 class="fas fa-edit"></i></a>
                                 </div>
@@ -111,9 +111,9 @@ $description = WIKI_DASHBOARD_DESC;
                                 foreach ($category->getArticles() as $article):?>
                                     <div class="ml-5 mt-1 article-container" id="article-<?= $article->getId() ?>">
                                         <span class="ml-2"><?= $article->getTitle() ?></span>
-                                        <a href="delete/article/<?= $article->getId() ?>"
+                                        <a href="article/delete/<?= $article->getId() ?>"
                                            class="float-right wiki-icons mr-2"><i class="fas fa-trash-alt"></i></a>
-                                        <a href="edit/article/<?= $article->getId() ?>"
+                                        <a href="article/edit/<?= $article->getId() ?>"
                                            class="float-right wiki-icons mr-3"><i class="fas fa-edit"></i></a>
                                     </div>
                                 <?php endforeach; ?>
