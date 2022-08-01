@@ -3,7 +3,7 @@
 namespace CMW\Model\Wiki;
 
 use CMW\Entity\Wiki\WikiArticlesEntity;
-use CMW\Model\Manager;
+use CMW\Manager\Database\DatabaseManager;
 use CMW\Model\Users\UsersModel;
 
 /**
@@ -12,7 +12,7 @@ use CMW\Model\Users\UsersModel;
  * @author Teyir
  * @version 1.0
  */
-class WikiArticlesModel extends Manager
+class WikiArticlesModel extends DatabaseManager
 {
 
     public function createArticle(string $title, int $categoryId, string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
@@ -32,7 +32,7 @@ class WikiArticlesModel extends Manager
                                wiki_articles_content, wiki_articles_author_id, wiki_articles_last_editor_id, wiki_articles_slug) 
                         VALUES (:title, :category_id, :icon, :content, :author_id,:last_editor_id, :slug)";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -52,7 +52,7 @@ class WikiArticlesModel extends Manager
        DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -83,7 +83,7 @@ class WikiArticlesModel extends Manager
     public function getArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -102,7 +102,7 @@ class WikiArticlesModel extends Manager
     public function getUndefinedArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -121,7 +121,7 @@ class WikiArticlesModel extends Manager
     public function getNumberOfUndefinedArticles(): int
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -138,7 +138,7 @@ class WikiArticlesModel extends Manager
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("categoryId" => $id))) {
@@ -170,7 +170,7 @@ class WikiArticlesModel extends Manager
                              wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
 
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
 
         if ($req->execute($var))
@@ -183,7 +183,7 @@ class WikiArticlesModel extends Manager
     {
         $sql = "UPDATE cmw_wiki_articles SET wiki_articles_is_define=1 WHERE wiki_articles_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -192,7 +192,7 @@ class WikiArticlesModel extends Manager
     {
         $sql = "DELETE FROM cmw_wiki_articles WHERE wiki_articles_id=:id";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -206,7 +206,7 @@ class WikiArticlesModel extends Manager
        DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug";
 
-        $db = Manager::dbConnect();
+        $db = DatabaseManager::dbConnect();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("slug" => $slug))) {
