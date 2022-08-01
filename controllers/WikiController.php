@@ -253,27 +253,21 @@ class WikiController extends CoreController
     #[Link("/wiki", Link::GET)]
     public function publicMain(): void
     {
-
-        //Default controllers (important)
-        $core = new CoreController();
-        $menu = new MenusController();
-
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addVariableList(["categories" => $categories, "core" => $core, "menu" => $menu]);
+        $view->addVariableList(["categories" => $categories]);
     }
 
+    /**
+     * @throws \CMW\Router\RouterException
+     */
     #[Link("/wiki/:slugC/:slugA", Link::GET, ["slugC" => ".*?"])]
     public function publicShowArticle($slugC, $slugA): void
     {
         //get the current url (slug)
         $url = $slugA;
-
-        //Default controllers (important)
-        $core = new CoreController();
-        $menu = new MenusController();
 
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
@@ -282,7 +276,7 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url, "core" => $core, "menu" => $menu]);
+        $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url]);
         $view->view();
     }
 }
