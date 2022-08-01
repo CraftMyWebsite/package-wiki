@@ -32,7 +32,7 @@ class WikiArticlesModel extends DatabaseManager
                                wiki_articles_content, wiki_articles_author_id, wiki_articles_last_editor_id, wiki_articles_slug) 
                         VALUES (:title, :category_id, :icon, :content, :author_id,:last_editor_id, :slug)";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -52,7 +52,7 @@ class WikiArticlesModel extends DatabaseManager
        DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -83,7 +83,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -102,7 +102,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getUndefinedArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -121,7 +121,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getNumberOfUndefinedArticles(): int
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -138,7 +138,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("categoryId" => $id))) {
@@ -170,7 +170,7 @@ class WikiArticlesModel extends DatabaseManager
                              wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
 
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var))
@@ -183,7 +183,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "UPDATE cmw_wiki_articles SET wiki_articles_is_define=1 WHERE wiki_articles_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -192,7 +192,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "DELETE FROM cmw_wiki_articles WHERE wiki_articles_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -206,7 +206,7 @@ class WikiArticlesModel extends DatabaseManager
        DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("slug" => $slug))) {

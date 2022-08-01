@@ -28,7 +28,7 @@ class WikiCategoriesModel extends DatabaseManager
         $sql = "INSERT INTO cmw_wiki_categories (wiki_categories_name,wiki_categories_description,
                                  wiki_categories_slug,wiki_categories_icon) VALUES (:name, :description, :slug, :icon)";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -47,7 +47,7 @@ class WikiCategoriesModel extends DatabaseManager
                     DATE_FORMAT(wiki_categories_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_categories_date_update', 
                     wiki_categories_position, wiki_categories_is_define FROM cmw_wiki_categories WHERE wiki_categories_id =:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -73,7 +73,7 @@ class WikiCategoriesModel extends DatabaseManager
     public function getCategories(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -92,7 +92,7 @@ class WikiCategoriesModel extends DatabaseManager
     public function getUndefinedCategories(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -111,7 +111,7 @@ class WikiCategoriesModel extends DatabaseManager
     public function getNumberOfUndefinedCategories(): int
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -127,7 +127,7 @@ class WikiCategoriesModel extends DatabaseManager
     public function getDefinedCategories(): array
     {
         $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 1";
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -159,7 +159,7 @@ class WikiCategoriesModel extends DatabaseManager
                                wiki_categories_is_define=:is_define WHERE wiki_categories_id=:id";
 
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var))
@@ -176,7 +176,7 @@ class WikiCategoriesModel extends DatabaseManager
 
         $sql = "UPDATE cmw_wiki_categories SET wiki_categories_is_define=1 WHERE wiki_categories_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute($var);
     }
@@ -185,7 +185,7 @@ class WikiCategoriesModel extends DatabaseManager
     {
         $sql = "DELETE FROM cmw_wiki_categories WHERE wiki_categories_id=:id";
 
-        $db = DatabaseManager::dbConnect();
+        $db = self::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
