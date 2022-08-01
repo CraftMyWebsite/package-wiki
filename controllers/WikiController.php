@@ -2,7 +2,7 @@
 
 namespace CMW\Controller\Wiki;
 
-use CMW\Controller\CoreController;
+use CMW\Controller\Core\CoreController;
 use CMW\Controller\Menus\MenusController;
 use CMW\Controller\users\UsersController;
 use CMW\Model\users\UsersModel;
