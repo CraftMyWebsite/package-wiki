@@ -1,11 +1,15 @@
 {
   "name": "wiki",
-  "name_menu": "Wiki",
-  "icon_menu": "fas fa-book",
-  "description": "Gérer et afficher le wiki de votre site",
-  "version": "1.0.0",
-  "author": "Teyir",
-  "url_menu": "wiki/list",
+  "menus": [
+    {
+      "name_menu": "Wiki",
+      "icon_menu": "fas fa-book",
+      "description": "Gérer et afficher le wiki de votre site",
+      "version": "1.0.0",
+      "author": "Teyir",
+      "url_menu": "wiki/list"
+    }
+  ],
   "permissions": {
     "Afficher la liste des wiki": "wiki.show",
     "Ajouter une catégorie": "wiki.categorie.add",
