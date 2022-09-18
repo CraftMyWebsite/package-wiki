@@ -1,43 +1,40 @@
 <?php
 
-/* Panel d'administration */
-const WIKI_DASHBOARD_TITLE = "Wiki - Liste";
-const WIKI_DASHBOARD_TITLE_ADD_CATEGORY = "Wiki - Ajouter une catégorie";
-const WIKI_DASHBOARD_TITLE_ADD_ARTICLE= "Wiki - Ajouter un article";
-const WIKI_DASHBOARD_TITLE_EDIT_CATEGORY = "Wiki - Modification d'une catégorie";
-const WIKI_DASHBOARD_DESC = "Gestion des wiki de votre site";
-
-const WIKI_DASHBOARD_BUTTON_ADD_CATEGORY = "Ajouter une catégorie";
-const WIKI_DASHBOARD_BUTTON_ADD_ARTICLE = "Ajouter un article";
-
-const WIKI_DASHBOARD_ARTICLES_UNDEFINED = "Articles & catégories <br> non-définis:";
-
-const WIKI_DASHBOARD_ARTICLES = "Articles";
-const WIKI_DASHBOARD_CATEGORIES = "Catégories";
-
-const WIKI_DASHBOARD_ADD_CATEGORY_NAME = "Nom";
-const WIKI_DASHBOARD_ADD_CATEGORY_NAME_PLACEHOLDER = "Entrez le nom de là catégorie";
-
-const WIKI_DASHBOARD_ADD_CATEGORY_DESCRIPTION = "Description";
-const WIKI_DASHBOARD_ADD_CATEGORY_DESCRIPTION_PLACEHOLDER = "Entrez la description";
-
-const WIKI_DASHBOARD_ADD_CATEGORY_ICON = "Icone";
-const WIKI_DASHBOARD_ADD_CATEGORY_ICON_PLACEHOLDER = "Exemple: fas fa-users";
-
-const WIKI_DASHBOARD_ADD_CATEGORY_SLUG = "Liens";
-const WIKI_DASHBOARD_ADD_CATEGORY_SLUG_PLACEHOLDER = "nous-rejoindre";
-
-
-const WIKI_DASHBOARD_ADD_ARTICLE_TITLE = "Titre";
-const WIKI_DASHBOARD_ADD_ARTICLE_TITLE_PLACEHOLDER = "Entrez le titre";
-
-const WIKI_DASHBOARD_ADD_ARTICLE_CATEGORIE = "Categorie";
-
-const WIKI_DASHBOARD_ADD_ARTICLE_CONTENT = "Contenu";
-const WIKI_DASHBOARD_ADD_ARTICLE_CONTENT_PLACEHOLDER = "Contenu de votre article";
-
-const WIKI_DASHBOARD_ADD_HINT_ICON = "Retrouvez la liste des icones sur le site de ";
-
-const WIKI_DASHBOARD_EDIT_CATEGORY_ENABLE = "Activer cette catégorie ?";
-const WIKI_DASHBOARD_EDIT_ARTICLE_ENABLE = "Activer cet article ?";
-
+return [
+	"title" => [
+		"dashboard_title" => "Wiki - Liste",
+		"add_category" => "Wiki - Ajouter une catégorie",
+		"add_article" => "Wiki - Ajouter un article",
+		"edit_category" => "Wiki - Modification d'une catégorie",
+		"dashboard_desc" => "Gestion des wiki de votre site",
+	],
+	"button" => [
+		"add_category" => "Ajouter une catégorie",
+		"add_article" => "Ajouter un article",
+	],
+	"articles" => [
+		"undefined" => "Articles & catégories <br> non-définis:",
+		"articles" => "Articles",
+		"categories" => "Catégories",
+	],
+	"add" => [
+		"category_name" => "Nom",
+		"category_name_placeholder" => "Entrez le nom de là catégorie",
+		"category_description" => "Description",
+		"category_description_placeholder" => "Entrez la description",
+		"category_icon" => "Icone",
+		"category_icon_placeholder" => "Exemple: fas fa-users",
+		"category_slug" => "Liens",
+		"category_slug_placeholder" => "Nous-rejoindre",
+		"article_title" => "Titre",
+		"article_title_placeholder" => "Entrez le titre",
+		"article_categorie" => "Catégorie",
+		"article_content" => "Contenu",
+		"article_contenu_placeholder" => "Contenu de votre article",
+		"hint_icon" => "Retrouvez la liste des icones sur le site de",
+	],
+	"edit" => [
+		"category_enable" => "Activer cette catégorie ?",
+		"article_enable" => "Activer cet article ?",
+	],
+];
