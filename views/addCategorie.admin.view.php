@@ -1,6 +1,10 @@
 <?php
-$title = WIKI_DASHBOARD_TITLE_ADD_CATEGORY;
-$description = WIKI_DASHBOARD_DESC;
+
+use CMW\Manager\Lang\LangManager;
+use CMW\Utils\Utils;
+
+$title = LangManager::translate("wiki.title.add_category");
+$description = LangManager::translate("wiki.title_dashboard_desc");
 
 ?>
 
@@ -12,49 +16,49 @@ $description = WIKI_DASHBOARD_DESC;
                     <div class="card card-primary">
 
                         <div class="card-header">
-                            <h3 class="card-title"><?= WIKI_DASHBOARD_TITLE_ADD_CATEGORY ?> :</h3>
+                            <h3 class="card-title"><?= LangManager::translate("wiki.title.add_category") ?> :</h3>
                         </div>
 
                         <div class="card-body">
 
-                            <label for="name"><?= WIKI_DASHBOARD_ADD_CATEGORY_NAME ?></label>
+                            <label for="name"><?= LangManager::translate("wiki.add.category_name") ?></label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-heading"></i></span>
                                 </div>
                                 <input type="text" name="name" class="form-control"
-                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_NAME_PLACEHOLDER ?>" required>
+                                       placeholder="<?= LangManager::translate("wiki.add.category_name_placeholder") ?>" required>
 
                             </div>
 
-                            <label for="description"><?= WIKI_DASHBOARD_ADD_CATEGORY_DESCRIPTION ?></label>
+                            <label for="description"><?= LangManager::translate("wiki.add.category_description") ?></label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-paragraph"></i></span>
                                 </div>
                                 <input type="text" name="description" class="form-control"
-                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_DESCRIPTION_PLACEHOLDER ?>"
+                                       placeholder="<?= LangManager::translate("wiki.add.category_description_placeholder") ?>"
                                        required>
                             </div>
 
-                            <label for="icon"><?= WIKI_DASHBOARD_ADD_CATEGORY_ICON ?></label>
+                            <label for="icon"><?= LangManager::translate("wiki.add.category_icon") ?></label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text"><i class="fas fa-icons"></i></span>
                                 </div>
                                 <input type="text" name="icon" class="form-control"
-                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_ICON_PLACEHOLDER ?>" required>
+                                       placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>" required>
                             </div>
-                            <small class="form-text"><?= WIKI_DASHBOARD_ADD_HINT_ICON ?> <a
+                            <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a
                                         href="https://fontawesome.com" target="_blank">FontAwesome.com</a></small>
 
-                            <label class="mt-4" for="slug"><?= WIKI_DASHBOARD_ADD_CATEGORY_SLUG ?></label>
+                            <label class="mt-4" for="slug"><?= LangManager::translate("wiki.add.category_slug") ?></label>
                             <div class="input-group mb-3">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text"><?= "https://" . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'wiki/' ?></span>
+                                    <span class="input-group-text"><?= Utils::getHttpProtocol() . '://'  . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'wiki/' ?></span>
                                 </div>
                                 <input type="text" name="slug" class="form-control"
-                                       placeholder="<?= WIKI_DASHBOARD_ADD_CATEGORY_SLUG_PLACEHOLDER ?>" required>
+                                       placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>" required>
                             </div>
 
                         </div>
@@ -62,7 +66,7 @@ $description = WIKI_DASHBOARD_DESC;
 
                         <div class="card-footer">
                             <button type="submit"
-                                    class="btn btn-primary float-right"><?= CORE_BTN_SAVE ?></button>
+                                    class="btn btn-primary float-right"><?= LangManager::translate("core.btn.save") ?></button>
                         </div>
 
                     </div>

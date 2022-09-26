@@ -30,7 +30,7 @@ return [
 		"article_title_placeholder" => "Enter the title",
 		"article_categorie" => "CCategory",
 		"article_content" => "Content",
-		"article_contenu_placeholder" => "Content of this article",
+		"article_content_placeholder" => "Content of this article",
 		"hint_icon" => "Get all this icons on the website",
 	],
 	"edit" => [

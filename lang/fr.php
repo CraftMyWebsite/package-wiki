@@ -30,7 +30,7 @@ return [
 		"article_title_placeholder" => "Entrez le titre",
 		"article_categorie" => "Catégorie",
 		"article_content" => "Contenu",
-		"article_contenu_placeholder" => "Contenu de votre article",
+		"article_content_placeholder" => "Contenu de votre article",
 		"hint_icon" => "Retrouvez la liste des icones sur le site de",
 	],
 	"edit" => [

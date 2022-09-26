@@ -1,10 +1,11 @@
 <?php
 
+use CMW\Manager\Lang\LangManager;
 use CMW\Model\Wiki\WikiArticlesModel;
 use CMW\Model\Wiki\WikiCategoriesModel;
 
-$title = WIKI_DASHBOARD_TITLE;
-$description = WIKI_DASHBOARD_DESC;
+$title = LangManager::translate("wiki.title.dashboard_title");
+$description = LangManager::translate("wiki.title.dashboard_desc");
 
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity[] $undefinedArticles */
@@ -16,11 +17,11 @@ $description = WIKI_DASHBOARD_DESC;
         <section class="card">
             <div class="row p-3">
                 <div class="mx-auto">
-                    <a href="categorie/add" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_CATEGORY ?></a>
+                    <a href="categorie/add" class="btn btn-success"><?= LangManager::translate("wiki.button.add_category") ?></a>
                 </div>
 
                 <div class="mx-auto">
-                    <a href="article/add" class="btn btn-success"><?= WIKI_DASHBOARD_BUTTON_ADD_ARTICLE ?></a>
+                    <a href="article/add" class="btn btn-success"><?= LangManager::translate("wiki.button.add_article") ?></a>
                 </div>
             </div>
         </section>
@@ -31,14 +32,14 @@ $description = WIKI_DASHBOARD_DESC;
                     <div class="card card-row card-secondary">
                         <div class="card-header">
                             <h3 class="card-title">
-                                <?= WIKI_DASHBOARD_ARTICLES_UNDEFINED ?>
+                                <?= LangManager::translate("wiki.articles.undefined") ?>
                             </h3>
                         </div>
                         <div class="card-body">
                             <!-- Undefined Articles-->
                             <div class="card card-primary card-outline">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= WIKI_DASHBOARD_ARTICLES ?></h5>
+                                    <h5 class="card-title"><?= LangManager::translate("wiki.articles.articles") ?></h5>
                                     <div class="card-tools">
                                         <span>(<strong><?= (new WikiArticlesModel())->getNumberOfUndefinedArticles() ?></strong>)</span>
                                     </div>
@@ -64,7 +65,7 @@ $description = WIKI_DASHBOARD_DESC;
                             <!-- Undefined Categories-->
                             <div class="card card-primary card-outline">
                                 <div class="card-header">
-                                    <h5 class="card-title"><?= WIKI_DASHBOARD_CATEGORIES ?></h5>
+                                    <h5 class="card-title"><?= LangManager::translate("wiki.articles.categories") ?></h5>
                                     <div class="card-tools">
                                         <span>(<strong><?= (new WikiCategoriesModel())->getNumberOfUndefinedCategories() ?></strong>)</span>
                                     </div>
