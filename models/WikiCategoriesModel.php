@@ -162,8 +162,9 @@ class WikiCategoriesModel extends DatabaseManager
         $db = self::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute($var))
+        if ($req->execute($var)) {
             return $this->getCategorieById($id);
+        }
 
         return null;
     }

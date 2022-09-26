@@ -173,8 +173,9 @@ class WikiArticlesModel extends DatabaseManager
         $db = self::getInstance();
         $req = $db->prepare($sql);
 
-        if ($req->execute($var))
+        if ($req->execute($var)) {
             return $this->getArticleById($id);
+        }
 
         return null;
     }

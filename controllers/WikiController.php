@@ -3,7 +3,6 @@
 namespace CMW\Controller\Wiki;
 
 use CMW\Controller\Core\CoreController;
-use CMW\Controller\Menus\MenusController;
 use CMW\Controller\users\UsersController;
 use CMW\Model\users\UsersModel;
 use CMW\Model\wiki\WikiArticlesModel;
@@ -120,7 +119,7 @@ class WikiController extends CoreController
         //Get the author pseudo
         $user = new UsersModel;
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
-        $userId = $userEntity->getId();
+        $userId = $userEntity?->getId();
 
         $articles->createArticle($title, $categoryId, $icon, $content, $slug, $userId);
         header("location: ../list");
@@ -149,11 +148,7 @@ class WikiController extends CoreController
         $icon = filter_input(INPUT_POST, "icon");
         $slug = filter_input(INPUT_POST, "slug");
 
-        if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
-            $isDefine = 0;
-        } else {
-            $isDefine = filter_input(INPUT_POST, "isDefine");
-        }
+        $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
         $this->wikiCategoriesModel->updateCategorie($id, $name, $description, $slug, $icon, $isDefine);
 
@@ -202,12 +197,8 @@ class WikiController extends CoreController
         $title = filter_input(INPUT_POST, "title");
         $content = filter_input(INPUT_POST, "content");
         $icon = filter_input(INPUT_POST, "icon");
-        $lastEditor = $userEntity->getId();
-        if (filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) == null) {
-            $isDefine = 0;
-        } else {
-            $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT);
-        }
+        $lastEditor = $userEntity?->getId();
+        $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
         $this->wikiArticlesModel->updateArticle($id, $title, $content, $icon, $lastEditor, $isDefine);
 
