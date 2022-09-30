@@ -49,5 +49,6 @@ ALTER TABLE `cmw_wiki_categories`
 
 
 ALTER TABLE `cmw_wiki_articles`
-    ADD CONSTRAINT `cmw_wiki_categories_id_fk` FOREIGN KEY (`wiki_articles_category_id`) REFERENCES `cmw_wiki_categories` (`wiki_categories_id`) ON DELETE CASCADE;
+    ADD CONSTRAINT `cmw_wiki_categories_id_fk` FOREIGN KEY (`wiki_articles_category_id`)
+        REFERENCES `cmw_wiki_categories` (`wiki_categories_id`) ON DELETE CASCADE;
 COMMIT;
