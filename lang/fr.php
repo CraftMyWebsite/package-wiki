@@ -6,6 +6,7 @@ return [
 		"add_category" => "Wiki - Ajouter une catégorie",
 		"add_article" => "Wiki - Ajouter un article",
 		"edit_category" => "Wiki - Modification d'une catégorie",
+		"edit_article" => "Wiki - Modification d'un article",
 		"dashboard_desc" => "Gestion des wiki de votre site",
 	],
 	"button" => [

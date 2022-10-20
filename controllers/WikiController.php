@@ -249,6 +249,7 @@ class WikiController extends CoreController
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
         $view->addVariableList(["categories" => $categories]);
+        $view->view();
     }
 
     /**
