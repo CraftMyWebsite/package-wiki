@@ -43,7 +43,7 @@ class WikiArticlesModel extends DatabaseManager
         return null;
     }
 
-    public function getArticleById(int $id): ?WikiArticlesEntity
+    public function getArticleById(?int $id): ?WikiArticlesEntity
     {
 
         $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
@@ -60,6 +60,10 @@ class WikiArticlesModel extends DatabaseManager
         }
 
         $res = $res->fetch();
+        
+        if (!$res){
+            return null;
+        }
 
         $author = (new UsersModel())->getUserById($res["wiki_articles_author_id"]);
         $lastEditor = (new UsersModel())->getUserById($res["wiki_articles_last_editor_id"]);
@@ -244,6 +248,10 @@ class WikiArticlesModel extends DatabaseManager
         $res = $db->query($sql);
 
         $res = $res->fetch();
+        
+        if(!$res){
+            return null;
+        }
 
         return $this->getArticleById($res['wiki_articles_id']);
     }
