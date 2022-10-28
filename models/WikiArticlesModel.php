@@ -235,5 +235,18 @@ class WikiArticlesModel extends DatabaseManager
         );
     }
 
+    public function getFirstArticle(): ?WikiArticlesEntity
+    {
+        $sql = "SELECT wiki_articles_id FROM `cmw_wiki_articles` 
+                        ORDER BY `cmw_wiki_articles`.`wiki_articles_category_id` ASC LIMIT 1";
+
+        $db = self::getInstance();
+        $res = $db->query($sql);
+
+        $res = $res->fetch();
+
+        return $this->getArticleById($res['wiki_articles_id']);
+    }
+
 
 }

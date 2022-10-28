@@ -246,9 +246,11 @@ class WikiController extends CoreController
     {
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
+        $firstArticle = $this->wikiArticlesModel->getFirstArticle();
+
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addVariableList(["categories" => $categories, "article" => null]);
+        $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
 
@@ -264,11 +266,12 @@ class WikiController extends CoreController
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
         $article = $this->wikiArticlesModel->getArticleBySlug($slugA);
-
+        $firstArticle = $this->wikiArticlesModel->getFirstArticle();
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url]);
+        $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
+            "firstArticle" => $firstArticle]);
         $view->view();
     }
 }

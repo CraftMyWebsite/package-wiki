@@ -19,6 +19,18 @@ Voici un petit exemple pour afficher en liste vos catégories et vos articles.
     <?php endforeach; ?>
 ```
 
+Si vous souhaitez afficher par défaut le premier article, vous pouvez utiliser la variable:
+```php
+/* @var ?\CMW\Entity\Wiki\WikiArticlesEntity $firstArticle */
+
+$firstArticle
+
+//Afficher le contenu du premier article:
+$firstArticle->getContent();
+```
+(Variable nullable)
+
+
 Pour accéder à votre WIKI faites ``monsite.fr/wiki``
 
 > Version: `V1.0`
