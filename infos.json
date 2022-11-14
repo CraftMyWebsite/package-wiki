@@ -2,23 +2,23 @@
   "name": "wiki",
   "menus": [
     {
-      "name_menu": "Wiki",
+      "name_menu_fr": "Wiki",
+      "name_menu_en": "Wiki",
       "icon_menu": "fas fa-book",
-      "description": "Gérer et afficher le wiki de votre site",
-      "version": "1.0.0",
-      "author": "Teyir",
       "url_menu": "wiki/list"
     }
   ],
-  "permissions": {
-    "Afficher la liste des wiki": "wiki.show",
-    "Ajouter une catégorie": "wiki.categorie.add",
-    "Modifier une catégorie": "wiki.categorie.edit",
-    "Supprimer une catégorie": "wiki.categorie.remove",
-    "Activer où non une catégorie": "wiki.categorie.define",
-    "Ajouter un article": "wiki.article.add",
-    "Modifier un article": "wiki.article.edit",
-    "Supprimer un article": "wiki.article.remove",
-    "Activer où non un article": "wiki.article.define"
-  }
+
+  "description": [
+    {
+      "fr": "Gérer et afficher le wiki de votre site",
+      "en": "Manage your website wiki"
+    }
+  ],
+
+  "version": "1.0.0",
+  "author": "Teyir",
+
+  "isGame": false,
+  "isCore": false
 }
