@@ -43,8 +43,7 @@ class WikiCategoriesModel extends DatabaseManager
     {
 
         $sql = "SELECT wiki_categories_id, wiki_categories_name, wiki_categories_description, wiki_categories_slug, 
-                    wiki_categories_icon, DATE_FORMAT(wiki_categories_date_create, '%d/%m/%Y à %H:%i:%s') AS 'wiki_categories_date_create', 
-                    DATE_FORMAT(wiki_categories_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_categories_date_update', 
+                    wiki_categories_icon, wiki_categories_date_create, wiki_categories_date_update, 
                     wiki_categories_position, wiki_categories_is_define FROM cmw_wiki_categories WHERE wiki_categories_id =:id";
 
         $db = self::getInstance();

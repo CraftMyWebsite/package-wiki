@@ -48,8 +48,7 @@ class WikiArticlesModel extends DatabaseManager
 
         $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
        wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
-       wiki_articles_icon,  DATE_FORMAT(wiki_articles_date_create, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_create', 
-       DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
+       wiki_articles_icon, wiki_articles_date_create, wiki_articles_date_update, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id";
 
         $db = self::getInstance();
@@ -207,8 +206,7 @@ class WikiArticlesModel extends DatabaseManager
 
         $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
        wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
-       wiki_articles_icon,  DATE_FORMAT(wiki_articles_date_create, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_create', 
-       DATE_FORMAT(wiki_articles_date_update, '%d/%m/%Y à %H:%i:%s') AS 'wiki_articles_date_update', wiki_articles_author_id, 
+       wiki_articles_icon,  wiki_articles_date_create, wiki_articles_date_update, wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug";
 
         $db = self::getInstance();
