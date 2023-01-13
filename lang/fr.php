@@ -2,12 +2,17 @@
 
 return [
 	"title" => [
-		"dashboard_title" => "Wiki - Liste",
-		"add_category" => "Wiki - Ajouter une catégorie",
-		"add_article" => "Wiki - Ajouter un article",
-		"edit_category" => "Wiki - Modification d'une catégorie",
-		"edit_article" => "Wiki - Modification d'un article",
+		"dashboard_title" => "Wiki",
+		"add_category" => "Ajouter une catégorie",
+		"add_article" => "Ajouter un article",
+		"edit_category" => "Modification d'une catégorie",
+		"edit_article" => "Modification d'un article",
 		"dashboard_desc" => "Gestion des wiki de votre site",
+		"manage" => "Gestion",
+		"actif" => "Actifs :",
+		"inactif" => "Inactifs :",
+		"inactifcat" => "Catégories inactive",
+		"inactifart" => "Articles inactif",
 	],
 	"button" => [
 		"add_category" => "Ajouter une catégorie",
@@ -20,7 +25,7 @@ return [
 	],
 	"add" => [
 		"category_name" => "Nom",
-		"category_name_placeholder" => "Entrez le nom de là catégorie",
+		"category_name_placeholder" => "Entrez le nom de la catégorie",
 		"category_description" => "Description",
 		"category_description_placeholder" => "Entrez la description",
 		"category_icon" => "Icone",

@@ -9,86 +9,66 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity $article */
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $categories */
 ?>
-    <div class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <form action="" method="post">
-                        <?php (new SecurityService())->insertHiddenToken() ?>
-                        <div class="card card-primary">
 
-                            <div class="card-header">
-                                <h3 class="card-title"><?= LangManager::translate("wiki.title.edit_article") ?> :</h3>
+<div class="d-flex flex-wrap justify-content-between">
+    <h3><i class="fa-solid fa-gears"></i> <span class="m-lg-auto"><?= LangManager::translate("wiki.title.edit_article") ?></span></h3>
+    <div class="buttons">
+        <button form="edit" type="submit"
+                class="btn btn-primary"><?= LangManager::translate("core.btn.save", lineBreak: true) ?></button>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <form method="post" action="" id="edit">
+                            <?php (new SecurityService())->insertHiddenToken() ?>
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" value="1" id="customSwitch3" name="isDefine" checked <?= ($article->getIsDefine() ? "checked" : "") ?>>
+                                <label class="form-check-label" for="customSwitch3"><h6><?= LangManager::translate("wiki.edit.article_enable") ?></h6></label>
                             </div>
-
-                            <div class="card-body">
-
-                                <label for="title"><?= LangManager::translate("wiki.add.category_name") ?></label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-heading"></i></span>
+                            <div class="row">
+                                <div class="col-12 col-lg-6">
+                                    <h6><?= LangManager::translate("wiki.add.article_title") ?> :</h6>
+                                    <div class="form-group position-relative has-icon-left">
+                                        <input type="text" class="form-control" name="title" required value="<?= $article->getTitle() ?>"
+                                               placeholder="<?= LangManager::translate("wiki.add.article_title_placeholder") ?>">
+                                        <div class="form-control-icon">
+                                            <i class="fas fa-heading"></i>
+                                        </div>
                                     </div>
-                                    <input type="text" name="title" value="<?= $article->getTitle() ?>"
-                                           class="form-control"
-                                           placeholder="<?= LangManager::translate("wiki.add.category_title_placeholder") ?>" required>
-
                                 </div>
-
-                                <label for="categorie"><?= LangManager::translate("wiki.add.article_categorie") ?></label>
-                                <div class="input-group mb-3">
-
-                                    <select class="form-control" name="categorie" required>
-                                        <?php
-                                        foreach ($categories as $category): ?>
-                                            <option value="<?= $category->getId() ?>"
-                                                <?= ($article->getCategoryId() === $category->getId() ? "selected" : "") ?> >
-                                                <?= $category->getName() ?>
-                                            </option>
-                                        <?php endforeach; ?>
+                                <div class="col-12 col-lg-6">
+                                    <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
+                                    <div class="form-group position-relative has-icon-left">
+                                        <input type="text" class="form-control" name="icon" required value="<?= $article->getIcon() ?>"
+                                               placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
+                                        <div class="form-control-icon">
+                                            <i class="fas fa-icons"></i>
+                                        </div>
+                                        <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a
+                                                href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
+                                    </div>
+                                </div>
+                            </div>
+                                <h6><?= LangManager::translate("wiki.add.article_categorie") ?> :</h6>
+                                    <select class="choices form-select" name="categorie" required>
+                                    <?php foreach ($categories as $category): ?>
+                                    <option value="<?= $category->getId() ?>"
+                                        <?= ($article->getCategoryId() === $category->getId() ? "selected" : "") ?> >
+                                        <?= $category->getName() ?>
+                                    </option>
+                                    <?php endforeach; ?>
                                     </select>
-
-
-                                </div>
-
-                                <label for="icon"><?= LangManager::translate("wiki.add.category_icon") ?></label>
-                                <div class="input-group mb-3">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text"><i class="fas fa-icons"></i></span>
-                                    </div>
-                                    <input type="text" name="icon" value="<?= $article->getIcon() ?>"
-                                           class="form-control"
-                                           placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>" required>
-                                </div>
-                                <small class="form-text"> <?= LangManager::translate("wiki.add.hint_icon") ?> <a
-                                            href="https://fontawesome.com" target="_blank">FontAwesome.com</a></small>
-
-
-                                <label for="content" class="mt-3"><?= LangManager::translate("wiki.add.article_content") ?></label>
-                                <div class="input-group mb-3">
-                                <textarea id="summernote" name="content" class="form-control"
-                                          placeholder="<?= LangManager::translate("wiki.add.article_content_placeholder") ?>"
-                                          required><?= $article->getContent() ?> </textarea>
-
-                                </div>
-
-                            </div>
-
-
-                            <div class="card-footer">
-                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success float-left">
-                                    <input type="checkbox" name="isDefine" value="1" class="custom-control-input"
-                                           id="customSwitch3" <?= ($article->getIsDefine() ? "checked" : "") ?>>
-                                    <label class="custom-control-label"
-                                           for="customSwitch3"><?= LangManager::translate("wiki.edit.article_enable") ?></label>
-                                </div>
-
-                                <button type="submit"
-                                        class="btn btn-primary float-right"><?= LangManager::translate("core.btn.save") ?></button>
-                            </div>
-
-                        </div>
-                    </form>
+                                <h6><?= LangManager::translate("wiki.add.article_content") ?> :</h6>
+                                <textarea name="content" id="summernote-1" required><?= $article->getContent() ?></textarea>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
