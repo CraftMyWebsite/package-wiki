@@ -2,12 +2,17 @@
 
 return [
 	"title" => [
-		"dashboard_title" => "Wiki - List",
-		"add_category" => "Wiki - Add category",
-		"add_article" => "Wiki - Add article",
-		"edit_category" => "Wiki - Edit category",
-        "edit_article" => "Wiki - Edit an article",
+		"dashboard_title" => "Wiki",
+		"add_category" => "Add category",
+		"add_article" => "Add article",
+		"edit_category" => "Edit category",
+        "edit_article" => "Edit an article",
 		"dashboard_desc" => "Manage the wiki of your website",
+		"manage" => "Manage",
+		"actif" => "Active :",
+		"inactif" => "Inactive :",
+		"inactifcat" => "Inactive categories",
+		"inactifart" => "Inactive articles",
 	],
 	"button" => [
 		"add_category" => "Add a category",

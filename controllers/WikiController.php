@@ -51,12 +51,13 @@ class WikiController extends CoreController
         //Include the view file ("views/list.admin.view.php").
 
         View::createAdminView('wiki', 'list')
-            ->addStyle("app/package/wiki/views/assets/css/main.css")
+            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
+            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
             ->addVariableList(["categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
-    #[Link("/categorie/add", Link::GET, [], "/cmw-admin/wiki")]
+    #[Link("/list", Link::GET, [], "/cmw-admin/wiki")]
     public function addCategorie(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
@@ -68,7 +69,7 @@ class WikiController extends CoreController
     }
 
 
-    #[Link("/categorie/add", Link::POST, [], "/cmw-admin/wiki")]
+    #[Link("/list", Link::POST, [], "/cmw-admin/wiki")]
     public function addCategoriePost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
@@ -81,7 +82,7 @@ class WikiController extends CoreController
 
 
         $this->wikiCategoriesModel->createCategorie($name, $description, $icon, $slug);
-        header("location: ../list");
+        header("location: ../wiki/list");
     }
 
     #[Link("/article/add", Link::GET, [], "/cmw-admin/wiki")]
@@ -174,12 +175,8 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addScriptBefore("admin/resources/vendors/summernote/summernote.min.js",
-                "admin/resources/vendors/summernote/summernote-bs4.min.js",
-                "app/package/wiki/views/assets/js/summernoteInit.js")
-            ->addStyle("app/package/wiki/views/assets/css/main.css",
-                "admin/resources/vendors/summernote/summernote-bs4.min.css",
-                "admin/resources/vendors/summernote/summernote.min.css")
+            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
+            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
