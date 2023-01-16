@@ -14,6 +14,10 @@ return [
 		"inactifcat" => "Inactive categories",
 		"inactifart" => "Inactive articles",
 	],
+	"modal" => [
+        "delete" => "Delete :",
+        "deletealert" => "The deletion is permanent.",
+    ],
 	"button" => [
 		"add_category" => "Add a category",
 		"add_article" => "Add an article",
