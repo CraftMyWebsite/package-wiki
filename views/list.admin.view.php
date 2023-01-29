@@ -74,15 +74,14 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
         </div>
         <div class="card">
             <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.add_article") ?> (Ne fonctionne pas encore)</h4>
-                    <a href="article/add" class="btn btn-success">En attendant</a>
+                <h4><?= LangManager::translate("wiki.title.add_article") ?></h4>
             </div>
             <div class="card-body">
                 <div class="content">
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-12">
-                                <form method="post" action="">
+                                <form method="post" action="article/add">
                                     <?php (new SecurityService())->insertHiddenToken() ?>
                                     <div class="row">
                                         <div class="col-12 col-lg-6">
@@ -110,7 +109,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                     </div>
                                         <h6><?= LangManager::translate("wiki.add.article_categorie") ?> :</h6>
                                             <select class="choices form-select" name="categorie" required>
-                                                <?php foreach ($categories as $category): ?>        
+                                                <?php foreach ($currentCategories as $category): ?>        
                                                     <option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
                                                 <?php endforeach; ?>
                                             </select>

@@ -46,6 +46,7 @@ class WikiController extends CoreController
         $undefinedCategories = $this->wikiCategoriesModel->getUndefinedCategories();
 
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
+        $currentCategories = $this->wikiCategoriesModel->getCategories();
 
 
         //Include the view file ("views/list.admin.view.php").
@@ -53,7 +54,7 @@ class WikiController extends CoreController
         View::createAdminView('wiki', 'list')
             ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
             ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
-            ->addVariableList(["categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
+            ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
@@ -83,24 +84,6 @@ class WikiController extends CoreController
 
         $this->wikiCategoriesModel->createCategorie($name, $description, $icon, $slug);
         header("location: ../wiki/list");
-    }
-
-    #[Link("/article/add", Link::GET, [], "/cmw-admin/wiki")]
-    public function addArticle(): void
-    {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
-
-        $categories = $this->wikiCategoriesModel->getCategories();
-
-        View::createAdminView('wiki', 'addArticle')
-            ->addScriptBefore("admin/resources/vendors/summernote/summernote.min.js",
-                "admin/resources/vendors/summernote/summernote-bs4.min.js",
-                "app/package/wiki/views/assets/js/summernoteInit.js")
-            ->addStyle("app/package/wiki/views/assets/css/main.css",
-                "admin/resources/vendors/summernote/summernote-bs4.min.css",
-                "admin/resources/vendors/summernote/summernote.min.css")
-            ->addVariableList(["categories" => $categories])
-            ->view();
     }
 
     #[Link("/article/add", Link::POST, [], "/cmw-admin/wiki")]
