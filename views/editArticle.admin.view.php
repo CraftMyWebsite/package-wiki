@@ -1,7 +1,7 @@
 <?php
 
 use CMW\Manager\Lang\LangManager;
-use CMW\Utils\SecurityService;
+use CMW\Manager\Security\SecurityManager;
 
 $title = LangManager::translate("wiki.title.edit_article");
 $description = LangManager::translate("wiki.title.dashboard_desc");
@@ -25,7 +25,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 <div class="row">
                     <div class="col-12">
                         <form method="post" action="" id="edit">
-                            <?php (new SecurityService())->insertHiddenToken() ?>
+                            <?php (new SecurityManager())->insertHiddenToken() ?>
                             <div class="form-check form-switch">
                                 <input class="form-check-input" type="checkbox" value="1" id="customSwitch3" name="isDefine" checked <?= ($article->getIsDefine() ? "checked" : "") ?>>
                                 <label class="form-check-label" for="customSwitch3"><h6><?= LangManager::translate("wiki.edit.article_enable") ?></h6></label>

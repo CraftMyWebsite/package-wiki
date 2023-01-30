@@ -1,5 +1,5 @@
 <?php
-use CMW\Utils\SecurityService;
+use CMW\Manager\Security\SecurityManager;
 use CMW\Manager\Lang\LangManager;
 use CMW\Model\Wiki\WikiArticlesModel;
 use CMW\Model\Wiki\WikiCategoriesModel;
@@ -24,7 +24,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
             </div>
             <div class="card-body">
                 <form method="post" action="">
-                    <?php (new SecurityService())->insertHiddenToken() ?>
+                    <?php (new SecurityManager())->insertHiddenToken() ?>
                     <div class="row">
                         <div class="col-12 col-lg-6">
                             <h6><?= LangManager::translate("wiki.add.category_name") ?> :</h6>
@@ -82,7 +82,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         <div class="row">
                             <div class="col-12">
                                 <form method="post" action="article/add">
-                                    <?php (new SecurityService())->insertHiddenToken() ?>
+                                    <?php (new SecurityManager())->insertHiddenToken() ?>
                                     <div class="row">
                                         <div class="col-12 col-lg-6">
                                             <h6><?= LangManager::translate("wiki.add.article_title") ?> :</h6>
