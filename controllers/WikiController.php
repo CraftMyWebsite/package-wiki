@@ -52,8 +52,8 @@ class WikiController extends CoreController
         //Include the view file ("views/list.admin.view.php").
 
         View::createAdminView('wiki', 'list')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
+            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css","admin/resources/vendors/prismjs/prism.css")
+            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/vendors/summernote/summernote-ext-highlight.js","admin/resources/assets/js/pages/summernote.js","admin/resources/vendors/prismjs/prism.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
@@ -158,8 +158,8 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
+            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css","admin/resources/vendors/prismjs/prism.css")
+            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/vendors/summernote/summernote-ext-highlight.js","admin/resources/assets/js/pages/summernote.js","admin/resources/vendors/prismjs/prism.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
@@ -230,6 +230,8 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
+        $view->addStyle("admin/resources/vendors/prismjs/prism.css");
+        $view->addScriptAfter("admin/resources/vendors/prismjs/prism.js");
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -250,6 +252,8 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
+        $view->addStyle("admin/resources/vendors/prismjs/prism.css");
+        $view->addScriptAfter("admin/resources/vendors/prismjs/prism.js");
         $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
             "firstArticle" => $firstArticle]);
         $view->view();
