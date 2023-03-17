@@ -9,14 +9,15 @@ return [
 		"edit_article" => "Modification d'un article",
 		"dashboard_desc" => "Gestion des wiki de votre site",
 		"manage" => "Gestion",
-		"actif" => "Actifs :",
-		"inactif" => "Inactifs :",
+		"actif" => "des actifs :",
+		"inactif" => "des inactifs :",
 		"inactifcat" => "Catégories inactive",
 		"inactifart" => "Articles inactif",
 	],
 	"modal" => [
         "delete" => "Supression de :",
         "deletealert" => "La supression est definitive.",
+        "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> Si votre catégorie contien des articles ceux-ci seront également supprimé !</b>"
     ],
 	"button" => [
 		"add_category" => "Ajouter une catégorie",
