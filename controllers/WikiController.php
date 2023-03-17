@@ -52,8 +52,6 @@ class WikiController extends CoreController
         //Include the view file ("views/list.admin.view.php").
 
         View::createAdminView('wiki', 'list')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css","admin/resources/vendors/prismjs/prism.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/vendors/summernote/summernote-ext-highlight.js","admin/resources/assets/js/pages/summernote.js","admin/resources/vendors/prismjs/prism.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
@@ -65,7 +63,6 @@ class WikiController extends CoreController
 
 
         View::createAdminView('wiki', 'addCategorie')
-            ->addStyle("app/package/wiki/views/assets/css/main.css")
             ->view();
     }
 
@@ -86,15 +83,32 @@ class WikiController extends CoreController
         header("location: ../wiki/list");
     }
 
-    #[Link("/article/add", Link::POST, [], "/cmw-admin/wiki")]
-    public function addArticlePost(): void
+    #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function addArticle(int $cat): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
+
+        //Get all undefined articles
+        $undefinedArticles = $this->wikiArticlesModel->getUndefinedArticles();
+
+        $undefinedCategories = $this->wikiCategoriesModel->getUndefinedCategories();
+
+        $categories = $this->wikiCategoriesModel->getDefinedCategories();
+        $currentCategories = $this->wikiCategoriesModel->getCategories();
+
+        View::createAdminView('wiki', 'addArticle')
+            ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
+            ->view();
+    }
+
+    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function addArticlePost(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
         $articles = new WikiArticlesModel();
 
         $title = filter_input(INPUT_POST, "title");
-        $categoryId = filter_input(INPUT_POST, "categorie");
         $icon = filter_input(INPUT_POST, "icon");
         $content = filter_input(INPUT_POST, "content");
 
@@ -105,8 +119,28 @@ class WikiController extends CoreController
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
         $userId = $userEntity?->getId();
 
-        $articles->createArticle($title, $categoryId, $icon, $content, $slug, $userId);
-        header("location: ../list");
+        $articles->createArticle($title, $cat, $icon, $content, $slug, $userId);
+        header("location: ../../list");
+    }
+
+    #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function positionDown(int $id, int $position): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
+
+        $this->wikiArticlesModel->downPositionArticle($id, $position);
+
+        header("location: ../../../list");
+    }
+
+    #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function positionUp(int $id, int $position): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
+
+        $this->wikiArticlesModel->upPositionArticle($id, $position);
+
+        header("location: ../../../list");
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -117,7 +151,6 @@ class WikiController extends CoreController
         $categorie = $this->wikiCategoriesModel->getCategorieById($id);
 
         View::createAdminView('wiki', 'editCategorie')
-            ->addStyle("app/package/wiki/views/assets/css/main.css")
             ->addVariableList(["categorie" => $categorie])
             ->view();
     }
@@ -158,8 +191,6 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css","admin/resources/vendors/prismjs/prism.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/vendors/summernote/summernote-ext-highlight.js","admin/resources/assets/js/pages/summernote.js","admin/resources/vendors/prismjs/prism.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
@@ -175,12 +206,13 @@ class WikiController extends CoreController
 
 
         $title = filter_input(INPUT_POST, "title");
+        $category_id = filter_input(INPUT_POST, "categorie");
         $content = filter_input(INPUT_POST, "content");
         $icon = filter_input(INPUT_POST, "icon");
         $lastEditor = $userEntity?->getId();
         $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        $this->wikiArticlesModel->updateArticle($id, $title, $content, $icon, $lastEditor, $isDefine);
+        $this->wikiArticlesModel->updateArticle($id, $title, $category_id, $content, $icon, $lastEditor, $isDefine);
 
         header("location: ../../list");
     }
@@ -230,8 +262,6 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addStyle("admin/resources/vendors/prismjs/prism.css");
-        $view->addScriptAfter("admin/resources/vendors/prismjs/prism.js");
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -252,8 +282,6 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addStyle("admin/resources/vendors/prismjs/prism.css");
-        $view->addScriptAfter("admin/resources/vendors/prismjs/prism.js");
         $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
             "firstArticle" => $firstArticle]);
         $view->view();

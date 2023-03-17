@@ -11,137 +11,27 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity[] $undefinedArticles */
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $undefinedCategories */
 ?>
-
 <div class="d-flex flex-wrap justify-content-between">
     <h3><i class="fa-solid fa-book"></i> <span class="m-lg-auto"><?= LangManager::translate("wiki.title.dashboard_title") ?></span></h3>
 </div>
 
 <section class="row">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-6">
         <div class="card">
             <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.add_category") ?></h4>
+                <h4><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.actif") ?></h4>
             </div>
             <div class="card-body">
-                <form method="post" action="">
-                    <?php (new SecurityManager())->insertHiddenToken() ?>
-                    <div class="row">
-                        <div class="col-12 col-lg-6">
-                            <h6><?= LangManager::translate("wiki.add.category_name") ?> :</h6>
-                            <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="name" required
-                                       placeholder="<?= LangManager::translate("wiki.add.category_name_placeholder") ?>">
-                                <div class="form-control-icon">
-                                    <i class="fas fa-heading"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <h6><?= LangManager::translate("wiki.add.category_description") ?> :</h6>
-                            <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="description" required
-                                       placeholder="<?= LangManager::translate("wiki.add.category_description_placeholder") ?>">
-                                <div class="form-control-icon">
-                                    <i class="fas fa-paragraph"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
-                            <div class="form-group position-relative has-icon-left">
-                                <input type="text" class="form-control" name="icon" required
-                                       placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
-                                <div class="form-control-icon">
-                                    <i class="fas fa-icons"></i>
-                                </div>
-                                <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a
-                                        href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
-                            </div>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <h6><?= LangManager::translate("wiki.add.category_slug") ?> :</h6>
-                            <div class="input-group mb-3">
-                                <span class="input-group-text" ><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" ?></span>
-                                <input type="text" name="slug" required class="form-control" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center">
-                        <button type="submit" class="btn btn-primary"><?= LangManager::translate("core.btn.add") ?></button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.add_article") ?></h4>
-            </div>
-            <div class="card-body">
-                <div class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12">
-                                <form method="post" action="article/add">
-                                    <?php (new SecurityManager())->insertHiddenToken() ?>
-                                    <div class="row">
-                                        <div class="col-12 col-lg-6">
-                                            <h6><?= LangManager::translate("wiki.add.article_title") ?> :</h6>
-                                            <div class="form-group position-relative has-icon-left">
-                                                <input type="text" class="form-control" name="title" required
-                                                       placeholder="<?= LangManager::translate("wiki.add.article_title_placeholder") ?>">
-                                                <div class="form-control-icon">
-                                                    <i class="fas fa-heading"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-lg-6">
-                                            <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
-                                            <div class="form-group position-relative has-icon-left">
-                                                <input type="text" class="form-control" name="icon" required
-                                                       placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
-                                                <div class="form-control-icon">
-                                                    <i class="fas fa-icons"></i>
-                                                </div>
-                                                <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a
-                                                        href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        <h6><?= LangManager::translate("wiki.add.article_categorie") ?> :</h6>
-                                            <select class="choices form-select" name="categorie" required>
-                                                <?php foreach ($currentCategories as $category): ?>        
-                                                    <option value="<?= $category->getId() ?>"><?= $category->getName() ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        <h6><?= LangManager::translate("wiki.add.article_content") ?> :</h6>
-                                        <textarea name="content" id="summernote-1" required></textarea>
-                                    <div class="text-center mt-2">
-                                        <button type="submit" class="btn btn-primary"><?= LangManager::translate("core.btn.add") ?></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-12 col-lg-5">
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.manage") ?></h4>
-            </div>
-            <div class="card-body">
-                <div class="divider">
-                    <div class="divider-text"><?= LangManager::translate("wiki.title.actif") ?></div>
-                </div>
+                <?php if ($categories): ?>
                 <?php foreach ($categories as $category):?>
                     <div class="card-in-card table-responsive mb-4">
                         <table class="table-borderless table table-hover mt-1">
                             <thead>
                                 <tr>
-                                    <th id="categorie-<?= $category->getId() ?>"><i class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?></th>
+                                    <th id="categorie-<?= $category->getId() ?>"><i class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?> -
+                                    <i><small><?= mb_strimwidth($category->getDescription(), 0, 45, '...') ?></small></i></th>
                                     <th class="text-end">
+                                        <a href="article/add/<?= $category->getId() ?>"><i class="text-success me-3 fa-solid fa-circle-plus"></i></a>
                                         <a href="categorie/edit/<?= $category->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
                                         <a type="button" data-bs-toggle="modal" data-bs-target="#delete-<?= $category->getId() ?>">
                                             <i class="text-danger fas fa-trash-alt"></i>
@@ -155,16 +45,16 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                                 <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.modal.delete") ?> <?= $category->getName() ?></h5>
                                             </div>
                                             <div class="modal-body">
-                                                <?= LangManager::translate("wiki.modal.deletealert") ?>
+                                                <?= LangManager::translate("wiki.modal.deletecatalert") ?>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                                    <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
+                                                    <i class="bx bx-x"></i>
+                                                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
                                                 </button>
                                                 <a href="categorie/delete/<?= $category->getId() ?>" class="btn btn-danger ml-1">
-                                                    <i class="bx bx-check d-block d-sm-none"></i>
-                                                    <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
+                                                    <i class="bx bx-check"></i>
+                                                    <span class=""><?= LangManager::translate("core.btn.delete") ?></span>
                                                 </a>                                
                                             </div>
                                         </div>
@@ -176,6 +66,12 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                 <tr id="article-<?= $article->getId() ?>">
                                     <td class="ps-4 text-bold-500"><i class="<?= $article->getIcon() ?>"></i> <?= $article->getTitle() ?></td>
                                     <td class="text-end">
+                                        <span class="me-3">
+                                            <a href="article/positionDown/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-minus"></i></a>
+                                            <b><?= $article->getPosition() ?></b>
+                                            <a href="article/positionUp/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-plus"></i></a>
+                                        </span>
+                                        
                                         <a href="article/edit/<?= $article->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
                                         <a type="button" data-bs-toggle="modal" data-bs-target="#deletee-<?= $article->getId() ?>">
                                             <i class="text-danger fas fa-trash-alt"></i>
@@ -193,12 +89,12 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <i class="bx bx-x d-block d-sm-none"></i>
-                                                    <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
+                                                    <i class="bx bx-x"></i>
+                                                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
                                                 </button>
                                                 <a href="article/delete/<?= $article->getId() ?>" class="btn btn-danger ml-1">
-                                                    <i class="bx bx-check d-block d-sm-none"></i>
-                                                    <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
+                                                    <i class="bx bx-check"></i>
+                                                    <span class=""><?= LangManager::translate("core.btn.delete") ?></span>
                                                 </a>                                
                                             </div>
                                         </div>
@@ -209,10 +105,82 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         </table>
                     </div>
                 <?php endforeach; ?>
-
+                <?php else: ?>
+                <div class="alert alert-info">Merci de créer une catégorie pour commencer à utiliser le Wiki</div>
+            <?php endif ?>
                 <div class="divider">
-                    <div class="divider-text"><?= LangManager::translate("wiki.title.inactif") ?></div>
+                    <a type="button" data-bs-toggle="modal" data-bs-target="#add-cat">
+                        <div class="divider-text"><i class="fa-solid fa-circle-plus"></i> Ajouter une catégories</div>
+                    </a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+<div class="modal fade " id="add-cat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary">
+                <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.title.add_category") ?></h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="">
+                    <?php (new SecurityManager())->insertHiddenToken() ?>            
+                        <h6><?= LangManager::translate("wiki.add.category_name") ?> :</h6>
+                        <div class="form-group position-relative has-icon-left">
+                            <input type="text" class="form-control" name="name" required placeholder="<?= LangManager::translate("wiki.add.category_name_placeholder") ?>">
+                            <div class="form-control-icon">
+                                <i class="fas fa-heading"></i>
+                            </div>
+                        </div>
+                        <h6><?= LangManager::translate("wiki.add.category_description") ?> :</h6>
+                        <div class="form-group position-relative has-icon-left">
+                            <input type="text" class="form-control" name="description" required placeholder="<?= LangManager::translate("wiki.add.category_description_placeholder") ?>">
+                            <div class="form-control-icon">
+                                <i class="fas fa-paragraph"></i>
+                            </div>
+                        </div>
+                        <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
+                        <div class="form-group position-relative has-icon-left">
+                            <input type="text" class="form-control" name="icon" required placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
+                            <div class="form-control-icon">
+                                <i class="fas fa-icons"></i>
+                            </div>
+                            <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
+                        </div>
+                         <h6><?= LangManager::translate("wiki.add.category_slug") ?> :</h6>
+                         <div class="input-group mb-3">
+                             <span class="input-group-text" ><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" ?></span>
+                             <input type="text" name="slug" required class="form-control" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
+                         </div>                   
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
+                    <i class="bx bx-x"></i>
+                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
+                </button>
+                <button type="submit" class="btn btn-primary ml-1">
+                    <i class="bx bx-check"></i>
+                    <span class=""><?= LangManager::translate("core.btn.add") ?></span>
+                </button>    
+                </form>                            
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <div class="col-12 col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h4><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.inactif") ?></h4>
+            </div>
+            <div class="card-body">
                 <div class="card-in-card table-responsive mb-4">
                     <table class="table table-hover table-borderless mt-1 mb-0">
                         <thead>
@@ -224,6 +192,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         <tbody>
                             <?php foreach ($undefinedCategories as $undefinedCategorie):?>
                             <tr>
+
                                 <td class="ps-4 text-bold-500"><i class="<?= $undefinedCategorie->getIcon() ?>"></i> <?= $undefinedCategorie->getName() ?></td>
                                 <td class="text-end">
                                     <a href="categorie/define/<?= $undefinedCategorie->getId() ?>"><i class="text-success me-3 fa-solid fa-rocket"></i></a>
