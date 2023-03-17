@@ -43,13 +43,40 @@ class WikiArticlesModel extends DatabaseManager
         return null;
     }
 
+    public function updateArticle(int $id, string $title, int $categoryId, string $content, string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
+    {
+        $var = array(
+            "id" => $id,
+            "title" => $title,
+            "category_id" => $categoryId,
+            "content" => $content,
+            "icon" => $icon,
+            "last_editor" => $lastEditor,
+            "is_define" => $isDefine
+        );
+
+        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_title=:title,wiki_articles_category_id=:category_id, wiki_articles_content=:content, 
+                             wiki_articles_icon=:icon, wiki_articles_date_update=now(), 
+                             wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
+
+
+        $db = self::getInstance();
+        $req = $db->prepare($sql);
+
+        if ($req->execute($var)) {
+            return $this->getArticleById($id);
+        }
+
+        return null;
+    }
+
     public function getArticleById(?int $id): ?WikiArticlesEntity
     {
 
         $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
        wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
        wiki_articles_icon, wiki_articles_date_create, wiki_articles_date_update, wiki_articles_author_id,
-       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id";
+       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id ORDER BY wiki_articles_position ASC";
 
         $db = self::getInstance();
         $res = $db->prepare($sql);
@@ -85,7 +112,7 @@ class WikiArticlesModel extends DatabaseManager
 
     public function getArticles(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_articles";
+        $sql = "SELECT * FROM cmw_wiki_articles ORDER BY wiki_articles_position ASC";
         $db = self::getInstance();
         $res = $db->prepare($sql);
 
@@ -104,7 +131,7 @@ class WikiArticlesModel extends DatabaseManager
 
     public function getUndefinedArticles(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0 ORDER BY wiki_articles_position ASC";
         $db = self::getInstance();
         $res = $db->prepare($sql);
 
@@ -123,7 +150,7 @@ class WikiArticlesModel extends DatabaseManager
 
     public function getNumberOfUndefinedArticles(): int
     {
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0 ORDER BY wiki_articles_position ASC";
         $db = self::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
@@ -139,7 +166,7 @@ class WikiArticlesModel extends DatabaseManager
 
     public function getArticlesInCategory(int $id): array
     {
-        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1";
+        $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1 ORDER BY wiki_articles_position ASC";
 
         $db = self::getInstance();
         $res = $db->prepare($sql);
@@ -155,32 +182,6 @@ class WikiArticlesModel extends DatabaseManager
         }
 
         return $toReturn;
-    }
-
-    public function updateArticle(int $id, string $title, string $content, string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
-    {
-        $var = array(
-            "id" => $id,
-            "title" => $title,
-            "content" => $content,
-            "icon" => $icon,
-            "last_editor" => $lastEditor,
-            "is_define" => $isDefine
-        );
-
-        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_title=:title, wiki_articles_content=:content, 
-                             wiki_articles_icon=:icon, wiki_articles_date_update=now(), 
-                             wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
-
-
-        $db = self::getInstance();
-        $req = $db->prepare($sql);
-
-        if ($req->execute($var)) {
-            return $this->getArticleById($id);
-        }
-
-        return null;
     }
 
     public function defineArticle(int $id): void
@@ -201,13 +202,35 @@ class WikiArticlesModel extends DatabaseManager
         $req->execute(array("id" => $id));
     }
 
+    public function downPositionArticle(int $id, int $position): void
+    {
+
+        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_position=:position WHERE wiki_articles_id=:id";
+        
+        $newPosition = $position - 1;
+        $db = self::getInstance();
+        $req = $db->prepare($sql);
+        $req->execute(array("id" => $id, "position" => $newPosition));
+    }
+
+    public function upPositionArticle(int $id, int $position): void
+    {
+
+        $sql = "UPDATE cmw_wiki_articles SET wiki_articles_position=:position WHERE wiki_articles_id=:id";
+        
+        $newPosition = $position + 1;
+        $db = self::getInstance();
+        $req = $db->prepare($sql);
+        $req->execute(array("id" => $id, "position" => $newPosition));
+    }
+
     public function getArticleBySlug(string $slug): ?WikiArticlesEntity
     {
 
         $sql = "SELECT wiki_articles_id, wiki_articles_category_id, wiki_articles_position, 
        wiki_articles_is_define, wiki_articles_title, wiki_articles_content, wiki_articles_slug, 
        wiki_articles_icon,  wiki_articles_date_create, wiki_articles_date_update, wiki_articles_author_id, 
-       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug";
+       wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug ORDER BY wiki_articles_position ASC";
 
         $db = self::getInstance();
         $res = $db->prepare($sql);
