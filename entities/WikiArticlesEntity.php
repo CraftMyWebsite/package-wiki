@@ -12,6 +12,7 @@ class WikiArticlesEntity
     private int $isDefine;
     private string $title;
     private string $content;
+    private string $contentNt;
     private string $slug;
     private string $icon;
     private string $dateCreate;
@@ -26,6 +27,7 @@ class WikiArticlesEntity
      * @param int $isDefine
      * @param string $title
      * @param string $content
+     * @param string $contentNt
      * @param string $slug
      * @param string $icon
      * @param string $dateCreate
@@ -33,7 +35,7 @@ class WikiArticlesEntity
      * @param \CMW\Entity\Users\UserEntity $author
      * @param \CMW\Entity\Users\UserEntity $lastEditor
      */
-    public function __construct(int $id, int $categoryId, int $position, int $isDefine, string $title, string $content, string $slug, string $icon, string $dateCreate, string $dateUpdate, UserEntity $author, UserEntity $lastEditor)
+    public function __construct(int $id, int $categoryId, int $position, int $isDefine, string $title, string $content, string $contentNt, string $slug, string $icon, string $dateCreate, string $dateUpdate, UserEntity $author, UserEntity $lastEditor)
     {
         $this->id = $id;
         $this->categoryId = $categoryId;
@@ -41,6 +43,7 @@ class WikiArticlesEntity
         $this->isDefine = $isDefine;
         $this->title = $title;
         $this->content = $content;
+        $this->contentNt = $contentNt;
         $this->slug = $slug;
         $this->icon = $icon;
         $this->dateCreate = $dateCreate;
@@ -87,6 +90,14 @@ class WikiArticlesEntity
     public function getTitle(): string
     {
         return $this->title;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentNotTranslate(): string
+    {
+        return $this->contentNt;
     }
 
     /**

@@ -64,14 +64,15 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                             <tbody>
                                 <?php foreach ($category->getArticles() as $article):?>
                                 <tr id="article-<?= $article->getId() ?>">
-                                    <td class="ps-4 text-bold-500"><i class="<?= $article->getIcon() ?>"></i> <?= $article->getTitle() ?></td>
+                                    <td class="ps-4 text-bold-500"><i class="<?= $article->getIcon() ?>"></i> <?= $article->getTitle() ?>
+                                    </td>
                                     <td class="text-end">
                                         <span class="me-3">
                                             <a href="article/positionDown/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-minus"></i></a>
                                             <b><?= $article->getPosition() ?></b>
                                             <a href="article/positionUp/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-plus"></i></a>
                                         </span>
-                                        
+                                        <a target="_blank" href="<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" . $category->getSlug() ."/" . $article->getSlug() ?>"><i class="me-3 fa-solid fa-up-right-from-square"></i></a>
                                         <a href="article/edit/<?= $article->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
                                         <a type="button" data-bs-toggle="modal" data-bs-target="#deletee-<?= $article->getId() ?>">
                                             <i class="text-danger fas fa-trash-alt"></i>
