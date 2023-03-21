@@ -9,6 +9,7 @@ use CMW\Model\wiki\WikiArticlesModel;
 use CMW\Model\wiki\WikiCategoriesModel;
 use CMW\Router\Link;
 use CMW\Utils\Utils;
+use CMW\Utils\Response;
 use CMW\Utils\View;
 use JetBrains\PhpStorm\NoReturn;
 
@@ -52,8 +53,6 @@ class WikiController extends CoreController
         //Include the view file ("views/list.admin.view.php").
 
         View::createAdminView('wiki', 'list')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
@@ -65,7 +64,6 @@ class WikiController extends CoreController
 
 
         View::createAdminView('wiki', 'addCategorie')
-            ->addStyle("app/package/wiki/views/assets/css/main.css")
             ->view();
     }
 
@@ -86,15 +84,47 @@ class WikiController extends CoreController
         header("location: ../wiki/list");
     }
 
-    #[Link("/article/add", Link::POST, [], "/cmw-admin/wiki")]
-    public function addArticlePost(): void
+    #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function addArticle(int $cat): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
+
+        //Get all undefined articles
+        $undefinedArticles = $this->wikiArticlesModel->getUndefinedArticles();
+
+        $undefinedCategories = $this->wikiCategoriesModel->getUndefinedCategories();
+
+        $categories = $this->wikiCategoriesModel->getDefinedCategories();
+        $currentCategories = $this->wikiCategoriesModel->getCategories();
+
+        View::createAdminView('wiki', 'addArticle')
+            ->addScriptBefore("admin/resources/vendors/editorjs/plugins/header.js",
+                    "admin/resources/vendors/editorjs/plugins/image.js",
+                    "admin/resources/vendors/editorjs/plugins/delimiter.js",
+                    "admin/resources/vendors/editorjs/plugins/list.js",
+                    "admin/resources/vendors/editorjs/plugins/quote.js",
+                    "admin/resources/vendors/editorjs/plugins/editorjs-codeflask.js",
+                    "admin/resources/vendors/editorjs/plugins/table.js",
+                    "admin/resources/vendors/editorjs/plugins/link.js",
+                    "admin/resources/vendors/editorjs/plugins/warning.js",
+                    "admin/resources/vendors/editorjs/plugins/embed.js",
+                    "admin/resources/vendors/editorjs/plugins/marker.js",
+                    "admin/resources/vendors/editorjs/plugins/underline.js",
+                    "admin/resources/vendors/editorjs/plugins/drag-drop.js",
+                    "admin/resources/vendors/editorjs/plugins/undo.js",
+                    "admin/resources/vendors/editorjs/editor.js")
+            ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
+            ->view();
+    }
+
+    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    public function addArticlePost(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
-
+        
         $articles = new WikiArticlesModel();
 
         $title = filter_input(INPUT_POST, "title");
-        $categoryId = filter_input(INPUT_POST, "categorie");
         $icon = filter_input(INPUT_POST, "icon");
         $content = filter_input(INPUT_POST, "content");
 
@@ -105,8 +135,29 @@ class WikiController extends CoreController
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
         $userId = $userEntity?->getId();
 
-        $articles->createArticle($title, $categoryId, $icon, $content, $slug, $userId);
-        header("location: ../list");
+        $articles->createArticle($title, $cat, $icon, $content, $slug, $userId);
+        header("location: ../../list");
+        
+    }
+
+    #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function positionDown(int $id, int $position): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
+
+        $this->wikiArticlesModel->downPositionArticle($id, $position);
+
+        header("location: ../../../list");
+    }
+
+    #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    public function positionUp(int $id, int $position): void
+    {
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
+
+        $this->wikiArticlesModel->upPositionArticle($id, $position);
+
+        header("location: ../../../list");
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -117,12 +168,11 @@ class WikiController extends CoreController
         $categorie = $this->wikiCategoriesModel->getCategorieById($id);
 
         View::createAdminView('wiki', 'editCategorie')
-            ->addStyle("app/package/wiki/views/assets/css/main.css")
             ->addVariableList(["categorie" => $categorie])
             ->view();
     }
 
-    #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
     #[NoReturn] public function editCategoriePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.edit");
@@ -158,29 +208,43 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addStyle("app/package/wiki/views/assets/css/main.css","admin/resources/vendors/summernote/summernote-lite.css","admin/resources/assets/css/pages/summernote.css")
-            ->addScriptAfter("admin/resources/vendors/jquery/jquery.min.js","admin/resources/vendors/summernote/summernote-lite.min.js","admin/resources/assets/js/pages/summernote.js")
+            ->addScriptBefore("admin/resources/vendors/editorjs/plugins/header.js",
+                    "admin/resources/vendors/editorjs/plugins/image.js",
+                    "admin/resources/vendors/editorjs/plugins/delimiter.js",
+                    "admin/resources/vendors/editorjs/plugins/list.js",
+                    "admin/resources/vendors/editorjs/plugins/quote.js",
+                    "admin/resources/vendors/editorjs/plugins/editorjs-codeflask.js",
+                    "admin/resources/vendors/editorjs/plugins/table.js",
+                    "admin/resources/vendors/editorjs/plugins/link.js",
+                    "admin/resources/vendors/editorjs/plugins/warning.js",
+                    "admin/resources/vendors/editorjs/plugins/embed.js",
+                    "admin/resources/vendors/editorjs/plugins/marker.js",
+                    "admin/resources/vendors/editorjs/plugins/underline.js",
+                    "admin/resources/vendors/editorjs/plugins/drag-drop.js",
+                    "admin/resources/vendors/editorjs/plugins/undo.js",
+                    "admin/resources/vendors/editorjs/editor.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
 
-    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
     #[NoReturn] public function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
-
+    Response::sendAlert("success", "test","test");
         //Get the editor id
         $user = new UsersModel;
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
 
 
         $title = filter_input(INPUT_POST, "title");
+        $category_id = filter_input(INPUT_POST, "categorie");
         $content = filter_input(INPUT_POST, "content");
         $icon = filter_input(INPUT_POST, "icon");
         $lastEditor = $userEntity?->getId();
         $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        $this->wikiArticlesModel->updateArticle($id, $title, $content, $icon, $lastEditor, $isDefine);
+        $this->wikiArticlesModel->updateArticle($id, $title, $category_id, $content, $icon, $lastEditor, $isDefine);
 
         header("location: ../../list");
     }

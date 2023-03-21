@@ -9,14 +9,15 @@ return [
         "edit_article" => "Edit an article",
 		"dashboard_desc" => "Manage the wiki of your website",
 		"manage" => "Manage",
-		"actif" => "Active :",
-		"inactif" => "Inactive :",
+		"actif" => "of active :",
+		"inactif" => "of inactive :",
 		"inactifcat" => "Inactive categories",
 		"inactifart" => "Inactive articles",
 	],
 	"modal" => [
         "delete" => "Delete :",
         "deletealert" => "The deletion is permanent.",
+        "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> Si votre catégorie contien des articles ceux-ci seront également supprimé !</b>"
     ],
 	"button" => [
 		"add_category" => "Add a category",
