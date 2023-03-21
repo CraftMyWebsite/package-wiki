@@ -192,7 +192,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 button.innerHTML = "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Enregistrement en cours ...";
                 setTimeout(() => {
                             button.innerHTML = "<i style='color: #16C329;' class='fa-solid fa-check fa-shake'></i> Ok !";
-                        }, 800);
+                        }, 850);
                 setTimeout(() => {
                             document.location.replace("<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'cmw-admin/wiki/list'?>");
                         }, 1000);

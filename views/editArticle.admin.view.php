@@ -75,7 +75,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
 <script>
     /**
      * Check inpt befor send
-    
+    */
      let input_title = document.querySelector("#title");
      let input_icon = document.querySelector("#icon");
      let button = document.querySelector("#saveButton");
@@ -91,7 +91,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
       button.innerHTML = "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Créer pour enregistrer";
      }
     }
-*/
+
 
     /**
      * EditorJS
@@ -205,20 +205,20 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 formData.append('categorie', document.getElementById("categorie").value);
                 formData.append('content', JSON.stringify(savedData));
                 formData.append('isDefine', isDefine.toString());
-                console.log (document.getElementById("content").value)
+                console.log (JSON.stringify(savedData))
                 fetch(url, {
                     method: "POST",
                     body: formData
                 })
 
-                /*button.disabled = true;
+                button.disabled = true;
                 button.innerHTML = "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Enregistrement en cours ...";
                 setTimeout(() => {
                             button.innerHTML = "<i style='color: #16C329;' class='fa-solid fa-check fa-shake'></i> Ok !";
-                        }, 800);
+                        }, 850);
                 setTimeout(() => {
                             document.location.replace("<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'cmw-admin/wiki/list'?>");
-                        }, 1000);*/
+                        }, 1000);
                                 
             })
             .catch((error) => {

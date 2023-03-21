@@ -227,11 +227,11 @@ class WikiController extends CoreController
             ->view();
     }
 
-    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
     #[NoReturn] public function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
-Response::sendAlert("success", "test","test");
+    Response::sendAlert("success", "test","test");
         //Get the editor id
         $user = new UsersModel;
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
