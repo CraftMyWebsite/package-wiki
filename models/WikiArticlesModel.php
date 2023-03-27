@@ -143,14 +143,18 @@ class WikiArticlesModel extends DatabaseManager
                         HTML;
                     break;
 
+
+
                 case "code":
                     $text = $block->data->code;
-                    $language = $block->data->language;
+                    $textconverted = htmlspecialchars($text, ENT_COMPAT);
                     $convertedHtml .=
                         <<<HTML
-                            <pre class='language-$language'>
-                                <code>$text</code>
+                        <div class="editor_allcode">
+                            <pre class="editor_pre">
+                                <code class="editor_code">$textconverted</code>
                             </pre>
+                        </div>
                         HTML;
                     break;
 

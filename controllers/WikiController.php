@@ -3,6 +3,7 @@
 namespace CMW\Controller\Wiki;
 
 use CMW\Controller\Core\CoreController;
+use CMW\Controller\Core\EditorController;
 use CMW\Controller\users\UsersController;
 use CMW\Model\users\UsersModel;
 use CMW\Model\wiki\WikiArticlesModel;
@@ -103,7 +104,7 @@ class WikiController extends CoreController
                     "admin/resources/vendors/editorjs/plugins/delimiter.js",
                     "admin/resources/vendors/editorjs/plugins/list.js",
                     "admin/resources/vendors/editorjs/plugins/quote.js",
-                    "admin/resources/vendors/editorjs/plugins/editorjs-codeflask.js",
+                    "admin/resources/vendors/editorjs/plugins/code.js",
                     "admin/resources/vendors/editorjs/plugins/table.js",
                     "admin/resources/vendors/editorjs/plugins/link.js",
                     "admin/resources/vendors/editorjs/plugins/warning.js",
@@ -213,7 +214,7 @@ class WikiController extends CoreController
                     "admin/resources/vendors/editorjs/plugins/delimiter.js",
                     "admin/resources/vendors/editorjs/plugins/list.js",
                     "admin/resources/vendors/editorjs/plugins/quote.js",
-                    "admin/resources/vendors/editorjs/plugins/editorjs-codeflask.js",
+                    "admin/resources/vendors/editorjs/plugins/code.js",
                     "admin/resources/vendors/editorjs/plugins/table.js",
                     "admin/resources/vendors/editorjs/plugins/link.js",
                     "admin/resources/vendors/editorjs/plugins/warning.js",
@@ -294,6 +295,8 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
+        $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
+        $view->addStyle("admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -314,6 +317,8 @@ class WikiController extends CoreController
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
+        $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
+        $view->addStyle("admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
             "firstArticle" => $firstArticle]);
         $view->view();
