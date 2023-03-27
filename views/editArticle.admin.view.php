@@ -146,7 +146,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 },
             },
             warning: Warning,
-            code: editorjsCodeflask,
+            code: CodeTool,
             delimiter: Delimiter,
             table: Table,
             embed: {
