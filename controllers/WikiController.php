@@ -296,7 +296,7 @@ class WikiController extends CoreController
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
         $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
-        $view->addStyle("admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
+        $view->addStyle("admin/resources/vendors/fontawesome-free/css/fa-all.min.css", "admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -318,7 +318,7 @@ class WikiController extends CoreController
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
         $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
-        $view->addStyle("admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
+        $view->addStyle("admin/resources/vendors/fontawesome-free/css/fa-all.min.css", "admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
             "firstArticle" => $firstArticle]);
         $view->view();
