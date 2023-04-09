@@ -61,7 +61,7 @@ class WikiController extends CoreController
     #[Link("/list", Link::GET, [], "/cmw-admin/wiki")]
     public function addCategorie(): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
 
         View::createAdminView('wiki', 'addCategorie')
@@ -72,7 +72,7 @@ class WikiController extends CoreController
     #[Link("/list", Link::POST, [], "/cmw-admin/wiki")]
     public function addCategoriePost(): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
         $name = filter_input(INPUT_POST, "name");
         $description = filter_input(INPUT_POST, "description");
@@ -88,7 +88,7 @@ class WikiController extends CoreController
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
     public function addArticle(int $cat): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.add");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
         //Get all undefined articles
         $undefinedArticles = $this->wikiArticlesModel->getUndefinedArticles();
@@ -164,7 +164,7 @@ class WikiController extends CoreController
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
     public function editCategorie(int $id): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
         $categorie = $this->wikiCategoriesModel->getCategorieById($id);
 
@@ -176,7 +176,7 @@ class WikiController extends CoreController
     #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
     #[NoReturn] public function editCategoriePost(int $id): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.edit");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
         $name = filter_input(INPUT_POST, "name");
         $description = filter_input(INPUT_POST, "description");
@@ -193,7 +193,7 @@ class WikiController extends CoreController
     #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
     public function deleteCategorie(int $id): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.delete");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.delete");
 
         $this->wikiCategoriesModel->deleteCategorie($id);
 
@@ -264,7 +264,7 @@ class WikiController extends CoreController
     #[Link("/categorie/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
     public function defineCategorie(int $id): void
     {
-        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.categorie.define");
+        UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.define");
 
         $this->wikiCategoriesModel->defineCategorie($id);
 
