@@ -88,7 +88,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
      }
      else {
       button.disabled = true;
-      button.innerHTML = "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Créer pour enregistrer";
+      button.innerHTML = "<?= LangManager::translate('wiki.button.create_before') ?>";
      }
     }
 
@@ -98,7 +98,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
      *  //TODO IMPLEMENT IMAGES
      */
     let editor = new EditorJS({
-        placeholder: "Commencez à taper ou cliquez sur le \"+\" pour choisir un bloc à ajouter...",
+        placeholder: "<?= LangManager::translate('wiki.editor.start') ?>",
         logLevel: "ERROR",
         readOnly: false,
         holder: "editorjs",
@@ -212,7 +212,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 })
 
                 button.disabled = true;
-                button.innerHTML = "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Enregistrement en cours ...";
+                button.innerHTML = "<?= LangManager::translate('wiki.button.saving') ?>";
                 setTimeout(() => {
                             button.innerHTML = "<i style='color: #16C329;' class='fa-solid fa-check fa-shake'></i> Ok !";
                         }, 850);

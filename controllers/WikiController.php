@@ -10,6 +10,7 @@ use CMW\Model\wiki\WikiArticlesModel;
 use CMW\Model\wiki\WikiCategoriesModel;
 use CMW\Router\Link;
 use CMW\Utils\Utils;
+use CMW\Utils\Redirect;
 use CMW\Utils\Response;
 use CMW\Manager\Views\View;
 use JetBrains\PhpStorm\NoReturn;
@@ -82,7 +83,7 @@ class WikiController extends CoreController
 
 
         $this->wikiCategoriesModel->createCategorie($name, $description, $icon, $slug);
-        header("location: ../wiki/list");
+        Redirect::redirectToPreviousPage();
     }
 
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -137,7 +138,6 @@ class WikiController extends CoreController
         $userId = $userEntity?->getId();
 
         $articles->createArticle($title, $cat, $icon, $content, $slug, $userId);
-        header("location: ../../list");
         
     }
 
@@ -148,7 +148,7 @@ class WikiController extends CoreController
 
         $this->wikiArticlesModel->downPositionArticle($id, $position);
 
-        header("location: ../../../list");
+        Redirect::redirectToPreviousPage();
     }
 
     #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -158,7 +158,7 @@ class WikiController extends CoreController
 
         $this->wikiArticlesModel->upPositionArticle($id, $position);
 
-        header("location: ../../../list");
+        Redirect::redirectToPreviousPage();
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -187,7 +187,7 @@ class WikiController extends CoreController
 
         $this->wikiCategoriesModel->updateCategorie($id, $name, $description, $slug, $icon, $isDefine);
 
-        header("location: ../../list");
+        Redirect::redirect("cmw-admin/wiki/list");
     }
 
     #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -197,7 +197,7 @@ class WikiController extends CoreController
 
         $this->wikiCategoriesModel->deleteCategorie($id);
 
-        header("location: ../../list");
+        Redirect::redirect("cmw-admin/wiki/list");
     }
 
     #[Link("/article/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -232,7 +232,6 @@ class WikiController extends CoreController
     #[NoReturn] public function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
-    Response::sendAlert("success", "test","test");
         //Get the editor id
         $user = new UsersModel;
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
@@ -247,7 +246,6 @@ class WikiController extends CoreController
 
         $this->wikiArticlesModel->updateArticle($id, $title, $category_id, $content, $icon, $lastEditor, $isDefine);
 
-        header("location: ../../list");
     }
 
     #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -257,7 +255,7 @@ class WikiController extends CoreController
 
         $this->wikiArticlesModel->deleteArticle($id);
 
-        header("location: ../../list");
+        Redirect::redirect("cmw-admin/wiki/list");
 
     }
 
@@ -268,7 +266,7 @@ class WikiController extends CoreController
 
         $this->wikiCategoriesModel->defineCategorie($id);
 
-        header("location: ../../list");
+        Redirect::redirect("cmw-admin/wiki/list");
     }
 
     #[Link("/article/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -278,7 +276,7 @@ class WikiController extends CoreController
 
         $this->wikiArticlesModel->defineArticle($id);
 
-        header("location: ../../list");
+        Redirect::redirect("cmw-admin/wiki/list");
     }
 
 
@@ -307,20 +305,22 @@ class WikiController extends CoreController
     #[Link("/wiki/:slugC/:slugA", Link::GET, ["slugC" => ".*?"])]
     public function publicShowArticle($slugC, $slugA): void
     {
-        //get the current url (slug)
-        $url = $slugA;
+
 
         $categories = $this->wikiCategoriesModel->getDefinedCategories();
 
         $article = $this->wikiArticlesModel->getArticleBySlug($slugA);
+        
+
         $firstArticle = $this->wikiArticlesModel->getFirstArticle();
 
         //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
         $view = new View('wiki', 'main');
         $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
         $view->addStyle("admin/resources/vendors/fontawesome-free/css/fa-all.min.css", "admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
-        $view->addVariableList(["categories" => $categories, "article" => $article, "url" => $url,
+        $view->addVariableList(["categories" => $categories, "article" => $article,
             "firstArticle" => $firstArticle]);
+
         $view->view();
     }
 }

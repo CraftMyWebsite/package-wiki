@@ -17,11 +17,19 @@ return [
 	"modal" => [
         "delete" => "Delete :",
         "deletealert" => "The deletion is permanent.",
-        "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> Si votre catégorie contien des articles ceux-ci seront également supprimé !</b>"
+        "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> If your category contains articles, these will also be deleted!</b>"
+    ],
+    "alert" => [
+        "create_before" => "Please create a category to start using the Wiki"
     ],
 	"button" => [
 		"add_category" => "Add a category",
 		"add_article" => "Add an article",
+		"create_before" => "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Create before save",
+		"saving" => "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Saving in progress",
+	],
+	"editor" => [
+		"start" => "Start typing or click the '+' to choose a block to add...",
 	],
 	"articles" => [
 		"undefined" => "Articles & category <br> undefined:",
@@ -39,7 +47,7 @@ return [
 		"category_slug_placeholder" => "Comme-with-us",
 		"article_title" => "Title",
 		"article_title_placeholder" => "Enter the title",
-		"article_categorie" => "CCategory",
+		"article_categorie" => "Category",
 		"article_content" => "Content",
 		"article_content_placeholder" => "Content of this article",
 		"hint_icon" => "Get all this icons on the website",

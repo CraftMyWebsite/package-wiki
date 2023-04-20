@@ -107,11 +107,13 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                     </div>
                 <?php endforeach; ?>
                 <?php else: ?>
-                <div class="alert alert-info">Merci de créer une catégorie pour commencer à utiliser le Wiki</div>
+                <div class="alert alert-info">
+                    <?= LangManager::translate("wiki.alert.create_before") ?>
+            </div>
             <?php endif ?>
                 <div class="divider">
                     <a type="button" data-bs-toggle="modal" data-bs-target="#add-cat">
-                        <div class="divider-text"><i class="fa-solid fa-circle-plus"></i> Ajouter une catégories</div>
+                        <div class="divider-text"><i class="fa-solid fa-circle-plus"></i> <?= LangManager::translate("wiki.button.add_category") ?></div>
                     </a>
                 </div>
             </div>
