@@ -19,9 +19,17 @@ return [
         "deletealert" => "La supression est definitive.",
         "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> Si votre catégorie contien des articles ceux-ci seront également supprimé !</b>"
     ],
+    "alert" => [
+        "create_before" => "Merci de créer une catégorie pour commencer à utiliser le Wiki"
+    ],
 	"button" => [
 		"add_category" => "Ajouter une catégorie",
 		"add_article" => "Ajouter un article",
+		"create_before" => "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Créer pour enregistrer",
+		"saving" => "<i class='fa-solid fa-spinner fa-spin-pulse'></i> Enregistrement en cours ...",
+	],
+	"editor" => [
+		"start" => "Commencez à taper ou cliquez sur le '+' pour choisir un bloc à ajouter...",
 	],
 	"articles" => [
 		"undefined" => "Articles & catégories <br> non-définis:",
