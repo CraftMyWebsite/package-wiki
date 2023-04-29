@@ -36,8 +36,8 @@ class WikiController extends CoreController
         $this->wikiCategoriesModel = new WikiCategoriesModel();
     }
 
-    #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/wiki")]
-    #[Link("/list", Link::GET, [], "/cmw-admin/wiki")]
+    #[Link(path: "/", method: Link::GET, scope: "/cmw-Admin/wiki")]
+    #[Link("/list", Link::GET, [], "/cmw-Admin/wiki")]
     public function frontWikiListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.show");
@@ -59,7 +59,7 @@ class WikiController extends CoreController
             ->view();
     }
 
-    #[Link("/list", Link::GET, [], "/cmw-admin/wiki")]
+    #[Link("/list", Link::GET, [], "/cmw-Admin/wiki")]
     public function addCategorie(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
@@ -70,7 +70,7 @@ class WikiController extends CoreController
     }
 
 
-    #[Link("/list", Link::POST, [], "/cmw-admin/wiki")]
+    #[Link("/list", Link::POST, [], "/cmw-Admin/wiki")]
     public function addCategoriePost(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
@@ -86,7 +86,7 @@ class WikiController extends CoreController
         Redirect::redirectToPreviousPage();
     }
 
-    #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function addArticle(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
@@ -100,26 +100,26 @@ class WikiController extends CoreController
         $currentCategories = $this->wikiCategoriesModel->getCategories();
 
         View::createAdminView('wiki', 'addArticle')
-            ->addScriptBefore("admin/resources/vendors/editorjs/plugins/header.js",
-                    "admin/resources/vendors/editorjs/plugins/image.js",
-                    "admin/resources/vendors/editorjs/plugins/delimiter.js",
-                    "admin/resources/vendors/editorjs/plugins/list.js",
-                    "admin/resources/vendors/editorjs/plugins/quote.js",
-                    "admin/resources/vendors/editorjs/plugins/code.js",
-                    "admin/resources/vendors/editorjs/plugins/table.js",
-                    "admin/resources/vendors/editorjs/plugins/link.js",
-                    "admin/resources/vendors/editorjs/plugins/warning.js",
-                    "admin/resources/vendors/editorjs/plugins/embed.js",
-                    "admin/resources/vendors/editorjs/plugins/marker.js",
-                    "admin/resources/vendors/editorjs/plugins/underline.js",
-                    "admin/resources/vendors/editorjs/plugins/drag-drop.js",
-                    "admin/resources/vendors/editorjs/plugins/undo.js",
-                    "admin/resources/vendors/editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/editorjs/plugins/header.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/image.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/delimiter.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/list.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/quote.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/code.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/table.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/link.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/warning.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/embed.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/marker.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/underline.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/drag-drop.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/undo.js",
+                    "Admin/Resources/Vendors/editorjs/editor.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
-    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-Admin/wiki", secure: false)]
     public function addArticlePost(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
@@ -141,7 +141,7 @@ class WikiController extends CoreController
         
     }
 
-    #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function positionDown(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
@@ -151,7 +151,7 @@ class WikiController extends CoreController
         Redirect::redirectToPreviousPage();
     }
 
-    #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function positionUp(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
@@ -161,7 +161,7 @@ class WikiController extends CoreController
         Redirect::redirectToPreviousPage();
     }
 
-    #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function editCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
@@ -173,7 +173,7 @@ class WikiController extends CoreController
             ->view();
     }
 
-    #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-Admin/wiki", secure: false)]
     #[NoReturn] public function editCategoriePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
@@ -187,20 +187,20 @@ class WikiController extends CoreController
 
         $this->wikiCategoriesModel->updateCategorie($id, $name, $description, $slug, $icon, $isDefine);
 
-        Redirect::redirect("cmw-admin/wiki/list");
+        Redirect::redirect("cmw-Admin/wiki/list");
     }
 
-    #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function deleteCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.delete");
 
         $this->wikiCategoriesModel->deleteCategorie($id);
 
-        Redirect::redirect("cmw-admin/wiki/list");
+        Redirect::redirect("cmw-Admin/wiki/list");
     }
 
-    #[Link("/article/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function editArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
@@ -209,26 +209,26 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addScriptBefore("admin/resources/vendors/editorjs/plugins/header.js",
-                    "admin/resources/vendors/editorjs/plugins/image.js",
-                    "admin/resources/vendors/editorjs/plugins/delimiter.js",
-                    "admin/resources/vendors/editorjs/plugins/list.js",
-                    "admin/resources/vendors/editorjs/plugins/quote.js",
-                    "admin/resources/vendors/editorjs/plugins/code.js",
-                    "admin/resources/vendors/editorjs/plugins/table.js",
-                    "admin/resources/vendors/editorjs/plugins/link.js",
-                    "admin/resources/vendors/editorjs/plugins/warning.js",
-                    "admin/resources/vendors/editorjs/plugins/embed.js",
-                    "admin/resources/vendors/editorjs/plugins/marker.js",
-                    "admin/resources/vendors/editorjs/plugins/underline.js",
-                    "admin/resources/vendors/editorjs/plugins/drag-drop.js",
-                    "admin/resources/vendors/editorjs/plugins/undo.js",
-                    "admin/resources/vendors/editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/editorjs/plugins/header.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/image.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/delimiter.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/list.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/quote.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/code.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/table.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/link.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/warning.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/embed.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/marker.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/underline.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/drag-drop.js",
+                    "Admin/Resources/Vendors/editorjs/plugins/undo.js",
+                    "Admin/Resources/Vendors/editorjs/editor.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
 
-    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-Admin/wiki", secure: false)]
     #[NoReturn] public function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
@@ -248,35 +248,35 @@ class WikiController extends CoreController
 
     }
 
-    #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function deleteArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.delete");
 
         $this->wikiArticlesModel->deleteArticle($id);
 
-        Redirect::redirect("cmw-admin/wiki/list");
+        Redirect::redirect("cmw-Admin/wiki/list");
 
     }
 
-    #[Link("/categorie/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/categorie/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function defineCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.define");
 
         $this->wikiCategoriesModel->defineCategorie($id);
 
-        Redirect::redirect("cmw-admin/wiki/list");
+        Redirect::redirect("cmw-Admin/wiki/list");
     }
 
-    #[Link("/article/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    #[Link("/article/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-Admin/wiki")]
     public function defineArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.define");
 
         $this->wikiArticlesModel->defineArticle($id);
 
-        Redirect::redirect("cmw-admin/wiki/list");
+        Redirect::redirect("cmw-Admin/wiki/list");
     }
 
 
@@ -291,10 +291,10 @@ class WikiController extends CoreController
 
         $firstArticle = $this->wikiArticlesModel->getFirstArticle();
 
-        //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
+        //Include the Public view file ("Public/Themes/$themePath/Views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
-        $view->addStyle("admin/resources/vendors/fontawesome-free/css/fa-all.min.css", "admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
+        $view->addScriptBefore("Admin/Resources/Vendors/highlight/highlight.min.js","Admin/Resources/Vendors/highlight/highlightAll.js");
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -314,10 +314,10 @@ class WikiController extends CoreController
 
         $firstArticle = $this->wikiArticlesModel->getFirstArticle();
 
-        //Include the public view file ("public/themes/$themePath/views/wiki/main.view.php")
+        //Include the Public view file ("Public/Themes/$themePath/Views/wiki/main.view.php")
         $view = new View('wiki', 'main');
-        $view->addScriptBefore("admin/resources/vendors/highlight/highlight.min.js","admin/resources/vendors/highlight/highlightAll.js");
-        $view->addStyle("admin/resources/vendors/fontawesome-free/css/fa-all.min.css", "admin/resources/vendors/highlight/style/" . EditorController::getCurrentStyle());
+        $view->addScriptBefore("Admin/Resources/Vendors/highlight/highlight.min.js","Admin/Resources/Vendors/highlight/highlightAll.js");
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/highlight/style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => $article,
             "firstArticle" => $firstArticle]);
 
