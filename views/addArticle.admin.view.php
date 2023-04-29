@@ -105,7 +105,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         uploadByFile(file) {
                             let formData = new FormData();
                             formData.append('image', file);
-                            return fetch("<?= Utils::getEnv()->getValue("PATH_SUBFOLDER")?>cmw-admin/pages/uploadImage/add", {
+                            return fetch("<?= Utils::getEnv()->getValue("PATH_SUBFOLDER")?>cmw-Admin/Pages/uploadImage/add", {
                                 method: "POST",
                                 body: formData
                             }).then(res => res.json())
@@ -194,7 +194,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                             button.innerHTML = "<i style='color: #16C329;' class='fa-solid fa-check fa-shake'></i> Ok !";
                         }, 850);
                 setTimeout(() => {
-                            document.location.replace("<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'cmw-admin/wiki/list'?>");
+                            document.location.replace("<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'cmw-Admin/wiki/list'?>");
                         }, 1000);
                                 
             })
