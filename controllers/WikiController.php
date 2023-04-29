@@ -5,6 +5,7 @@ namespace CMW\Controller\Wiki;
 use CMW\Controller\Core\CoreController;
 use CMW\Controller\Core\EditorController;
 use CMW\Controller\users\UsersController;
+use CMW\Manager\Requests\Request;
 use CMW\Model\users\UsersModel;
 use CMW\Model\wiki\WikiArticlesModel;
 use CMW\Model\wiki\WikiCategoriesModel;
@@ -87,7 +88,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function addArticle(int $cat): void
+    public function addArticle(Request $request, int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
@@ -100,27 +101,27 @@ class WikiController extends CoreController
         $currentCategories = $this->wikiCategoriesModel->getCategories();
 
         View::createAdminView('wiki', 'addArticle')
-            ->addScriptBefore("Admin/Resources/Vendors/editorjs/plugins/header.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/image.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/delimiter.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/list.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/quote.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/code.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/table.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/link.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/warning.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/embed.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/marker.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/underline.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/drag-drop.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/undo.js",
-                    "Admin/Resources/Vendors/editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/Editorjs/Plugins/header.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/image.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/delimiter.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/list.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/quote.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/code.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/table.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/link.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/warning.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/embed.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/marker.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/underline.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/drag-drop.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/undo.js",
+                    "Admin/Resources/Vendors/Editorjs/editor.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
     #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
-    public function addArticlePost(int $cat): void
+    public function addArticlePost(Request $request, int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
         
@@ -142,7 +143,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function positionDown(int $id, int $position): void
+    public function positionDown(Request $request, int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
@@ -152,7 +153,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function positionUp(int $id, int $position): void
+    public function positionUp(Request $request, int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
@@ -162,7 +163,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function editCategorie(int $id): void
+    public function editCategorie(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
@@ -174,7 +175,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
-    #[NoReturn] public function editCategoriePost(int $id): void
+    #[NoReturn] public function editCategoriePost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
@@ -191,7 +192,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function deleteCategorie(int $id): void
+    public function deleteCategorie(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.delete");
 
@@ -201,7 +202,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function editArticle(int $id): void
+    public function editArticle(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
 
@@ -209,27 +210,27 @@ class WikiController extends CoreController
         $article = $this->wikiArticlesModel->getArticleById($id);
 
         View::createAdminView('wiki', 'editArticle')
-            ->addScriptBefore("Admin/Resources/Vendors/editorjs/plugins/header.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/image.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/delimiter.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/list.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/quote.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/code.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/table.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/link.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/warning.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/embed.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/marker.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/underline.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/drag-drop.js",
-                    "Admin/Resources/Vendors/editorjs/plugins/undo.js",
-                    "Admin/Resources/Vendors/editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/Editorjs/Plugins/header.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/image.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/delimiter.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/list.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/quote.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/code.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/table.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/link.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/warning.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/embed.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/marker.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/underline.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/drag-drop.js",
+                    "Admin/Resources/Vendors/Editorjs/Plugins/undo.js",
+                    "Admin/Resources/Vendors/Editorjs/editor.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
 
     #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
-    #[NoReturn] public function editArticlePost(int $id): void
+    #[NoReturn] public function editArticlePost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
         //Get the editor id
@@ -249,7 +250,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function deleteArticle(int $id): void
+    public function deleteArticle(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.delete");
 
@@ -260,7 +261,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/categorie/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function defineCategorie(int $id): void
+    public function defineCategorie(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.define");
 
@@ -270,7 +271,7 @@ class WikiController extends CoreController
     }
 
     #[Link("/article/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    public function defineArticle(int $id): void
+    public function defineArticle(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.define");
 
@@ -303,7 +304,7 @@ class WikiController extends CoreController
      * @throws \CMW\Router\RouterException
      */
     #[Link("/wiki/:slugC/:slugA", Link::GET, ["slugC" => ".*?"])]
-    public function publicShowArticle($slugC, $slugA): void
+    public function publicShowArticle(Request $request, $slugC, $slugA): void
     {
 
 
