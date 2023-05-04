@@ -4,7 +4,7 @@
 
 ## Exemple
 
-Tout d'abord veuillez créer un fichier dans le dossier ```view```de votre thème ```wiki/main.view.php```
+Tout d'abord veuillez créer un fichier dans le dossier ```View```de votre thème ```Wiki/main.view.php```
 
 Voici un petit exemple pour afficher en liste vos catégories et vos articles.
 
