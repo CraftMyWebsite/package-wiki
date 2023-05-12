@@ -2,7 +2,7 @@
 
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Security\SecurityManager;
-use CMW\Utils\Utils;
+use CMW\Utils\Website;
 
 $title = LangManager::translate("wiki.title.edit_category");
 $description = LangManager::translate("wiki.title.dashboard_desc");
@@ -61,7 +61,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 <div class="col-12 col-lg-6">
                     <h6><?= LangManager::translate("wiki.add.category_slug") ?> :</h6>
                     <div class="input-group mb-3">
-                        <span class="input-group-text" ><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" ?></span>
+                        <span class="input-group-text" ><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" ?></span>
                         <input type="text" value="<?= $categorie->getSlug() ?>" name="slug" required class="form-control" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
                     </div>
                 </div>

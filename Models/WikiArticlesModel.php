@@ -4,6 +4,7 @@ namespace CMW\Model\Wiki;
 
 use CMW\Entity\Wiki\WikiArticlesEntity;
 use CMW\Manager\Database\DatabaseManager;
+use CMW\Manager\Package\AbstractModel;
 use CMW\Model\Users\UsersModel;
 
 /**
@@ -12,7 +13,7 @@ use CMW\Model\Users\UsersModel;
  * @author Teyir
  * @version 1.0
  */
-class WikiArticlesModel extends DatabaseManager
+class WikiArticlesModel extends AbstractModel
 {
 
     public function createArticle(string $title, int $categoryId, string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
@@ -32,7 +33,7 @@ class WikiArticlesModel extends DatabaseManager
                                wiki_articles_content, wiki_articles_author_id, wiki_articles_last_editor_id, wiki_articles_slug) 
                         VALUES (:title, :category_id, :icon, :content, :author_id,:last_editor_id, :slug)";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -60,7 +61,7 @@ class WikiArticlesModel extends DatabaseManager
                              wiki_articles_last_editor_id=:last_editor, wiki_articles_is_define=:is_define WHERE wiki_articles_id=:id";
 
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
@@ -208,7 +209,7 @@ class WikiArticlesModel extends DatabaseManager
        wiki_articles_icon, wiki_articles_date_create, wiki_articles_date_update, wiki_articles_author_id,
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_id =:id ORDER BY wiki_articles_position ASC";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("id" => $id))) {
@@ -244,7 +245,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles ORDER BY wiki_articles_position ASC";
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -263,7 +264,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getUndefinedArticles(): array
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0 ORDER BY wiki_articles_position ASC";
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
@@ -282,7 +283,7 @@ class WikiArticlesModel extends DatabaseManager
     public function getNumberOfUndefinedArticles(): int
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_is_define = 0 ORDER BY wiki_articles_position ASC";
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
 
@@ -299,7 +300,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "SELECT * FROM cmw_wiki_articles WHERE wiki_articles_category_id =:categoryId AND wiki_articles_is_define = 1 ORDER BY wiki_articles_position ASC";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("categoryId" => $id))) {
@@ -319,7 +320,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "UPDATE cmw_wiki_articles SET wiki_articles_is_define=1 WHERE wiki_articles_id=:id";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -328,7 +329,7 @@ class WikiArticlesModel extends DatabaseManager
     {
         $sql = "DELETE FROM cmw_wiki_articles WHERE wiki_articles_id=:id";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id));
     }
@@ -339,7 +340,7 @@ class WikiArticlesModel extends DatabaseManager
         $sql = "UPDATE cmw_wiki_articles SET wiki_articles_position=:position WHERE wiki_articles_id=:id";
         
         $newPosition = $position - 1;
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id, "position" => $newPosition));
     }
@@ -350,7 +351,7 @@ class WikiArticlesModel extends DatabaseManager
         $sql = "UPDATE cmw_wiki_articles SET wiki_articles_position=:position WHERE wiki_articles_id=:id";
         
         $newPosition = $position + 1;
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $req->execute(array("id" => $id, "position" => $newPosition));
     }
@@ -363,7 +364,7 @@ class WikiArticlesModel extends DatabaseManager
        wiki_articles_icon,  wiki_articles_date_create, wiki_articles_date_update, wiki_articles_author_id, 
        wiki_articles_last_editor_id FROM cmw_wiki_articles WHERE wiki_articles_slug =:slug ORDER BY wiki_articles_position ASC";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
         if (!$res->execute(array("slug" => $slug))) {
@@ -397,7 +398,7 @@ class WikiArticlesModel extends DatabaseManager
         $sql = "SELECT wiki_articles_id FROM `cmw_wiki_articles` 
                         ORDER BY `cmw_wiki_articles`.`wiki_articles_category_id` ASC LIMIT 1";
 
-        $db = self::getInstance();
+        $db = DatabaseManager::getInstance();
         $res = $db->query($sql);
 
         $res = $res->fetch();
