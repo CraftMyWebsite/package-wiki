@@ -1,9 +1,9 @@
 <?php
-use CMW\Manager\Security\SecurityManager;
+
+use CMW\Manager\Env\EnvManager;
 use CMW\Manager\Lang\LangManager;
-use CMW\Model\Wiki\WikiArticlesModel;
-use CMW\Model\Wiki\WikiCategoriesModel;
-use CMW\Utils\Utils;
+use CMW\Utils\Website;
+
 $title = LangManager::translate("wiki.title.dashboard_title");
 $description = LangManager::translate("wiki.title.dashboard_desc");
 
@@ -105,7 +105,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         uploadByFile(file) {
                             let formData = new FormData();
                             formData.append('image', file);
-                            return fetch("<?= Utils::getEnv()->getValue("PATH_SUBFOLDER")?>cmw-admin/Pages/uploadImage/add", {
+                            return fetch("<?=  EnvManager::getInstance()->getValue("PATH_SUBFOLDER")?>cmw-admin/Pages/uploadImage/add", {
                                 method: "POST",
                                 body: formData
                             }).then(res => res.json())
@@ -113,7 +113,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                     return {
                                         success: 1,
                                         file: {
-                                            url: "<?= Utils::getEnv()->getValue("PATH_URL")?>public/uploads/editor/" + response
+                                            url: "<?= EnvManager::getInstance()->getValue("PATH_SUBFOLDER")?>public/uploads/editor/" + response
                                         }
                                     }
                                 })
@@ -194,7 +194,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                             button.innerHTML = "<i style='color: #16C329;' class='fa-solid fa-check fa-shake'></i> Ok !";
                         }, 850);
                 setTimeout(() => {
-                            document.location.replace("<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . 'cmw-admin/wiki/list'?>");
+                            document.location.replace("<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . 'cmw-admin/wiki/list'?>");
                         }, 1000);
                                 
             })

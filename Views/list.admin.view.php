@@ -1,9 +1,13 @@
 <?php
+
+use CMW\Manager\Env\EnvManager;
 use CMW\Manager\Security\SecurityManager;
 use CMW\Manager\Lang\LangManager;
 use CMW\Model\Wiki\WikiArticlesModel;
 use CMW\Model\Wiki\WikiCategoriesModel;
 use CMW\Utils\Utils;
+use CMW\Utils\Website;
+
 $title = LangManager::translate("wiki.title.dashboard_title");
 $description = LangManager::translate("wiki.title.dashboard_desc");
 
@@ -72,7 +76,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                             <b><?= $article->getPosition() ?></b>
                                             <a href="article/positionUp/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-plus"></i></a>
                                         </span>
-                                        <a target="_blank" href="<?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" . $category->getSlug() ."/" . $article->getSlug() ?>"><i class="me-3 fa-solid fa-up-right-from-square"></i></a>
+                                        <a target="_blank" href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" . $category->getSlug() ."/" . $article->getSlug() ?>"><i class="me-3 fa-solid fa-up-right-from-square"></i></a>
                                         <a href="article/edit/<?= $article->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
                                         <a type="button" data-bs-toggle="modal" data-bs-target="#deletee-<?= $article->getId() ?>">
                                             <i class="text-danger fas fa-trash-alt"></i>
@@ -156,7 +160,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         </div>
                          <h6><?= LangManager::translate("wiki.add.category_slug") ?> :</h6>
                          <div class="input-group mb-3">
-                             <span class="input-group-text" ><?= Utils::getHttpProtocol() . '://' . $_SERVER['SERVER_NAME'] . getenv("PATH_SUBFOLDER") . "wiki/" ?></span>
+                             <span class="input-group-text" ><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" ?></span>
                              <input type="text" name="slug" required class="form-control" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
                          </div>                   
             </div>
