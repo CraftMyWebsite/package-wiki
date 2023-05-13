@@ -1,6 +1,7 @@
 <?php
 
 return [
+    "wiki" => "Wiki",
 	"title" => [
 		"dashboard_title" => "Wiki",
 		"add_category" => "Ajouter une catégorie",
