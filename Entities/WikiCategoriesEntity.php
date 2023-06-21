@@ -2,6 +2,8 @@
 
 namespace CMW\Entity\Wiki;
 
+use CMW\Controller\Core\CoreController;
+
 class WikiCategoriesEntity
 {
     private int $id;
@@ -87,7 +89,7 @@ class WikiCategoriesEntity
      */
     public function getDateCreate(): string
     {
-        return $this->dateCreate;
+        return CoreController::formatDate($this->dateCreate);
     }
 
     /**
@@ -95,7 +97,7 @@ class WikiCategoriesEntity
      */
     public function getDateUpdate(): ?string
     {
-        return $this->dateUpdate;
+        return CoreController::formatDate($this->dateUpdate);
     }
 
     /**

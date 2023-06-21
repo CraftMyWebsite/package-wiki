@@ -71,7 +71,7 @@ class WikiController extends AbstractController
 
 
         wikiCategoriesModel::getInstance()->createCategorie($name, $description, $icon, $slug);
-        Redirect::redirectToPreviousPage();
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -136,7 +136,7 @@ class WikiController extends AbstractController
 
         wikiArticlesModel::getInstance()->downPositionArticle($id, $position);
 
-        Redirect::redirectToPreviousPage();
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -146,7 +146,7 @@ class WikiController extends AbstractController
 
         wikiArticlesModel::getInstance()->upPositionArticle($id, $position);
 
-        Redirect::redirectToPreviousPage();
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]

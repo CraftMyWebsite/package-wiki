@@ -2,6 +2,7 @@
 
 namespace CMW\Entity\Wiki;
 
+use CMW\Controller\Core\CoreController;
 use CMW\Entity\Users\UserEntity;
 
 class WikiArticlesEntity
@@ -129,7 +130,7 @@ class WikiArticlesEntity
      */
     public function getDateCreate(): string
     {
-        return $this->dateCreate;
+        return CoreController::formatDate($this->dateCreate);
     }
 
     /**
@@ -137,7 +138,7 @@ class WikiArticlesEntity
      */
     public function getDateUpdate(): string
     {
-        return $this->dateUpdate;
+        return CoreController::formatDate($this->dateUpdate);
     }
 
     /**
