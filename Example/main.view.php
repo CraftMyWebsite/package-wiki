@@ -1,7 +1,8 @@
 <!------------------------------------
     ----- Required namespace-----
 -------------------------------------->
-<?php use CMW\Utils\Utils; ?>
+<?php use CMW\Manager\Env\EnvManager;
+use CMW\Utils\Utils; ?>
 
 <!------------------------------------
            ----- Navigation-----
@@ -9,7 +10,7 @@
 <?php foreach ($categories as $categorie): ?>
     <i class="<?= $categorie->getIcon() ?>"></i> <?= $categorie->getName() ?></div>
         <?php foreach ($categorie?->getArticles() as $menuArticle): ?>
-            <a href="<?= Utils::getEnv()->getValue("PATH_SUBFOLDER") . "wiki/" . $categorie->getSlug() . "/" . $menuArticle->getSlug() ?>">
+            <a href="<?= EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" . $categorie->getSlug() . "/" . $menuArticle->getSlug() ?>">
                 <i class="<?= $menuArticle->getIcon() ?>"></i> <?= $menuArticle->getTitle() ?></div>
             </a>
         <?php endforeach; ?>
