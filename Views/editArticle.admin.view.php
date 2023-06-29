@@ -2,6 +2,8 @@
 
 use CMW\Manager\Env\EnvManager;
 use CMW\Manager\Lang\LangManager;
+use CMW\Utils\Website;
+
 $title = LangManager::translate("wiki.title.edit_article");
 $description = LangManager::translate("wiki.title.dashboard_desc");
 

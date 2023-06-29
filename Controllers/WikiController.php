@@ -196,7 +196,7 @@ class WikiController extends AbstractController
         $categories = wikiCategoriesModel::getInstance()->getCategories();
         $article = wikiArticlesModel::getInstance()->getArticleById($id);
 
-        View::createAdminView('wiki', 'editArticle')
+        View::createAdminView('Wiki', 'editArticle')
             ->addScriptBefore("Admin/Resources/Vendors/Editorjs/Plugins/header.js",
                     "Admin/Resources/Vendors/Editorjs/Plugins/image.js",
                     "Admin/Resources/Vendors/Editorjs/Plugins/delimiter.js",
