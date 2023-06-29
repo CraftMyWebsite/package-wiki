@@ -113,7 +113,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                     return {
                                         success: 1,
                                         file: {
-                                            url: "<?= EnvManager::getInstance()->getValue("PATH_SUBFOLDER")?>public/uploads/editor/" + response
+                                            url: "<?= EnvManager::getInstance()->getValue("PATH_SUBFOLDER")?>Public/Uploads/Editor/" + response
                                         }
                                     }
                                 })
