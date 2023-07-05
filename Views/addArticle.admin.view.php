@@ -32,7 +32,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                                         <div class="col-12 col-lg-6">
                                             <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
                                             <div class="form-group position-relative has-icon-left">
-                                                <input type="text" class="form-control" id="icon" required
+                                                <input type="text" class="form-control" id="icon"
                                                        placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
                                                 <div class="form-control-icon">
                                                     <i class="fas fa-icons"></i>
@@ -61,12 +61,10 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
      * Check inpt befor send
     */
      let input_title = document.querySelector("#title");
-     let input_icon = document.querySelector("#icon");
      let button = document.querySelector("#saveButton");
      input_title.addEventListener("change", stateHandle);
-     input_icon.addEventListener("change", stateHandle);
      function stateHandle() {
-     if (document.querySelector("#title").value !="" && document.querySelector("#icon").value !="") {
+     if (document.querySelector("#title").value !== "" ) {
       button.disabled = false;
       button.innerHTML = "<?= LangManager::translate("core.btn.add") ?>";
      }

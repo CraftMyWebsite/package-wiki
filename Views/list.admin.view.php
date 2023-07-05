@@ -152,7 +152,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                         </div>
                         <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
                         <div class="form-group position-relative has-icon-left">
-                            <input type="text" class="form-control" name="icon" required placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
+                            <input type="text" class="form-control" name="icon" placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
                             <div class="form-control-icon">
                                 <i class="fas fa-icons"></i>
                             </div>

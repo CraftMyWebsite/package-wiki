@@ -15,7 +15,7 @@ class WikiArticlesEntity
     private string $content;
     private string $contentNt;
     private string $slug;
-    private string $icon;
+    private ?string $icon;
     private string $dateCreate;
     private string $dateUpdate;
     private UserEntity $author;
@@ -30,13 +30,13 @@ class WikiArticlesEntity
      * @param string $content
      * @param string $contentNt
      * @param string $slug
-     * @param string $icon
+     * @param ?string $icon
      * @param string $dateCreate
      * @param string $dateUpdate
      * @param \CMW\Entity\Users\UserEntity $author
      * @param \CMW\Entity\Users\UserEntity $lastEditor
      */
-    public function __construct(int $id, int $categoryId, int $position, int $isDefine, string $title, string $content, string $contentNt, string $slug, string $icon, string $dateCreate, string $dateUpdate, UserEntity $author, UserEntity $lastEditor)
+    public function __construct(int $id, int $categoryId, int $position, int $isDefine, string $title, string $content, string $contentNt, string $slug, ?string $icon, string $dateCreate, string $dateUpdate, UserEntity $author, UserEntity $lastEditor)
     {
         $this->id = $id;
         $this->categoryId = $categoryId;
@@ -118,9 +118,9 @@ class WikiArticlesEntity
     }
 
     /**
-     * @return string
+     * @return ?string
      */
-    public function getIcon(): string
+    public function getIcon(): ?string
     {
         return $this->icon;
     }

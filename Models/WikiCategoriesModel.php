@@ -16,7 +16,7 @@ use CMW\Manager\Package\AbstractModel;
 class WikiCategoriesModel extends AbstractModel
 {
 
-    public function createCategorie(string $name, string $description, string $icon, string $slug): ?WikiCategoriesEntity
+    public function createCategorie(string $name, string $description, ?string $icon, string $slug): ?WikiCategoriesEntity
     {
 
         $var = array(
@@ -143,7 +143,7 @@ class WikiCategoriesModel extends AbstractModel
         return $toReturn;
     }
 
-    public function updateCategorie(int $id, string $name, string $description, string $slug, string $icon, int $isDefine): ?WikiCategoriesEntity
+    public function updateCategorie(int $id, string $name, string $description, string $slug, ?string $icon, int $isDefine): ?WikiCategoriesEntity
     {
         $var = array(
             "id" => $id,

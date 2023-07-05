@@ -16,7 +16,7 @@ use CMW\Model\Users\UsersModel;
 class WikiArticlesModel extends AbstractModel
 {
 
-    public function createArticle(string $title, int $categoryId, string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
+    public function createArticle(string $title, int $categoryId, ?string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
     {
 
         $var = array(
@@ -44,7 +44,7 @@ class WikiArticlesModel extends AbstractModel
         return null;
     }
 
-    public function updateArticle(int $id, string $title, int $categoryId, string $content, string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
+    public function updateArticle(int $id, string $title, int $categoryId, string $content, ?string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
     {
         $var = array(
             "id" => $id,

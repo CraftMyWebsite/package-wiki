@@ -50,7 +50,7 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
                 <div class="col-12 col-lg-6">
                     <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
                     <div class="form-group position-relative has-icon-left">
-                        <input type="text" class="form-control" name="icon" required value="<?= $categorie->getIcon() ?>"
+                        <input type="text" class="form-control" name="icon" value="<?= $categorie->getIcon() ?>"
                                placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
                         <div class="form-control-icon">
                             <i class="fas fa-icons"></i>

@@ -70,7 +70,7 @@ class WikiController extends AbstractController
         $slug = Utils::normalizeForSlug(filter_input(INPUT_POST, "slug"));
 
 
-        wikiCategoriesModel::getInstance()->createCategorie($name, $description, $icon, $slug);
+        wikiCategoriesModel::getInstance()->createCategorie($name, $description, ($icon === "" ? null : $icon), $slug);
         Redirect::redirectPreviousRoute();
     }
 
@@ -125,7 +125,7 @@ class WikiController extends AbstractController
         $userEntity = $user->getUserById($_SESSION['cmwUserId']);
         $userId = $userEntity?->getId();
 
-        $articles->createArticle($title, $cat, $icon, $content, $slug, $userId);
+        $articles->createArticle($title, $cat, ($icon === "" ? null : $icon), $content, $slug, $userId);
         
     }
 
@@ -173,7 +173,7 @@ class WikiController extends AbstractController
 
         $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        wikiCategoriesModel::getInstance()->updateCategorie($id, $name, $description, $slug, $icon, $isDefine);
+        wikiCategoriesModel::getInstance()->updateCategorie($id, $name, $description, $slug, ($icon === "" ? null : $icon), $isDefine);
 
         Redirect::redirect("cmw-admin/wiki/list");
     }
@@ -232,7 +232,7 @@ class WikiController extends AbstractController
         $lastEditor = $userEntity?->getId();
         $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, $icon, $lastEditor, $isDefine);
+        wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === "" ? null : $icon), $lastEditor, $isDefine);
 
     }
 
