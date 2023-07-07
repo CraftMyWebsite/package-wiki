@@ -219,18 +219,16 @@ class WikiController extends AbstractController
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
         //Get the editor id
-        $user = new UsersModel;
-        $userEntity = $user->getUserById($_SESSION['cmwUserId']);
 
 
         $title = filter_input(INPUT_POST, "title");
         $category_id = filter_input(INPUT_POST, "categorie");
         $content = filter_input(INPUT_POST, "content");
         $icon = filter_input(INPUT_POST, "icon");
-        $lastEditor = $userEntity?->getId();
+        $user = UsersModel::getCurrentUser()?->getId();
         $isDefine = filter_input(INPUT_POST, "isDefine", FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === "" ? null : $icon), $lastEditor, $isDefine);
+        wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === "" ? null : $icon), $user, $isDefine);
 
     }
 
