@@ -121,11 +121,9 @@ class WikiController extends AbstractController
         $slug = Utils::normalizeForSlug($title);
 
         //Get the author pseudo
-        $user = new UsersModel;
-        $userEntity = $user->getUserById($_SESSION['cmwUserId']);
-        $userId = $userEntity?->getId();
+        $user = UsersModel::getCurrentUser()?->getId();
 
-        $articles->createArticle($title, $cat, ($icon === "" ? null : $icon), $content, $slug, $userId);
+        $articles->createArticle($title, $cat, ($icon === "" ? null : $icon), $content, $slug, $user);
         
     }
 
