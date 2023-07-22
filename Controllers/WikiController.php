@@ -4,6 +4,9 @@ namespace CMW\Controller\Wiki;
 
 use CMW\Controller\Core\EditorController;
 use CMW\Controller\users\UsersController;
+use CMW\Manager\Flash\Alert;
+use CMW\Manager\Flash\Flash;
+use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Manager\Requests\Request;
 use CMW\Model\users\UsersModel;
@@ -88,26 +91,13 @@ class WikiController extends AbstractController
         $currentCategories = wikiCategoriesModel::getInstance()->getCategories();
 
         View::createAdminView('Wiki', 'addArticle')
-            ->addScriptBefore("Admin/Resources/Vendors/Editorjs/Plugins/header.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/image.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/delimiter.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/list.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/quote.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/code.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/table.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/link.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/warning.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/embed.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/marker.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/underline.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/drag-drop.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/undo.js",
-                    "Admin/Resources/Vendors/Editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/Tinymce/tinymce.min.js",
+                "Admin/Resources/Vendors/Tinymce/Config/full.js")
             ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
-    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
     private function addArticlePost(Request $request, int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
@@ -124,6 +114,10 @@ class WikiController extends AbstractController
         $user = UsersModel::getCurrentUser()?->getId();
 
         $articles->createArticle($title, $cat, ($icon === "" ? null : $icon), $content, $slug, $user);
+
+        Flash::send(Alert::SUCCESS,LangManager::translate("core.toaster.success"),LangManager::translate("wiki.alert.added"));
+
+        Redirect::redirectPreviousRoute();
         
     }
 
@@ -195,26 +189,13 @@ class WikiController extends AbstractController
         $article = wikiArticlesModel::getInstance()->getArticleById($id);
 
         View::createAdminView('Wiki', 'editArticle')
-            ->addScriptBefore("Admin/Resources/Vendors/Editorjs/Plugins/header.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/image.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/delimiter.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/list.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/quote.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/code.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/table.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/link.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/warning.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/embed.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/marker.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/underline.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/drag-drop.js",
-                    "Admin/Resources/Vendors/Editorjs/Plugins/undo.js",
-                    "Admin/Resources/Vendors/Editorjs/editor.js")
+            ->addScriptBefore("Admin/Resources/Vendors/Tinymce/tinymce.min.js",
+                "Admin/Resources/Vendors/Tinymce/Config/full.js")
             ->addVariableList(["article" => $article, "categories" => $categories])
             ->view();
     }
 
-    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
+    #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
     #[NoReturn] private function editArticlePost(Request $request, int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
@@ -230,6 +211,9 @@ class WikiController extends AbstractController
 
         wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === "" ? null : $icon), $user, $isDefine);
 
+        Flash::send(Alert::SUCCESS,LangManager::translate("core.toaster.success"),LangManager::translate("wiki.alert.edited"));
+
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -277,8 +261,8 @@ class WikiController extends AbstractController
 
         //Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
         $view = new View('Wiki', 'main');
-        $view->addScriptBefore("Admin/Resources/Vendors/Highlight/highlight.min.js","Admin/Resources/Vendors/Highlight/highlightAll.js");
-        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Highlight/Style/" . EditorController::getCurrentStyle());
+        $view->addScriptBefore("Admin/Resources/Vendors/Prismjs/prism.js");
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/default.css");
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
@@ -300,8 +284,8 @@ class WikiController extends AbstractController
 
         //Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
         $view = new View('Wiki', 'main');
-        $view->addScriptBefore("Admin/Resources/Vendors/Highlight/highlight.min.js","Admin/Resources/Vendors/Highlight/highlightAll.js");
-        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Highlight/Style/" . EditorController::getCurrentStyle());
+        $view->addScriptBefore("Admin/Resources/Vendors/Prismjs/prism.js");
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/Style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => $article,
             "firstArticle" => $firstArticle]);
 
