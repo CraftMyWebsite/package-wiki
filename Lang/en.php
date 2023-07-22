@@ -21,7 +21,9 @@ return [
         "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> If your category contains articles, these will also be deleted!</b>"
     ],
     "alert" => [
-        "create_before" => "Please create a category to start using the Wiki"
+        "create_before" => "Please create a category to start using the Wiki",
+        "added" => "Wiki page added",
+        "edited" => "Wiki edited"
     ],
 	"button" => [
 		"add_category" => "Add a category",

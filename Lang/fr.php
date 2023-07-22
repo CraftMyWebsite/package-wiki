@@ -21,7 +21,9 @@ return [
         "deletecatalert" => "<b><i class='fa-xl fa-solid fa-triangle-exclamation'></i> Si votre catégorie contien des articles ceux-ci seront également supprimé !</b>"
     ],
     "alert" => [
-        "create_before" => "Merci de créer une catégorie pour commencer à utiliser le Wiki"
+        "create_before" => "Merci de créer une catégorie pour commencer à utiliser le Wiki",
+        "added" => "Page du wiki ajouté",
+        "edited" => "Wiki modifié"
     ],
 	"button" => [
 		"add_category" => "Ajouter une catégorie",
