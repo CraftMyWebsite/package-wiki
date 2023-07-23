@@ -262,7 +262,7 @@ class WikiController extends AbstractController
         //Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
         $view = new View('Wiki', 'main');
         $view->addScriptBefore("Admin/Resources/Vendors/Prismjs/prism.js");
-        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/default.css");
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/Style/" . EditorController::getCurrentStyle());
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
