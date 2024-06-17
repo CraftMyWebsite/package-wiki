@@ -4,7 +4,6 @@ namespace CMW\Package\Wiki;
 
 use CMW\Manager\Package\IPackageConfig;
 use CMW\Manager\Package\PackageMenuType;
-use CMW\Manager\Package\PackageSubMenuType;
 
 class Package implements IPackageConfig
 {
@@ -15,7 +14,7 @@ class Package implements IPackageConfig
 
     public function version(): string
     {
-        return "0.0.2";
+        return "0.0.1";
     }
 
     public function authors(): array
@@ -51,7 +50,7 @@ class Package implements IPackageConfig
                 url: "wiki/list",
                 permission: "wiki.show",
                 subMenus: []
-            )
+            ),
         ];
     }
 
