@@ -9,50 +9,26 @@ $title = LangManager::translate("wiki.title.dashboard_title");
 $description = LangManager::translate("wiki.title.dashboard_desc");
 
 ?>
-<div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.add_article") ?></h4>
-            </div>
-            <div class="card-body">
-                <div class="content">
-                    <div class="container-fluid">
-                        <div class="row">
-                            <div class="col-12 ">
-                                <form action="" method="post">
-                                    <?php (new SecurityManager())->insertHiddenToken() ?>
-                                    <div class="row">
-                                        <div class="col-12 col-lg-6">
-                                            <h6><?= LangManager::translate("wiki.add.article_title") ?> :</h6>
-                                            <div class="form-group position-relative has-icon-left">
-                                                <input name="title" type="text" class="form-control" id="title" required
-                                                       placeholder="<?= LangManager::translate("wiki.add.article_title_placeholder") ?>">
-                                                <div class="form-control-icon">
-                                                    <i class="fas fa-heading"></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-lg-6">
-                                            <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
-                                            <div class="form-group position-relative has-icon-left">
-                                                <input name="icon" type="text" class="form-control" id="icon"
-                                                       placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
-                                                <div class="form-control-icon">
-                                                    <i class="fas fa-icons"></i>
-                                                </div>
-                                                <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a
-                                                        href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        <h6><?= LangManager::translate("wiki.add.article_content") ?> :</h6>
-                                <textarea class="tinymce" name="content"></textarea>
-                                    <div class="text-center mt-2">
-                                        <button id="saveButton" type="submit" class="btn btn-primary"><?= LangManager::translate('core.btn.save') ?></button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<h3><?= LangManager::translate("wiki.title.add_article") ?></h3>
+
+<form action="" method="post" class="card">
+    <?php (new SecurityManager())->insertHiddenToken() ?>
+    <div class="grid-2">
+        <div>
+            <label for="title"><?= LangManager::translate("wiki.add.article_title") ?> :</label>
+            <div class="input-group">
+                <i class="fa-solid fa-heading"></i>
+                <input type="text" id="title" name="title" required
+                       placeholder="<?= LangManager::translate("wiki.add.article_title_placeholder") ?>">
             </div>
         </div>
+        <div>
+            <div class="icon-picker" data-id="icon" data-name="icon" data-label="<?= LangManager::translate("wiki.add.category_icon") ?> :" data-placeholder="Sélectionner un icon" data-value=""></div>
+        </div>
+    </div>
+    <label for="content"><?= LangManager::translate("wiki.add.article_content") ?> :</label>
+    <textarea id="content" class="tinymce" name="content" data-tiny-height="500"></textarea>
+    <div class="mt-4">
+        <button id="saveButton" type="submit" class="btn-center btn-primary"><?= LangManager::translate('core.btn.save') ?></button>
+    </div>
+</form>

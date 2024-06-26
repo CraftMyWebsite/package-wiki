@@ -62,18 +62,18 @@ return [
 
     "permissions" => [
         "wiki" => [
-            "show" => "Show wiki",
+            "show" => "Show",
             "category" => [
-                "add" => "Add a category",
-                "edit" => "Edit a category",
-                "delete" => "Delete a category",
-                "define" => "Define a category",
+                "add" => "Add",
+                "edit" => "Edit",
+                "delete" => "Delete",
+                "define" => "Define",
             ],
             "article" => [
-                "add" => "Add an article",
-                "edit" => "Edit an article",
-                "delete" => "Delete an article",
-                "define" => "Define an article",
+                "add" => "Add",
+                "edit" => "Edit",
+                "delete" => "Delete",
+                "define" => "Define",
             ],
         ],
     ],
