@@ -62,18 +62,18 @@ return [
 
     "permissions" => [
         "wiki" => [
-            "show" => "Afficher les wiki",
+            "show" => "Afficher",
             "category" => [
-                "add" => "Ajouter une catégorie",
-                "edit" => "Modifier une catégorie",
-                "delete" => "Supprimer une catégorie",
-                "define" => "Définir une catégorie",
+                "add" => "Ajouter",
+                "edit" => "Modifier",
+                "delete" => "Supprimer",
+                "define" => "Définir",
             ],
             "article" => [
-                "add" => "Ajouter un article",
-                "edit" => "Modifier un article",
-                "delete" => "Supprimer un article",
-                "define" => "Définir un article",
+                "add" => "Ajouter",
+                "edit" => "Modifier",
+                "delete" => "Supprimer",
+                "define" => "Définir",
             ],
         ],
     ],

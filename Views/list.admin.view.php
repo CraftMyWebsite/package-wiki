@@ -15,275 +15,182 @@ $description = LangManager::translate("wiki.title.dashboard_desc");
 /** @var \CMW\Entity\Wiki\WikiArticlesEntity[] $undefinedArticles */
 /** @var \CMW\Entity\Wiki\WikiCategoriesEntity[] $undefinedCategories */
 ?>
-<div class="d-flex flex-wrap justify-content-between">
-    <h3><i class="fa-solid fa-book"></i> <span class="m-lg-auto"><?= LangManager::translate("wiki.title.dashboard_title") ?></span></h3>
-</div>
 
-<section class="row">
-    <div class="col-12 col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.actif") ?></h4>
-            </div>
-            <div class="card-body">
-                <?php if ($categories): ?>
-                <?php foreach ($categories as $category):?>
-                    <div class="card-in-card table-responsive mb-4">
-                        <table class="table-borderless table table-hover mt-1">
-                            <thead>
-                                <tr>
-                                    <th id="categorie-<?= $category->getId() ?>"><i class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?> -
-                                    <i><small><?= mb_strimwidth($category->getDescription(), 0, 45, '...') ?></small></i></th>
-                                    <th class="text-end">
-                                        <a href="article/add/<?= $category->getId() ?>"><i class="text-success me-3 fa-solid fa-circle-plus"></i></a>
-                                        <a href="categorie/edit/<?= $category->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
-                                        <a type="button" data-bs-toggle="modal" data-bs-target="#delete-<?= $category->getId() ?>">
-                                            <i class="text-danger fas fa-trash-alt"></i>
-                                        </a>
-                                    </th>
-                                </tr>
-                                <div class="modal fade text-left" id="delete-<?= $category->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-danger">
-                                                <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.modal.delete") ?> <?= $category->getName() ?></h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <?= LangManager::translate("wiki.modal.deletecatalert") ?>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <i class="bx bx-x"></i>
-                                                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
-                                                </button>
-                                                <a href="categorie/delete/<?= $category->getId() ?>" class="btn btn-danger ml-1">
-                                                    <i class="bx bx-check"></i>
-                                                    <span class=""><?= LangManager::translate("core.btn.delete") ?></span>
-                                                </a>                                
-                                            </div>
-                                        </div>
-                                    </div>
+<h3><i class="fa-solid fa-book"></i> <?= LangManager::translate("wiki.title.dashboard_title") ?></h3>
+
+<div class="grid-2">
+    <div class="card">
+        <h6><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.actif") ?></h6>
+        <?php if ($categories): ?>
+            <?php foreach ($categories as $category):?>
+                        <div class="flex justify-between">
+                            <div id="categorie-<?= $category->getId() ?>"><i class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?> -
+                                <i><small><?= mb_strimwidth($category->getDescription(), 0, 45, '...') ?></small></i></div>
+                            <div class="space-x-2">
+                                <a href="article/add/<?= $category->getId() ?>"><i class="text-success fa-solid fa-circle-plus"></i></a>
+                                <a href="categorie/edit/<?= $category->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                                <button data-modal-toggle="modal-delete-<?= $category->getId() ?>" type="button"><i class="text-danger fas fa-trash-alt"></i></button>
+                            </div>
+                        </div>
+                        <div id="modal-delete-<?= $category->getId() ?>" class="modal-container">
+                            <div class="modal">
+                                <div class="modal-header-danger">
+                                    <h6><?= LangManager::translate("wiki.modal.delete") ?> <?= $category->getName() ?></h6>
+                                    <button type="button" data-modal-hide="modal-delete-<?= $category->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
                                 </div>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($category->getArticles() as $article):?>
-                                <tr id="article-<?= $article->getId() ?>">
-                                    <td class="ps-4 text-bold-500"><i class="<?= $article->getIcon() ?>"></i> <?= $article->getTitle() ?>
-                                    </td>
-                                    <td class="text-end">
+                                <div class="modal-body">
+                                    <?= LangManager::translate("wiki.modal.deletecatalert") ?>
+                                </div>
+                                <div class="modal-footer">
+                                    <a href="categorie/delete/<?= $category->getId() ?>" class="btn-danger">
+                                        <?= LangManager::translate("core.btn.delete") ?>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <?php foreach ($category->getArticles() as $article):?>
+                            <div class="flex justify-between pl-3" id="article-<?= $article->getId() ?>">
+                                <div class="ps-4 text-bold-500"><i class="<?= $article->getIcon() ?>"></i> <?= $article->getTitle() ?>
+                                </div>
+                                <div class="space-x-2">
                                         <span class="me-3">
                                             <a href="article/positionDown/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-minus"></i></a>
                                             <b><?= $article->getPosition() ?></b>
                                             <a href="article/positionUp/<?= $article->getId() ?>/<?= $article->getPosition() ?>"><i class="fa-xs fa-solid fa-circle-plus"></i></a>
                                         </span>
-                                        <a target="_blank" href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" . $category->getSlug() ."/" . $article->getSlug() ?>"><i class="me-3 fa-solid fa-up-right-from-square"></i></a>
-                                        <a href="article/edit/<?= $article->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
-                                        <a type="button" data-bs-toggle="modal" data-bs-target="#deletee-<?= $article->getId() ?>">
-                                            <i class="text-danger fas fa-trash-alt"></i>
+                                    <a target="_blank" href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" . $category->getSlug() ."/" . $article->getSlug() ?>"><i class="fa-solid fa-up-right-from-square"></i></a>
+                                    <a href="article/edit/<?= $article->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                                    <button data-modal-toggle="modal-deletee-<?= $article->getId() ?>" type="button"><i class="text-danger fas fa-trash-alt"></i></button>
+                                </div>
+                            </div>
+                            <div id="modal-deletee-<?= $article->getId() ?>" class="modal-container">
+                                <div class="modal">
+                                    <div class="modal-header-danger">
+                                        <h6><?= LangManager::translate("wiki.modal.delete") ?> <?= $article->getTitle() ?></h6>
+                                        <button type="button" data-modal-hide="modal-deletee-<?= $article->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <?= LangManager::translate("wiki.modal.deletealert") ?>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <a href="article/delete/<?= $article->getId() ?>" class="btn btn-danger">
+                                            <?= LangManager::translate("core.btn.delete") ?>
                                         </a>
-                                    </td> 
-                                </tr>
-                                <div class="modal fade text-left" id="deletee-<?= $article->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                        <div class="modal-content">
-                                            <div class="modal-header bg-danger">
-                                                <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.modal.delete") ?> <?= $article->getTitle() ?></h5>
-                                            </div>
-                                            <div class="modal-body">
-                                                <?= LangManager::translate("wiki.modal.deletealert") ?>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                    <i class="bx bx-x"></i>
-                                                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
-                                                </button>
-                                                <a href="article/delete/<?= $article->getId() ?>" class="btn btn-danger ml-1">
-                                                    <i class="bx bx-check"></i>
-                                                    <span class=""><?= LangManager::translate("core.btn.delete") ?></span>
-                                                </a>                                
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php endforeach; ?>
-                <?php else: ?>
-                <div class="alert alert-info">
-                    <?= LangManager::translate("wiki.alert.create_before") ?>
+                            </div>
+                        <?php endforeach; ?>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <div class="alert alert-info">
+                <?= LangManager::translate("wiki.alert.create_before") ?>
             </div>
-            <?php endif ?>
-                <div class="divider">
-                    <a type="button" data-bs-toggle="modal" data-bs-target="#add-cat">
-                        <div class="divider-text"><i class="fa-solid fa-circle-plus"></i> <?= LangManager::translate("wiki.button.add_category") ?></div>
-                    </a>
-                </div>
-            </div>
+        <?php endif ?>
+        <div class="mt-4">
+            <button data-modal-toggle="modal-add-cat" class="btn-primary btn-center" type="button"><i class="fa-solid fa-circle-plus"></i> <?= LangManager::translate("wiki.button.add_category") ?></button>
         </div>
+
     </div>
 
 
 
 
-<div class="modal fade " id="add-cat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-        <div class="modal-content">
-            <div class="modal-header bg-primary">
-                <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.title.add_category") ?></h5>
-            </div>
-            <div class="modal-body">
-                <form method="post" action="">
-                    <?php (new SecurityManager())->insertHiddenToken() ?>            
-                        <h6><?= LangManager::translate("wiki.add.category_name") ?> :</h6>
-                        <div class="form-group position-relative has-icon-left">
-                            <input type="text" class="form-control" name="name" required placeholder="<?= LangManager::translate("wiki.add.category_name_placeholder") ?>">
-                            <div class="form-control-icon">
-                                <i class="fas fa-heading"></i>
-                            </div>
+
+
+
+    <div class="card">
+        <h6><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.inactif") ?></h6>
+        <div><?= LangManager::translate("wiki.title.inactifcat") ?> (<strong><?= (new WikiCategoriesModel())->getNumberOfUndefinedCategories() ?></strong>)</div>
+            <?php foreach ($undefinedCategories as $undefinedCategorie):?>
+                <div class="flex justify-between">
+                    <div class="pl-4"><i class="<?= $undefinedCategorie->getIcon() ?>"></i> <?= $undefinedCategorie->getName() ?></div>
+                    <div class="space-x-2">
+                        <a href="categorie/define/<?= $undefinedCategorie->getId() ?>"><i class="text-success fa-solid fa-rocket"></i></a>
+                        <a href="categorie/edit/<?= $undefinedCategorie->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                        <button data-modal-toggle="modal-deleteee-<?= $undefinedCategorie->getId() ?>" type="button"><i class="text-danger fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+
+                <div id="modal-deleteee-<?= $undefinedCategorie->getId() ?>" class="modal-container">
+                    <div class="modal">
+                        <div class="modal-header-danger">
+                            <h6><?= LangManager::translate("wiki.modal.delete") ?> <?= $undefinedCategorie->getName() ?></h6>
+                            <button type="button" data-modal-hide="modal-deleteee-<?= $undefinedCategorie->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-                        <h6><?= LangManager::translate("wiki.add.category_description") ?> :</h6>
-                        <div class="form-group position-relative has-icon-left">
-                            <input type="text" class="form-control" name="description" required placeholder="<?= LangManager::translate("wiki.add.category_description_placeholder") ?>">
-                            <div class="form-control-icon">
-                                <i class="fas fa-paragraph"></i>
-                            </div>
+                        <div class="modal-body">
+                            <?= LangManager::translate("wiki.modal.deletealert") ?>
                         </div>
-                        <h6><?= LangManager::translate("wiki.add.category_icon") ?> :</h6>
-                        <div class="form-group position-relative has-icon-left">
-                            <input type="text" class="form-control" name="icon" placeholder="<?= LangManager::translate("wiki.add.category_icon_placeholder") ?>">
-                            <div class="form-control-icon">
-                                <i class="fas fa-icons"></i>
-                            </div>
-                            <small class="form-text"><?= LangManager::translate("wiki.add.hint_icon") ?> <a href="https://fontawesome.com/search?o=r&m=free" target="_blank">FontAwesome.com</a></small>
+                        <div class="modal-footer">
+                            <a href="categorie/delete/<?= $undefinedCategorie->getId() ?>" class="btn-danger">
+                                <?= LangManager::translate("core.btn.delete") ?>
+                            </a>
                         </div>
-                         <h6><?= LangManager::translate("wiki.add.category_slug") ?> :</h6>
-                         <div class="input-group mb-3">
-                             <span class="input-group-text" ><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" ?></span>
-                             <input type="text" name="slug" required class="form-control" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
-                         </div>                   
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                    <i class="bx bx-x"></i>
-                    <span class=""><?= LangManager::translate("core.btn.close") ?></span>
-                </button>
-                <button type="submit" class="btn btn-primary ml-1">
-                    <i class="bx bx-check"></i>
-                    <span class=""><?= LangManager::translate("core.btn.add") ?></span>
-                </button>    
-                </form>                            
-            </div>
-        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
+
+        <?= LangManager::translate("wiki.title.inactifart") ?> (<strong><?= (new WikiArticlesModel())->getNumberOfUndefinedArticles() ?></strong>)
+            <?php foreach ($undefinedArticles as $undefinedArticle):?>
+                <div class="flex justify-between">
+                    <div class="pl-4"><i class="<?= $undefinedArticle->getIcon() ?>"></i> <?= $undefinedArticle->getTitle() ?></div>
+                    <div class="space-x-2">
+                        <a href="article/define/<?= $undefinedArticle->getId() ?>"><i class="text-success fa-solid fa-rocket"></i></a>
+                        <a href="article/edit/<?= $undefinedArticle->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                        <button data-modal-toggle="modal-delette-<?= $undefinedArticle->getId() ?>" type="button"><i class="text-danger fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <div id="modal-delette-<?= $undefinedArticle->getId() ?>" class="modal-container">
+                    <div class="modal">
+                        <div class="modal-header-danger">
+                            <h6><?= LangManager::translate("wiki.modal.delete") ?> <?= $undefinedArticle->getTitle() ?></h6>
+                            <button type="button" data-modal-hide="modal-delette-<?= $undefinedArticle->getId() ?>"><i class="fa-solid fa-xmark"></i></button>
+                        </div>
+                        <div class="modal-body">
+                            <?= LangManager::translate("wiki.modal.deletealert") ?>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="article/delete/<?= $undefinedArticle->getId() ?>" class="btn-danger">
+                                <?= LangManager::translate("core.btn.delete") ?>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach; ?>
     </div>
 </div>
 
 
-
-
-    <div class="col-12 col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <h4><?= LangManager::translate("wiki.title.manage") ?> <?= LangManager::translate("wiki.title.inactif") ?></h4>
-            </div>
-            <div class="card-body">
-                <div class="card-in-card table-responsive mb-4">
-                    <table class="table table-hover table-borderless mt-1 mb-0">
-                        <thead>
-                            <tr>
-                                <th><?= LangManager::translate("wiki.title.inactifcat") ?> (<strong><?= (new WikiCategoriesModel())->getNumberOfUndefinedCategories() ?></strong>)</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($undefinedCategories as $undefinedCategorie):?>
-                            <tr>
-
-                                <td class="ps-4 text-bold-500"><i class="<?= $undefinedCategorie->getIcon() ?>"></i> <?= $undefinedCategorie->getName() ?></td>
-                                <td class="text-end">
-                                    <a href="categorie/define/<?= $undefinedCategorie->getId() ?>"><i class="text-success me-3 fa-solid fa-rocket"></i></a>
-                                    <a href="categorie/edit/<?= $undefinedCategorie->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
-                                    <a type="button" data-bs-toggle="modal" data-bs-target="#deleteee-<?= $undefinedCategorie->getId() ?>">
-                                        <i class="text-danger fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <div class="modal fade text-left" id="deleteee-<?= $undefinedCategorie->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-danger">
-                                            <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.modal.delete") ?> <?= $undefinedCategorie->getName() ?></h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <?= LangManager::translate("wiki.modal.deletealert") ?>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
-                                            </button>
-                                            <a href="categorie/delete/<?= $undefinedCategorie->getId() ?>" class="btn btn-danger ml-1">
-                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
-                                            </a>                                
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-
-                                        
-                <div class="card-in-card table-responsive">
-                    <table class="table table-hover table-borderless mt-1 mb-0">
-                        <thead>
-                            <tr>
-                                <th><?= LangManager::translate("wiki.title.inactifart") ?> (<strong><?= (new WikiArticlesModel())->getNumberOfUndefinedArticles() ?></strong>)</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($undefinedArticles as $undefinedArticle):?>
-                            <tr>
-                                <td class="ps-4 text-bold-500"><i class="<?= $undefinedArticle->getIcon() ?>"></i> <?= $undefinedArticle->getTitle() ?></td>
-                                <td class="text-end">
-                                    <a href="article/define/<?= $undefinedArticle->getId() ?>"><i class="text-success me-3 fa-solid fa-rocket"></i></a>
-                                    <a href="article/edit/<?= $undefinedArticle->getId() ?>"><i class="text-primary me-3 fas fa-edit"></i></a>
-                                    <a type="button" data-bs-toggle="modal" data-bs-target="#delette-<?= $undefinedArticle->getId() ?>">
-                                        <i class="text-danger fas fa-trash-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <div class="modal fade text-left" id="delette-<?= $undefinedArticle->getId() ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel160" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-danger">
-                                            <h5 class="modal-title white" id="myModalLabel160"><?= LangManager::translate("wiki.modal.delete") ?> <?= $undefinedArticle->getTitle() ?></h5>
-                                        </div>
-                                        <div class="modal-body">
-                                            <?= LangManager::translate("wiki.modal.deletealert") ?>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-light-secondary" data-bs-dismiss="modal">
-                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.close") ?></span>
-                                            </button>
-                                            <a href="article/delete/<?= $undefinedArticle->getId() ?>" class="btn btn-danger ml-1">
-                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                <span class="d-none d-sm-block"><?= LangManager::translate("core.btn.delete") ?></span>
-                                            </a>                                
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+<div id="modal-add-cat" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <h6>Titre de la modal</h6>
+            <button type="button" data-modal-hide="modal-add-cat"><i class="fa-solid fa-xmark"></i></button>
         </div>
+        <form method="post" action="">
+            <?php (new SecurityManager())->insertHiddenToken() ?>
+            <div class="modal-body">
+                <label for="name"><?= LangManager::translate("wiki.add.category_name") ?> :</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-heading"></i>
+                    <input type="text" id="name" name="name" required placeholder="<?= LangManager::translate("wiki.add.category_name_placeholder") ?>">
+                </div>
+                <label for="description"><?= LangManager::translate("wiki.add.category_description") ?> :</label>
+                <div class="input-group">
+                    <i class="fa-solid fa-paragraph"></i>
+                    <input type="text" id="description" name="description" required placeholder="<?= LangManager::translate("wiki.add.category_description_placeholder") ?>">
+                </div>
+                <div class="icon-picker" data-id="icon" data-name="icon" data-label="<?= LangManager::translate("wiki.add.category_icon") ?> :" data-placeholder="Sélectionner un icon" data-value=""></div>
+                <label for="slug"><?= LangManager::translate("wiki.add.category_slug") ?> :</label>
+                <div class="input-group">
+                    <i><?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" ?></i>
+                    <input type="text" id="slug" name="slug" placeholder="<?= LangManager::translate("wiki.add.category_slug_placeholder") ?>">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn-primary">
+                    <?= LangManager::translate("core.btn.add") ?>
+                </button>
+            </div>
+        </form>
     </div>
-</section>
+</div>

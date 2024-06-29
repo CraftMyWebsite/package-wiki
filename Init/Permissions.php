@@ -16,6 +16,10 @@ class Permissions implements IPermissionInit
                 description: LangManager::translate('wiki.permissions.wiki.show'),
             ),
             new PermissionInitType(
+                code: 'wiki.category.define',
+                description: LangManager::translate('wiki.permissions.wiki.category.define'),
+            ),
+            new PermissionInitType(
                 code: 'wiki.category.add',
                 description: LangManager::translate('wiki.permissions.wiki.category.add'),
             ),
@@ -28,8 +32,8 @@ class Permissions implements IPermissionInit
                 description: LangManager::translate('wiki.permissions.wiki.category.delete'),
             ),
             new PermissionInitType(
-                code: 'wiki.category.define',
-                description: LangManager::translate('wiki.permissions.wiki.category.define'),
+                code: 'wiki.article.define',
+                description: LangManager::translate('wiki.permissions.wiki.article.define'),
             ),
             new PermissionInitType(
                 code: 'wiki.article.add',
@@ -42,10 +46,6 @@ class Permissions implements IPermissionInit
             new PermissionInitType(
                 code: 'wiki.article.delete',
                 description: LangManager::translate('wiki.permissions.wiki.article.delete'),
-            ),
-            new PermissionInitType(
-                code: 'wiki.article.define',
-                description: LangManager::translate('wiki.permissions.wiki.article.define'),
             ),
         ];
     }
