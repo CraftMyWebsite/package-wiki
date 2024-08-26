@@ -2,16 +2,15 @@
 
 namespace CMW\Controller\Wiki;
 
-use CMW\Controller\Core\EditorController;
-use CMW\Controller\users\UsersController;
+use CMW\Controller\Users\UsersController;
 use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Manager\Requests\Request;
-use CMW\Model\users\UsersModel;
-use CMW\Model\wiki\WikiArticlesModel;
-use CMW\Model\wiki\WikiCategoriesModel;
+use CMW\Model\Users\UsersModel;
+use CMW\Model\Wiki\WikiArticlesModel;
+use CMW\Model\Wiki\WikiCategoriesModel;
 use CMW\Manager\Router\Link;
 use CMW\Utils\Utils;
 use CMW\Utils\Redirect;
@@ -262,7 +261,7 @@ class WikiController extends AbstractController
         //Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
         $view = new View('Wiki', 'main');
         $view->addScriptBefore("Admin/Resources/Vendors/Prismjs/prism.js");
-        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/Style/" . EditorController::getCurrentStyle());
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css");
         $view->addVariableList(["categories" => $categories, "article" => null, "firstArticle" => $firstArticle]);
         $view->view();
     }
