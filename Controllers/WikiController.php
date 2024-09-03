@@ -65,15 +65,25 @@ class WikiController extends AbstractController
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
-        $name = filter_input(INPUT_POST, "name");
-        $description = filter_input(INPUT_POST, "description");
-        $icon = filter_input(INPUT_POST, "icon");
+        [$name, $description, $icon, $slug] = Utils::filterInput('name', 'description', 'icon', 'slug');
 
-        $slug = Utils::normalizeForSlug(filter_input(INPUT_POST, "slug"));
-
+        if ($slug == "") {
+            $slug = $this->generateSlug($name);
+        }
 
         wikiCategoriesModel::getInstance()->createCategorie($name, $description, ($icon === "" ? null : $icon), $slug);
+
         Redirect::redirectPreviousRoute();
+    }
+
+    /**
+     * @param int $id
+     * @param string $name
+     * @return string
+     */
+    public function generateSlug(string $name): string
+    {
+        return Utils::normalizeForSlug($name);
     }
 
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -277,14 +287,13 @@ class WikiController extends AbstractController
         $categories = wikiCategoriesModel::getInstance()->getDefinedCategories();
 
         $article = wikiArticlesModel::getInstance()->getArticleBySlug($slugA);
-        
 
         $firstArticle = wikiArticlesModel::getInstance()->getFirstArticle();
 
         //Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
         $view = new View('Wiki', 'main');
         $view->addScriptBefore("Admin/Resources/Vendors/Prismjs/prism.js");
-        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css", "Admin/Resources/Vendors/Prismjs/Style/" . EditorController::getCurrentStyle());
+        $view->addStyle("Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css");
         $view->addVariableList(["categories" => $categories, "article" => $article,
             "firstArticle" => $firstArticle]);
 
