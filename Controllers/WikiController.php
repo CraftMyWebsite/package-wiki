@@ -8,13 +8,13 @@ use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Manager\Requests\Request;
+use CMW\Manager\Router\Link;
+use CMW\Manager\Views\View;
 use CMW\Model\Users\UsersModel;
 use CMW\Model\Wiki\WikiArticlesModel;
 use CMW\Model\Wiki\WikiCategoriesModel;
-use CMW\Manager\Router\Link;
-use CMW\Utils\Utils;
 use CMW\Utils\Redirect;
-use CMW\Manager\Views\View;
+use CMW\Utils\Utils;
 use JetBrains\PhpStorm\NoReturn;
 
 
@@ -27,11 +27,9 @@ use JetBrains\PhpStorm\NoReturn;
 class WikiController extends AbstractController
 {
     #[Link(path: "/", method: Link::GET, scope: "/cmw-admin/wiki")]
-    #[Link("/list", Link::GET, [], "/cmw-admin/wiki")]
     private function frontWikiListAdmin(): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.show");
-
 
         //Get all undefined articles
         $undefinedArticles = wikiArticlesModel::getInstance()->getUndefinedArticles();
@@ -42,10 +40,9 @@ class WikiController extends AbstractController
         $currentCategories = wikiCategoriesModel::getInstance()->getCategories();
 
 
-        //Include the view file ("views/list.admin.view.php").
-
-        View::createAdminView('Wiki', 'list')
-            ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories, "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
+        View::createAdminView('Wiki', 'main')
+            ->addVariableList(["currentCategories" => $currentCategories, "categories" => $categories,
+                "undefinedArticles" => $undefinedArticles, "undefinedCategories" => $undefinedCategories])
             ->view();
     }
 
@@ -110,7 +107,7 @@ class WikiController extends AbstractController
     private function addArticlePost(Request $request, int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
-        
+
         $articles = new WikiArticlesModel();
 
         $title = filter_input(INPUT_POST, "title");
@@ -124,10 +121,10 @@ class WikiController extends AbstractController
 
         $articles->createArticle($title, $cat, ($icon === "" ? null : $icon), $content, $slug, $user);
 
-        Flash::send(Alert::SUCCESS,LangManager::translate("core.toaster.success"),LangManager::translate("wiki.alert.added"));
+        Flash::send(Alert::SUCCESS, LangManager::translate("core.toaster.success"), LangManager::translate("wiki.alert.added"));
 
         Redirect::redirectPreviousRoute();
-        
+
     }
 
     #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
@@ -220,7 +217,7 @@ class WikiController extends AbstractController
 
         wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === "" ? null : $icon), $user, $isDefine);
 
-        Flash::send(Alert::SUCCESS,LangManager::translate("core.toaster.success"),LangManager::translate("wiki.alert.edited"));
+        Flash::send(Alert::SUCCESS, LangManager::translate("core.toaster.success"), LangManager::translate("wiki.alert.edited"));
 
         Redirect::redirectPreviousRoute();
     }

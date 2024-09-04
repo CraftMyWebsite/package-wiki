@@ -39,7 +39,7 @@ class Package implements IPackageConfig
                 lang: "fr",
                 icon: "fas fa-book",
                 title: "Wiki",
-                url: "wiki/list",
+                url: "wiki",
                 permission: "wiki.show",
                 subMenus: []
             ),
@@ -47,7 +47,7 @@ class Package implements IPackageConfig
                 lang: "en",
                 icon: "fas fa-book",
                 title: "Wiki",
-                url: "wiki/list",
+                url: "wiki",
                 permission: "wiki.show",
                 subMenus: []
             ),
