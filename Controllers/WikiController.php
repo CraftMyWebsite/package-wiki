@@ -7,7 +7,6 @@ use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
-use CMW\Manager\Requests\Request;
 use CMW\Manager\Router\Link;
 use CMW\Manager\Views\View;
 use CMW\Model\Users\UsersModel;
@@ -84,7 +83,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/add/:cat", Link::GET, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function addArticle(Request $request, int $cat): void
+    private function addArticle(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.add");
 
@@ -104,7 +103,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/add/:cat", Link::POST, ["cat" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function addArticlePost(Request $request, int $cat): void
+    private function addArticlePost(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
@@ -128,7 +127,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/positionDown/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function positionDown(Request $request, int $id, int $position): void
+    private function positionDown(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
@@ -138,7 +137,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/positionUp/:id/:position", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function positionUp(Request $request, int $id, int $position): void
+    private function positionUp(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.add");
 
@@ -148,7 +147,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/categorie/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function editCategorie(Request $request, int $id): void
+    private function editCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
@@ -160,7 +159,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/categorie/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki", secure: false)]
-    #[NoReturn] private function editCategoriePost(Request $request, int $id): void
+    #[NoReturn] private function editCategoriePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.edit");
 
@@ -176,8 +175,8 @@ class WikiController extends AbstractController
         Redirect::redirect("cmw-admin/wiki/list");
     }
 
-    #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function deleteCategorie(Request $request, int $id): void
+    #[NoReturn] #[Link("/categorie/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
+    private function deleteCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.delete");
 
@@ -187,7 +186,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/edit/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function editArticle(Request $request, int $id): void
+    private function editArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
 
@@ -202,7 +201,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/edit/:id", Link::POST, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    #[NoReturn] private function editArticlePost(Request $request, int $id): void
+    #[NoReturn] private function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.edit");
         //Get the editor id
@@ -223,7 +222,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/delete/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function deleteArticle(Request $request, int $id): void
+    private function deleteArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.delete");
 
@@ -234,7 +233,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/categorie/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function defineCategorie(Request $request, int $id): void
+    private function defineCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.category.define");
 
@@ -244,7 +243,7 @@ class WikiController extends AbstractController
     }
 
     #[Link("/article/define/:id", Link::GET, ["id" => "[0-9]+"], "/cmw-admin/wiki")]
-    private function defineArticle(Request $request, int $id): void
+    private function defineArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions("core.dashboard", "wiki.article.define");
 
@@ -277,7 +276,7 @@ class WikiController extends AbstractController
      * @throws \CMW\Router\RouterException
      */
     #[Link("/wiki/:slugC/:slugA", Link::GET, ["slugC" => ".*?"])]
-    private function publicShowArticle(Request $request, $slugC, $slugA): void
+    private function publicShowArticle($slugC, $slugA): void
     {
 
 
