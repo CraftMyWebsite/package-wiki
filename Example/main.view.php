@@ -10,7 +10,7 @@ use CMW\Utils\Utils; ?>
 <?php foreach ($categories as $categorie): ?>
     <i class="<?= $categorie->getIcon() ?>"></i> <?= $categorie->getName() ?></div>
         <?php foreach ($categorie?->getArticles() as $menuArticle): ?>
-            <a href="<?= EnvManager::getInstance()->getValue("PATH_SUBFOLDER") . "wiki/" . $categorie->getSlug() . "/" . $menuArticle->getSlug() ?>">
+            <a href="<?= EnvManager::getInstance()->getValue('PATH_SUBFOLDER') . 'wiki/' . $categorie->getSlug() . '/' . $menuArticle->getSlug() ?>">
                 <i class="<?= $menuArticle->getIcon() ?>"></i> <?= $menuArticle->getTitle() ?></div>
             </a>
         <?php endforeach; ?>
@@ -19,18 +19,18 @@ use CMW\Utils\Utils; ?>
 <!------------------------------------
             ----- Article -----
 -------------------------------------->
-<?php if($article !== null): ?>
+<?php if ($article !== null): ?>
     <i class="<?= $article->getIcon() ?>"></i><?= $article->getTitle() ?>
     <?= $article->getContent() ?>
-    <?= date("d/m/Y", strtotime($article->getDateCreate())) ?>
+    <?= date('d/m/Y', strtotime($article->getDateCreate())) ?>
     <?= $article->getAuthor()->getPseudo() ?>
-    <?= date("d/m/Y", strtotime($article->getDateUpdate())) ?>
-<?php elseif($firstArticle === null && $article !== null): ?>
+    <?= date('d/m/Y', strtotime($article->getDateUpdate())) ?>
+<?php elseif ($firstArticle === null && $article !== null): ?>
     You haven't started creating your Wiki yet!
 <?php else: ?>
     <i class="<?= $firstArticle->getIcon() ?>"></i><?= $firstArticle->getTitle() ?>
     <?= $firstArticle->getContent() ?>
-    <?= date("d/m/Y", strtotime($firstArticle->getDateCreate())) ?>
+    <?= date('d/m/Y', strtotime($firstArticle->getDateCreate())) ?>
     <?= $firstArticle->getAuthor()->getPseudo() ?>
-    <?= date("d/m/Y", strtotime($firstArticle->getDateUpdate())) ?>
+    <?= date('d/m/Y', strtotime($firstArticle->getDateUpdate())) ?>
 <?php endif; ?>

@@ -6,7 +6,6 @@ use CMW\Entity\Wiki\WikiCategoriesEntity;
 use CMW\Manager\Database\DatabaseManager;
 use CMW\Manager\Package\AbstractModel;
 
-
 /**
  * Class @wikiCategorieModel
  * @package Wiki
@@ -15,19 +14,17 @@ use CMW\Manager\Package\AbstractModel;
  */
 class WikiCategoriesModel extends AbstractModel
 {
-
     public function createCategorie(string $name, string $description, ?string $icon, string $slug): ?WikiCategoriesEntity
     {
-
         $var = array(
-            "name" => $name,
-            "description" => $description,
-            "icon" => $icon,
-            "slug" => $slug
+            'name' => $name,
+            'description' => $description,
+            'icon' => $icon,
+            'slug' => $slug
         );
 
-        $sql = "INSERT INTO cmw_wiki_categories (wiki_categories_name,wiki_categories_description,
-                                 wiki_categories_slug,wiki_categories_icon) VALUES (:name, :description, :slug, :icon)";
+        $sql = 'INSERT INTO cmw_wiki_categories (wiki_categories_name,wiki_categories_description,
+                                 wiki_categories_slug,wiki_categories_icon) VALUES (:name, :description, :slug, :icon)';
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -42,15 +39,14 @@ class WikiCategoriesModel extends AbstractModel
 
     public function getCategorieById($id): ?WikiCategoriesEntity
     {
-
-        $sql = "SELECT wiki_categories_id, wiki_categories_name, wiki_categories_description, wiki_categories_slug, 
+        $sql = 'SELECT wiki_categories_id, wiki_categories_name, wiki_categories_description, wiki_categories_slug, 
                     wiki_categories_icon, wiki_categories_date_create, wiki_categories_date_update, 
-                    wiki_categories_position, wiki_categories_is_define FROM cmw_wiki_categories WHERE wiki_categories_id =:id";
+                    wiki_categories_position, wiki_categories_is_define FROM cmw_wiki_categories WHERE wiki_categories_id =:id';
 
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array("id" => $id))) {
+        if (!$res->execute(array('id' => $id))) {
             return null;
         }
 
@@ -72,7 +68,7 @@ class WikiCategoriesModel extends AbstractModel
 
     public function getCategories(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_categories";
+        $sql = 'SELECT * FROM cmw_wiki_categories';
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
@@ -83,7 +79,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki["wiki_categories_id"]);
+            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -91,7 +87,7 @@ class WikiCategoriesModel extends AbstractModel
 
     public function getUndefinedCategories(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0";
+        $sql = 'SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0';
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
@@ -102,7 +98,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki["wiki_categories_id"]);
+            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -110,7 +106,7 @@ class WikiCategoriesModel extends AbstractModel
 
     public function getNumberOfUndefinedCategories(): int
     {
-        $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0";
+        $sql = 'SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 0';
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
         $res = $req->execute();
@@ -126,7 +122,7 @@ class WikiCategoriesModel extends AbstractModel
 
     public function getDefinedCategories(): array
     {
-        $sql = "SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 1";
+        $sql = 'SELECT * FROM cmw_wiki_categories WHERE wiki_categories_is_define = 1';
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
@@ -137,7 +133,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki["wiki_categories_id"]);
+            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -146,18 +142,17 @@ class WikiCategoriesModel extends AbstractModel
     public function updateCategorie(int $id, string $name, string $description, string $slug, ?string $icon, int $isDefine): ?WikiCategoriesEntity
     {
         $var = array(
-            "id" => $id,
-            "name" => $name,
-            "description" => $description,
-            "slug" => $slug,
-            "icon" => $icon,
-            "is_define" => $isDefine
+            'id' => $id,
+            'name' => $name,
+            'description' => $description,
+            'slug' => $slug,
+            'icon' => $icon,
+            'is_define' => $isDefine
         );
 
-        $sql = "UPDATE cmw_wiki_categories SET wiki_categories_name=:name, wiki_categories_description=:description, 
+        $sql = 'UPDATE cmw_wiki_categories SET wiki_categories_name=:name, wiki_categories_description=:description, 
                                wiki_categories_slug=:slug, wiki_categories_icon=:icon, wiki_categories_date_update=now(), 
-                               wiki_categories_is_define=:is_define WHERE wiki_categories_id=:id";
-
+                               wiki_categories_is_define=:is_define WHERE wiki_categories_id=:id';
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -172,10 +167,10 @@ class WikiCategoriesModel extends AbstractModel
     public function defineCategorie(int $id): void
     {
         $var = array(
-            "id" => $id
+            'id' => $id
         );
 
-        $sql = "UPDATE cmw_wiki_categories SET wiki_categories_is_define=1 WHERE wiki_categories_id=:id";
+        $sql = 'UPDATE cmw_wiki_categories SET wiki_categories_is_define=1 WHERE wiki_categories_id=:id';
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
@@ -184,11 +179,10 @@ class WikiCategoriesModel extends AbstractModel
 
     public function deleteCategorie(int $id): void
     {
-        $sql = "DELETE FROM cmw_wiki_categories WHERE wiki_categories_id=:id";
+        $sql = 'DELETE FROM cmw_wiki_categories WHERE wiki_categories_id=:id';
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
-        $req->execute(array("id" => $id));
+        $req->execute(array('id' => $id));
     }
-
 }

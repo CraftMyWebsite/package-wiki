@@ -98,7 +98,6 @@ class WikiArticlesEntity
      */
     public function getContentNotTranslate(): string
     {
-
         return htmlspecialchars($this->contentNt);
     }
 
@@ -157,5 +156,4 @@ class WikiArticlesEntity
     {
         return $this->lastEditor;
     }
-
 }

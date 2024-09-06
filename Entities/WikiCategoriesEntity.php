@@ -123,5 +123,4 @@ class WikiCategoriesEntity
     {
         return $this->articles;
     }
-
 }

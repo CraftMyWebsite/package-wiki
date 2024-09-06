@@ -5,8 +5,8 @@ namespace CMW\Implementation\Wiki\Core;
 use CMW\Interface\Core\IMenus;
 use CMW\Manager\Lang\LangManager;
 
-class WikiMenusImplementations implements IMenus {
-
+class WikiMenusImplementations implements IMenus
+{
     public function getRoutes(): array
     {
         return [
