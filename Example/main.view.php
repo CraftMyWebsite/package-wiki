@@ -7,10 +7,10 @@ use CMW\Utils\Utils; ?>
 <!------------------------------------
            ----- Navigation-----
 -------------------------------------->
-<?php foreach ($categories as $categorie): ?>
-    <i class="<?= $categorie->getIcon() ?>"></i> <?= $categorie->getName() ?></div>
-        <?php foreach ($categorie?->getArticles() as $menuArticle): ?>
-            <a href="<?= EnvManager::getInstance()->getValue('PATH_SUBFOLDER') . 'wiki/' . $categorie->getSlug() . '/' . $menuArticle->getSlug() ?>">
+<?php foreach ($categories as $category): ?>
+    <i class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?></div>
+        <?php foreach ($category->getArticles() as $menuArticle): ?>
+            <a href="<?= EnvManager::getInstance()->getValue('PATH_SUBFOLDER') . 'wiki/' . $category->getSlug() . '/' . $menuArticle->getSlug() ?>">
                 <i class="<?= $menuArticle->getIcon() ?>"></i> <?= $menuArticle->getTitle() ?></div>
             </a>
         <?php endforeach; ?>

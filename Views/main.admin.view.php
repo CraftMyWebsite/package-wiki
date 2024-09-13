@@ -23,13 +23,14 @@ $description = LangManager::translate('wiki.title.dashboard_desc');
         <?php if ($categories): ?>
             <?php foreach ($categories as $category): ?>
                 <div class="flex justify-between">
-                    <div id="categorie-<?= $category->getId() ?>"><i
+                    <div id="category-<?= $category->getId() ?>"><i
                             class="<?= $category->getIcon() ?>"></i> <?= $category->getName() ?> -
                         <i><small><?= mb_strimwidth($category->getDescription(), 0, 45, '...') ?></small></i></div>
                     <div class="space-x-2">
                         <a href="wiki/article/add/<?= $category->getId() ?>"><i
                                 class="text-success fa-solid fa-circle-plus"></i></a>
-                        <a href="wiki/categorie/edit/<?= $category->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                        <a href="wiki/category/edit/<?= $category->getId() ?>"><i
+                                class="text-info fas fa-edit"></i></a>
                         <button data-modal-toggle="modal-delete-<?= $category->getId() ?>" type="button"><i
                                 class="text-danger fas fa-trash-alt"></i></button>
                     </div>
@@ -67,7 +68,8 @@ $description = LangManager::translate('wiki.title.dashboard_desc');
                             <a target="_blank"
                                href="<?= Website::getProtocol() . '://' . $_SERVER['SERVER_NAME'] . EnvManager::getInstance()->getValue('PATH_SUBFOLDER') . 'wiki/' . $category->getSlug() . '/' . $article->getSlug() ?>"><i
                                     class="fa-solid fa-up-right-from-square"></i></a>
-                            <a href="wiki/article/edit/<?= $article->getId() ?>"><i class="text-info fas fa-edit"></i></a>
+                            <a href="wiki/article/edit/<?= $article->getId() ?>"><i
+                                    class="text-info fas fa-edit"></i></a>
                             <button data-modal-toggle="modal-deletee-<?= $article->getId() ?>" type="button"><i
                                     class="text-danger fas fa-trash-alt"></i></button>
                         </div>

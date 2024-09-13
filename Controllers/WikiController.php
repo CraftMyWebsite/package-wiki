@@ -3,6 +3,7 @@
 namespace CMW\Controller\Wiki;
 
 use CMW\Controller\Users\UsersController;
+use CMW\Manager\Filter\FilterManager;
 use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
 use CMW\Manager\Lang\LangManager;
@@ -43,39 +44,23 @@ class WikiController extends AbstractController
             ->view();
     }
 
-    #[Link('/list', Link::GET, [], '/cmw-admin/wiki')]
-    private function addCategorie(): void
+    #[NoReturn] #[Link('/', Link::POST, [], '/cmw-admin/wiki')]
+    private function addCategoryPost(): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.add');
 
-        View::createAdminView('Wiki', 'addCategorie')
-            ->view();
-    }
+        $name = FilterManager::filterInputStringPost('name');
+        $description = FilterManager::filterInputStringPost('description');
+        $icon = FilterManager::filterInputStringPost('icon', 35);
+        $slug = FilterManager::filterInputStringPost('slug');
 
-    #[Link('/list', Link::POST, [], '/cmw-admin/wiki')]
-    private function addCategoriePost(): void
-    {
-        UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.add');
-
-        [$name, $description, $icon, $slug] = Utils::filterInput('name', 'description', 'icon', 'slug');
-
-        if ($slug == '') {
-            $slug = $this->generateSlug($name);
+        if (empty($slug)) {
+            $slug = Utils::normalizeForSlug($name);
         }
 
         wikiCategoriesModel::getInstance()->createCategorie($name, $description, ($icon === '' ? null : $icon), $slug);
 
         Redirect::redirectPreviousRoute();
-    }
-
-    /**
-     * @param int $id
-     * @param string $name
-     * @return string
-     */
-    public function generateSlug(string $name): string
-    {
-        return Utils::normalizeForSlug($name);
     }
 
     #[Link('/article/add/:cat', Link::GET, ['cat' => '[0-9]+'], '/cmw-admin/wiki')]
@@ -94,20 +79,21 @@ class WikiController extends AbstractController
         View::createAdminView('Wiki', 'addArticle')
             ->addScriptBefore('Admin/Resources/Vendors/Tinymce/tinymce.min.js',
                 'Admin/Resources/Vendors/Tinymce/Config/full.js')
-            ->addVariableList(['currentCategories' => $currentCategories, 'categories' => $categories, 'undefinedArticles' => $undefinedArticles, 'undefinedCategories' => $undefinedCategories])
+            ->addVariableList(['currentCategories' => $currentCategories, 'categories' =>
+                $categories, 'undefinedArticles' => $undefinedArticles, 'undefinedCategories' => $undefinedCategories])
             ->view();
     }
 
-    #[Link('/article/add/:cat', Link::POST, ['cat' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/article/add/:cat', Link::POST, ['cat' => '[0-9]+'], '/cmw-admin/wiki')]
     private function addArticlePost(int $cat): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.add');
 
         $articles = new WikiArticlesModel();
 
-        $title = filter_input(INPUT_POST, 'title');
-        $icon = filter_input(INPUT_POST, 'icon');
-        $content = filter_input(INPUT_POST, 'content');
+        $title = FilterManager::filterInputStringPost('title');
+        $icon = FilterManager::filterInputStringPost('icon', 35);
+        $content = FilterManager::filterInputStringPost('content', null);
 
         $slug = Utils::normalizeForSlug($title);
 
@@ -121,7 +107,7 @@ class WikiController extends AbstractController
         Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/article/positionDown/:id/:position', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/article/positionDown/:id/:position', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
     private function positionDown(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.add');
@@ -131,7 +117,7 @@ class WikiController extends AbstractController
         Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/article/positionUp/:id/:position', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/article/positionUp/:id/:position', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
     private function positionUp(int $id, int $position): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.add');
@@ -141,45 +127,45 @@ class WikiController extends AbstractController
         Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/categorie/edit/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
-    private function editCategorie(int $id): void
+    #[Link('/category/edit/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    private function editCategory(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.edit');
 
-        $categorie = wikiCategoriesModel::getInstance()->getCategorieById($id);
+        $category = wikiCategoriesModel::getInstance()->getCategoryById($id);
 
-        View::createAdminView('Wiki', 'editCategorie')
-            ->addVariableList(['categorie' => $categorie])
+        View::createAdminView('Wiki', 'editCategory')
+            ->addVariableList(['category' => $category])
             ->view();
     }
 
-    #[Link('/categorie/edit/:id', Link::POST, ['id' => '[0-9]+'], '/cmw-admin/wiki', secure: false)]
+    #[Link('/category/edit/:id', Link::POST, ['id' => '[0-9]+'], '/cmw-admin/wiki', secure: false)]
     #[NoReturn]
-    private function editCategoriePost(int $id): void
+    private function editCategoryPost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.edit');
 
-        $name = filter_input(INPUT_POST, 'name');
-        $description = filter_input(INPUT_POST, 'description');
-        $icon = filter_input(INPUT_POST, 'icon');
-        $slug = filter_input(INPUT_POST, 'slug');
+        $name = FilterManager::filterInputStringPost("name");
+        $description = FilterManager::filterInputStringPost("description");
+        $icon = FilterManager::filterInputStringPost("icon", 35);
+        $slug = FilterManager::filterInputStringPost("slug");
 
         $isDefine = filter_input(INPUT_POST, 'isDefine', FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
         wikiCategoriesModel::getInstance()->updateCategorie($id, $name, $description, $slug, ($icon === '' ? null : $icon), $isDefine);
 
-        Redirect::redirect('cmw-admin/wiki/list');
+        Redirect::redirectPreviousRoute();
     }
 
     #[NoReturn]
     #[Link('/categorie/delete/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
-    private function deleteCategorie(int $id): void
+    private function deleteCategory(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.delete');
 
         wikiCategoriesModel::getInstance()->deleteCategorie($id);
 
-        Redirect::redirect('cmw-admin/wiki/list');
+        Redirect::redirectPreviousRoute();
     }
 
     #[Link('/article/edit/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
@@ -202,50 +188,61 @@ class WikiController extends AbstractController
     private function editArticlePost(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.edit');
-        // Get the editor id
 
-        $title = filter_input(INPUT_POST, 'title');
-        $category_id = filter_input(INPUT_POST, 'categorie');
-        $content = filter_input(INPUT_POST, 'content');
-        $icon = filter_input(INPUT_POST, 'icon');
+        $title = FilterManager::filterInputStringPost('title');
+        $icon = FilterManager::filterInputStringPost('icon', 35);
+        $content = FilterManager::filterInputStringPost('content', null);
+        $categoryId = FilterManager::filterInputIntPost('category');
         $user = UsersModel::getCurrentUser()?->getId();
         $isDefine = filter_input(INPUT_POST, 'isDefine', FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
-        wikiArticlesModel::getInstance()->updateArticle($id, $title, $category_id, $content, ($icon === '' ? null : $icon), $user, $isDefine);
+        wikiArticlesModel::getInstance()->updateArticle(
+            $id,
+            $title,
+            $categoryId,
+            $content,
+            ($icon === '' ? null : $icon),
+            $user,
+            $isDefine,
+        );
 
-        Flash::send(Alert::SUCCESS, LangManager::translate('core.toaster.success'), LangManager::translate('wiki.alert.edited'));
+        Flash::send(
+            Alert::SUCCESS,
+            LangManager::translate('core.toaster.success'),
+            LangManager::translate('wiki.alert.edited')
+        );
 
         Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/article/delete/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/article/delete/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
     private function deleteArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.delete');
 
         wikiArticlesModel::getInstance()->deleteArticle($id);
 
-        Redirect::redirect('cmw-admin/wiki/list');
+        Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/categorie/define/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/categorie/define/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
     private function defineCategorie(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.category.define');
 
         wikiCategoriesModel::getInstance()->defineCategorie($id);
 
-        Redirect::redirect('cmw-admin/wiki/list');
+        Redirect::redirectPreviousRoute();
     }
 
-    #[Link('/article/define/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
+    #[NoReturn] #[Link('/article/define/:id', Link::GET, ['id' => '[0-9]+'], '/cmw-admin/wiki')]
     private function defineArticle(int $id): void
     {
         UsersController::redirectIfNotHavePermissions('core.dashboard', 'wiki.article.define');
 
         wikiArticlesModel::getInstance()->defineArticle($id);
 
-        Redirect::redirect('cmw-admin/wiki/list');
+        Redirect::redirectPreviousRoute();
     }
 
     /* //////////////////// FRONT PUBLIC //////////////////// */
@@ -266,9 +263,6 @@ class WikiController extends AbstractController
         $view->view();
     }
 
-    /**
-     * @throws \CMW\Router\RouterException
-     */
     #[Link('/wiki/:slugC/:slugA', Link::GET, ['slugC' => '.*?'])]
     private function publicShowArticle($slugC, $slugA): void
     {

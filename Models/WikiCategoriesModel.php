@@ -31,13 +31,13 @@ class WikiCategoriesModel extends AbstractModel
 
         if ($req->execute($var)) {
             $id = $db->lastInsertId();
-            return $this->getCategorieById($id);
+            return $this->getCategoryById($id);
         }
 
         return null;
     }
 
-    public function getCategorieById($id): ?WikiCategoriesEntity
+    public function getCategoryById($id): ?WikiCategoriesEntity
     {
         $sql = 'SELECT wiki_categories_id, wiki_categories_name, wiki_categories_description, wiki_categories_slug, 
                     wiki_categories_icon, wiki_categories_date_create, wiki_categories_date_update, 
@@ -79,7 +79,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
+            $toReturn[] = $this->getCategoryById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -98,7 +98,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
+            $toReturn[] = $this->getCategoryById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -133,7 +133,7 @@ class WikiCategoriesModel extends AbstractModel
         $toReturn = array();
 
         while ($wiki = $res->fetch()) {
-            $toReturn[] = $this->getCategorieById($wiki['wiki_categories_id']);
+            $toReturn[] = $this->getCategoryById($wiki['wiki_categories_id']);
         }
 
         return $toReturn;
@@ -158,7 +158,7 @@ class WikiCategoriesModel extends AbstractModel
         $req = $db->prepare($sql);
 
         if ($req->execute($var)) {
-            return $this->getCategorieById($id);
+            return $this->getCategoryById($id);
         }
 
         return null;
