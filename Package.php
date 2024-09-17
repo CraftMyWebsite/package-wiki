@@ -36,15 +36,6 @@ class Package implements IPackageConfig
     {
         return [
             new PackageMenuType(
-                lang: 'fr',
-                icon: 'fas fa-book',
-                title: 'Wiki',
-                url: 'wiki',
-                permission: 'wiki.show',
-                subMenus: []
-            ),
-            new PackageMenuType(
-                lang: 'en',
                 icon: 'fas fa-book',
                 title: 'Wiki',
                 url: 'wiki',
