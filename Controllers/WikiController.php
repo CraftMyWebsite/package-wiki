@@ -21,7 +21,7 @@ use JetBrains\PhpStorm\NoReturn;
  * Class: @wikiController
  * @package wiki
  * @author Teyir
- * @version 1.0
+ * @version 0.0.1
  */
 class WikiController extends AbstractController
 {
