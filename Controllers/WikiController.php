@@ -255,12 +255,11 @@ class WikiController extends AbstractController
 
         $firstArticle = wikiArticlesModel::getInstance()->getFirstArticle();
 
-        // Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
-        $view = new View('Wiki', 'main');
-        $view->addScriptBefore('Admin/Resources/Vendors/Prismjs/prism.js');
-        $view->addStyle('Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css');
-        $view->addVariableList(['categories' => $categories, 'article' => null, 'firstArticle' => $firstArticle]);
-        $view->view();
+        View::createPublicView('Wiki', 'main')
+            ->addScriptBefore('Admin/Resources/Vendors/Prismjs/prism.js')
+            ->addStyle('Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css')
+            ->addVariableList(['categories' => $categories, 'article' => null, 'firstArticle' => $firstArticle])
+            ->view();
     }
 
     #[Link('/wiki/:slugC/:slugA', Link::GET, ['slugC' => '.*?'])]
@@ -272,13 +271,11 @@ class WikiController extends AbstractController
 
         $firstArticle = wikiArticlesModel::getInstance()->getFirstArticle();
 
-        // Include the Public view file ("Public/Themes/$themePath/Views/Wiki/main.view.php")
-        $view = new View('Wiki', 'main');
-        $view->addScriptBefore('Admin/Resources/Vendors/Prismjs/prism.js');
-        $view->addStyle('Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css');
-        $view->addVariableList(['categories' => $categories, 'article' => $article,
-            'firstArticle' => $firstArticle]);
-
-        $view->view();
+        View::createPublicView('Wiki', 'main')
+            ->addScriptBefore('Admin/Resources/Vendors/Prismjs/prism.js')
+            ->addStyle('Admin/Resources/Vendors/Fontawesome-free/Css/fa-all.min.css')
+            ->addVariableList(['categories' => $categories, 'article' => $article,
+                'firstArticle' => $firstArticle])
+            ->view();
     }
 }
