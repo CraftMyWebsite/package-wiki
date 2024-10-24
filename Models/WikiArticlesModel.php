@@ -2,9 +2,12 @@
 
 namespace CMW\Model\Wiki;
 
+use CMW\Controller\Core\CoreController;
 use CMW\Entity\Wiki\WikiArticlesEntity;
 use CMW\Manager\Database\DatabaseManager;
+use CMW\Manager\Editor\EditorManager;
 use CMW\Manager\Package\AbstractModel;
+use CMW\Manager\Uploads\ImagesManager;
 use CMW\Model\Users\UsersModel;
 
 /**
@@ -193,6 +196,9 @@ class WikiArticlesModel extends AbstractModel
 
     public function deleteArticle(int $id): void
     {
+        $articleContent = $this->getArticleById($id)->getContent();
+        EditorManager::getInstance()->deleteEditorImageInContent($articleContent);
+
         $sql = 'DELETE FROM cmw_wiki_articles WHERE wiki_articles_id=:id';
 
         $db = DatabaseManager::getInstance();
