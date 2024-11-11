@@ -262,8 +262,8 @@ class WikiController extends AbstractController
             ->view();
     }
 
-    #[Link('/wiki/:slugC/:slugA', Link::GET, ['slugC' => '.*?'])]
-    private function publicShowArticle($slugC, $slugA): void
+    #[Link('/wiki/:slugC/:slugA', Link::GET, ['slugC' => '.*?', 'slugA' => '.*?'])]
+    private function publicShowArticle(string $slugC, string $slugA): void
     {
         $categories = wikiCategoriesModel::getInstance()->getDefinedCategories();
 

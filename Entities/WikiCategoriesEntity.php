@@ -2,9 +2,10 @@
 
 namespace CMW\Entity\Wiki;
 
+use CMW\Manager\Package\AbstractEntity;
 use CMW\Utils\Date;
 
-class WikiCategoriesEntity
+class WikiCategoriesEntity extends AbstractEntity
 {
     private int $id;
     private string $name;
@@ -15,7 +16,7 @@ class WikiCategoriesEntity
     private ?string $dateUpdate;
     private int $position;
     private int $isDefine;
-    /** @var \CMW\Entity\Wiki\WikiArticlesEntity|\CMW\Entity\Wiki\WikiArticlesEntity[] $articles */
+    /** @var WikiArticlesEntity|WikiArticlesEntity[] $articles */
     private ?array $articles;
 
     /**
@@ -28,7 +29,7 @@ class WikiCategoriesEntity
      * @param string|null $dateUpdate
      * @param int $position
      * @param int $isDefine
-     * @param \CMW\Entity\Wiki\WikiArticlesEntity[]|null $articles
+     * @param WikiArticlesEntity[]|null $articles
      */
     public function __construct(int $id, string $name, string $description, string $slug, ?string $icon, string $dateCreate, ?string $dateUpdate, int $position, int $isDefine, ?array $articles)
     {
@@ -117,7 +118,7 @@ class WikiCategoriesEntity
     }
 
     /**
-     * @return \CMW\Entity\Wiki\WikiArticlesEntity[]|null
+     * @return WikiArticlesEntity[]|null
      */
     public function getArticles(): ?array
     {

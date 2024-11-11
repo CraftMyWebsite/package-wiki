@@ -20,15 +20,15 @@ class WikiArticlesModel extends AbstractModel
 {
     public function createArticle(string $title, int $categoryId, ?string $icon, string $content, string $slug, int $authorId): ?WikiArticlesEntity
     {
-        $var = array(
+        $var = [
             'title' => $title,
             'category_id' => $categoryId,
             'icon' => $icon,
             'content' => $content,
             'author_id' => $authorId,
             'last_editor_id' => $authorId,
-            'slug' => $slug
-        );
+            'slug' => $slug,
+        ];
 
         $sql = 'INSERT INTO cmw_wiki_articles (wiki_articles_title, wiki_articles_category_id, wiki_articles_icon, 
                                wiki_articles_content, wiki_articles_author_id, wiki_articles_last_editor_id, wiki_articles_slug) 
@@ -47,15 +47,15 @@ class WikiArticlesModel extends AbstractModel
 
     public function updateArticle(int $id, string $title, int $categoryId, string $content, ?string $icon, int $lastEditor, int $isDefine): ?WikiArticlesEntity
     {
-        $var = array(
+        $var = [
             'id' => $id,
             'title' => $title,
             'category_id' => $categoryId,
             'content' => $content,
             'icon' => $icon,
             'last_editor' => $lastEditor,
-            'is_define' => $isDefine
-        );
+            'is_define' => $isDefine,
+        ];
 
         $sql = 'UPDATE cmw_wiki_articles SET wiki_articles_title=:title,wiki_articles_category_id=:category_id, wiki_articles_content=:content, 
                              wiki_articles_icon=:icon, wiki_articles_date_update=now(), 
@@ -81,7 +81,7 @@ class WikiArticlesModel extends AbstractModel
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array('id' => $id))) {
+        if (!$res->execute(['id' => $id])) {
             return null;
         }
 
@@ -91,8 +91,8 @@ class WikiArticlesModel extends AbstractModel
             return null;
         }
 
-        $author = (new UsersModel())->getUserById($res['wiki_articles_author_id']);
-        $lastEditor = (new UsersModel())->getUserById($res['wiki_articles_last_editor_id']);
+        $author = UsersModel::getInstance()->getUserById($res['wiki_articles_author_id']);
+        $lastEditor = UsersModel::getInstance()->getUserById($res['wiki_articles_last_editor_id']);
 
         return new WikiArticlesEntity(
             $res['wiki_articles_id'],
@@ -118,10 +118,10 @@ class WikiArticlesModel extends AbstractModel
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
-            return array();
+            return [];
         }
 
-        $toReturn = array();
+        $toReturn = [];
 
         while ($wiki = $res->fetch()) {
             $toReturn[] = $this->getArticleById($wiki['wiki_articles_id']);
@@ -137,10 +137,10 @@ class WikiArticlesModel extends AbstractModel
         $res = $db->prepare($sql);
 
         if (!$res->execute()) {
-            return array();
+            return [];
         }
 
-        $toReturn = array();
+        $toReturn = [];
 
         while ($wiki = $res->fetch()) {
             $toReturn[] = $this->getArticleById($wiki['wiki_articles_id']);
@@ -172,11 +172,11 @@ class WikiArticlesModel extends AbstractModel
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array('categoryId' => $id))) {
-            return array();
+        if (!$res->execute(['categoryId' => $id])) {
+            return [];
         }
 
-        $toReturn = array();
+        $toReturn = [];
 
         while ($wiki = $res->fetch()) {
             $toReturn[] = $this->getArticleById($wiki['wiki_articles_id']);
@@ -191,7 +191,7 @@ class WikiArticlesModel extends AbstractModel
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
-        $req->execute(array('id' => $id));
+        $req->execute(['id' => $id]);
     }
 
     public function deleteArticle(int $id): void
@@ -203,7 +203,7 @@ class WikiArticlesModel extends AbstractModel
 
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
-        $req->execute(array('id' => $id));
+        $req->execute(['id' => $id]);
     }
 
     public function downPositionArticle(int $id, int $position): void
@@ -213,7 +213,7 @@ class WikiArticlesModel extends AbstractModel
         $newPosition = $position - 1;
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
-        $req->execute(array('id' => $id, 'position' => $newPosition));
+        $req->execute(['id' => $id, 'position' => $newPosition]);
     }
 
     public function upPositionArticle(int $id, int $position): void
@@ -223,7 +223,7 @@ class WikiArticlesModel extends AbstractModel
         $newPosition = $position + 1;
         $db = DatabaseManager::getInstance();
         $req = $db->prepare($sql);
-        $req->execute(array('id' => $id, 'position' => $newPosition));
+        $req->execute(['id' => $id, 'position' => $newPosition]);
     }
 
     public function getArticleBySlug(string $slug): ?WikiArticlesEntity
@@ -236,14 +236,14 @@ class WikiArticlesModel extends AbstractModel
         $db = DatabaseManager::getInstance();
         $res = $db->prepare($sql);
 
-        if (!$res->execute(array('slug' => $slug))) {
+        if (!$res->execute(['slug' => $slug])) {
             return null;
         }
 
         $res = $res->fetch();
 
-        $author = (new UsersModel())->getUserById($res['wiki_articles_author_id']);
-        $lastEditor = (new UsersModel())->getUserById($res['wiki_articles_last_editor_id']);
+        $author = UsersModel::getInstance()->getUserById($res['wiki_articles_author_id']);
+        $lastEditor = UsersModel::getInstance()->getUserById($res['wiki_articles_last_editor_id']);
 
         return new WikiArticlesEntity(
             $res['wiki_articles_id'],

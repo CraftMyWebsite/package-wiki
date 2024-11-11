@@ -2,10 +2,11 @@
 
 namespace CMW\Entity\Wiki;
 
+use CMW\Manager\Package\AbstractEntity;
 use CMW\Utils\Date;
 use CMW\Entity\Users\UserEntity;
 
-class WikiArticlesEntity
+class WikiArticlesEntity extends AbstractEntity
 {
     private int $id;
     private int $categoryId;
@@ -33,8 +34,8 @@ class WikiArticlesEntity
      * @param ?string $icon
      * @param string $dateCreate
      * @param string $dateUpdate
-     * @param \CMW\Entity\Users\UserEntity $author
-     * @param \CMW\Entity\Users\UserEntity $lastEditor
+     * @param UserEntity $author
+     * @param UserEntity $lastEditor
      */
     public function __construct(int $id, int $categoryId, int $position, int $isDefine, string $title, string $content, string $contentNt, string $slug, ?string $icon, string $dateCreate, string $dateUpdate, UserEntity $author, UserEntity $lastEditor)
     {
@@ -142,7 +143,7 @@ class WikiArticlesEntity
     }
 
     /**
-     * @return \CMW\Entity\Users\UserEntity
+     * @return UserEntity
      */
     public function getAuthor(): UserEntity
     {
@@ -150,7 +151,7 @@ class WikiArticlesEntity
     }
 
     /**
-     * @return \CMW\Entity\Users\UserEntity
+     * @return UserEntity
      */
     public function getLastEditor(): UserEntity
     {
