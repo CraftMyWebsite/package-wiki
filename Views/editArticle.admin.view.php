@@ -13,7 +13,7 @@ $description = LangManager::translate('wiki.title.dashboard_desc');
 <h3><?= LangManager::translate('wiki.title.edit_article') ?></h3>
 
 <form action="" method="post" class="card">
-    <?php (new SecurityManager())->insertHiddenToken() ?>
+    <?php SecurityManager::getInstance()->insertHiddenToken() ?>
     <div class="grid-2">
         <div>
             <label for="title"><?= LangManager::translate('wiki.add.article_title') ?> :</label>

@@ -188,7 +188,7 @@ $description = LangManager::translate('wiki.title.dashboard_desc');
             <button type="button" data-modal-hide="modal-add-cat"><i class="fa-solid fa-xmark"></i></button>
         </div>
         <form method="post" action="">
-            <?php (new SecurityManager())->insertHiddenToken() ?>
+            <?php SecurityManager::getInstance()->insertHiddenToken() ?>
             <div class="modal-body">
                 <label for="name"><?= LangManager::translate('wiki.add.category_name') ?> :</label>
                 <div class="input-group">

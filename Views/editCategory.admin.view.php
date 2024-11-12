@@ -14,7 +14,7 @@ $description = LangManager::translate('wiki.title.dashboard_desc');
 <h3><i class="fa-solid fa-gears"></i> <?= LangManager::translate('wiki.title.edit_category') ?></h3>
 
 <form method="post" action="" class="card">
-    <?php (new SecurityManager())->insertHiddenToken() ?>
+    <?php SecurityManager::getInstance()->insertHiddenToken() ?>
     <div>
         <label class="toggle">
             <p class="toggle-label"><?= LangManager::translate('wiki.edit.category_enable') ?></p>
