@@ -3,6 +3,7 @@
 namespace CMW\Controller\Wiki;
 
 use CMW\Controller\Users\UsersController;
+use CMW\Controller\Users\UsersSessionsController;
 use CMW\Manager\Filter\FilterManager;
 use CMW\Manager\Flash\Alert;
 use CMW\Manager\Flash\Flash;
@@ -10,7 +11,6 @@ use CMW\Manager\Lang\LangManager;
 use CMW\Manager\Package\AbstractController;
 use CMW\Manager\Router\Link;
 use CMW\Manager\Views\View;
-use CMW\Model\Users\UsersModel;
 use CMW\Model\Wiki\WikiArticlesModel;
 use CMW\Model\Wiki\WikiCategoriesModel;
 use CMW\Utils\Redirect;
@@ -98,7 +98,7 @@ class WikiController extends AbstractController
         $slug = Utils::normalizeForSlug($title);
 
         // Get the author pseudo
-        $user = UsersModel::getCurrentUser()?->getId();
+        $user = UsersSessionsController::getInstance()->getCurrentUser()?->getId();
 
         $articles->createArticle($title, $cat, ($icon === '' ? null : $icon), $content, $slug, $user);
 
@@ -193,7 +193,7 @@ class WikiController extends AbstractController
         $icon = FilterManager::filterInputStringPost('icon', 35);
         $content = FilterManager::filterInputStringPost('content', null);
         $categoryId = FilterManager::filterInputIntPost('category');
-        $user = UsersModel::getCurrentUser()?->getId();
+        $user = UsersSessionsController::getInstance()->getCurrentUser()?->getId();
         $isDefine = filter_input(INPUT_POST, 'isDefine', FILTER_SANITIZE_NUMBER_INT) ?? 0;
 
         wikiArticlesModel::getInstance()->updateArticle(
