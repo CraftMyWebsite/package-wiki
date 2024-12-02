@@ -39,8 +39,7 @@ class Package implements IPackageConfig
                 icon: 'fas fa-book',
                 title: 'Wiki',
                 url: 'wiki',
-                permission: 'wiki.show',
-                subMenus: []
+                permission: 'wiki.show'
             ),
         ];
     }
