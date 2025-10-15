@@ -2,7 +2,6 @@
 
 namespace CMW\Package\Wiki;
 
-use CMW\Manager\Package\IPackageConfig;
 use CMW\Manager\Package\IPackageConfigV2;
 use CMW\Manager\Package\PackageMenuType;
 
@@ -64,11 +63,6 @@ class Package implements IPackageConfigV2
     public function imageLink(): ?string
     {
         return null;
-    }
-
-    public function author(): ?string
-    {
-        return "Teyir";
     }
 
     public function compatiblesPackages(): array
